@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {Block, Text} from './';
+import Text from './Text';
+import Block from './Block';
 import * as theme from '../constants/theme';
 
 const Card = props => {

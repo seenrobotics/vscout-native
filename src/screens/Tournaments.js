@@ -1,16 +1,11 @@
 import * as shape from 'd3-shape';
 import React from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {Image, SafeAreaView, StyleSheet} from 'react-native';
+
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
-import {Block, Text} from '../components';
+import {Block,CardList,Text} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 
@@ -118,13 +113,4 @@ const styles = StyleSheet.create({
     borderRadius: 25 / 2,
     marginRight: 5,
   },
-  requests: {
-    marginTop: -55,
-    paddingTop: 55 + 20,
-    paddingHorizontal: 15,
-    zIndex: -1,
-  },
-  requestsHeader: {paddingHorizontal: 20, paddingBottom: 15},
-  request: {padding: 20, marginBottom: 15},
-  requestStatus: {marginRight: 20, overflow: 'hidden', height: 90},
 });
