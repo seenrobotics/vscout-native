@@ -1,0 +1,14 @@
+{
+    "name": "vscout",
+    "displayName": "vscout",
+    "platforms": ["ios", "android"],
+    "icon": "./assets/icon.png",
+    "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#fff"
+    },
+    "ios": {
+        "supportsTablet": true
+    }
+}
