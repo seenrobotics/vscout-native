@@ -2,13 +2,13 @@ import React from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
-import Tournaments from '../screens/Tournaments';
+import Events from '../screens/Events';
 
 const routeConfigs = {
-  Tournaments: {screen: Tournaments},
+  Events: {screen: Events},
 };
 export default createAppContainer(
   createDrawerNavigator(routeConfigs, {
-    initialRouteName: 'Tournaments',
+    initialRouteName: 'Events',
   }),
 );
