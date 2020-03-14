@@ -3,7 +3,7 @@ import {StyleSheet, Text} from 'react-native'
 
 import * as theme from '../constants/theme';
 
-export default class Typography extends Component {
+export default class Typography extends Component  {
   render() {
     const {
       h1,
@@ -34,6 +34,7 @@ export default class Typography extends Component {
       children,
       ...props
     } = this.props;
+  
 
     const textStyles = [
       styles.text, h1 && styles.h1, h2 && styles.h2, h3 && styles.h3,
@@ -85,3 +86,4 @@ const styles = StyleSheet.create({
         title: theme.fonts.title, body: theme.fonts.body,
         caption: theme.fonts.caption, small: theme.fonts.small
   });
+

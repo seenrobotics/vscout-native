@@ -8,14 +8,8 @@ import { LineChart, Path } from 'react-native-svg-charts';
 import { Block, CardList, Text } from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
+import {Event} from '../common/types' ;
 
-
-interface Event {
-  id: number;
-  eventName: string;
-  eventType: string;
-  eventDate: string;
-}
 
 interface TournamentPageProps {
   type: string,
