@@ -1,4 +1,5 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
 
 import Text from './Text';
 import Block from './Block';
@@ -47,3 +48,16 @@ const rightContentLen = props.rightContent.length;
           {request.time}hrs
 */
 export default Card;
+
+
+const styles = StyleSheet.create({
+  requests: {
+    marginTop: -55,
+    paddingTop: 55 + 20,
+    paddingHorizontal: 15,
+    zIndex: -1,
+  },
+  requestsHeader: {paddingHorizontal: 20, paddingBottom: 15},
+  request: {padding: 20, marginBottom: 15},
+  requestStatus: {marginRight: 20, overflow: 'hidden', height: 90},
+});

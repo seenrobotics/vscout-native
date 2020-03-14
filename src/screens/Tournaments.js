@@ -90,16 +90,24 @@ class Tournaments extends React.Component {
     return (
       <SafeAreaView style={styles.safe}>
         {this.renderHeader()}
-        <CardList {...this.props} />
+        <CardList {
+          
+          
+          ...this.props
+          
+          } />
       </SafeAreaView>
     );
   }
 }
 
 Tournaments.defaultProps = {
+  type: "Event",
   user: mocks.user,
-  requests: mocks.requests,
   chart: mocks.chart,
+  data : {
+    events: mocks.events,
+  },
 };
 
 export default Tournaments;

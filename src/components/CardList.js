@@ -11,18 +11,34 @@ const capitalize = string => {
 };
 
 const CardList = props => {
+  // console.log(props);
   const {data, type} = props;
+  console.log(data);
+  const cardRenders = data.events.map(
+    cardProps => ({
+      id: cardProps.id,
+      leftHeader: cardProps.eventDate,
+      leftBody : cardProps.eventType.substring(0,1),
+      rightHeader : cardProps.eventName,
+      rightContent : [
+      ],
+
+    })
+  )
+  // const data = requests;
+  // console.log(requests);
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
-        <Text light>Recent ${capitalize(type)}s</Text>
+        <Text light>Recent {capitalize(type)}s</Text>
         <TouchableOpacity activeOpacity={0.8}>
           <Text semibold>View All</Text>
         </TouchableOpacity>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {data ? (
-          data.map(cardProps => (
+        {cardRenders ? (
+          cardRenders.map(cardProps => (
+            
             <TouchableOpacity
               activeOpacity={0.8}
               key={`${type}-${cardProps.id}`}>
