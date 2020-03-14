@@ -3,4 +3,4 @@ import Text from './Text';
 import Card from './Card';
 import CardList from './CardList';
 
-export { Block, Text };
+export { Block, Text, Card, CardList };
