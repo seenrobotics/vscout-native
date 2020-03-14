@@ -11,7 +11,6 @@ const capitalize = string => {
 };
 
 const CardList = props => {
-  // console.log(props);
   const {data, type} = props;
   console.log(data);
   const cardRenders = data.events.map(
@@ -25,8 +24,6 @@ const CardList = props => {
 
     })
   )
-  // const data = requests;
-  // console.log(requests);
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>

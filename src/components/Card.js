@@ -43,12 +43,8 @@ const rightContentLen = props.rightContent.length;
     </Block>
   );
 };
-/*
-          {request.age}  {request.gender} • {request.distance}km •{' '}
-          {request.time}hrs
-*/
-export default Card;
 
+export default Card;
 
 const styles = StyleSheet.create({
   requests: {

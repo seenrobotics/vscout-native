@@ -11,10 +11,10 @@ import * as mocks from '../mocks';
 
 
 interface Event {
-    id: number;
-    eventName: string;
-    eventType: string;
-    eventDate: string;
+  id: number;
+  eventName: string;
+  eventType: string;
+  eventDate: string;
 }
 
 interface TournamentPageProps {
@@ -106,12 +106,7 @@ class Events extends React.Component<TournamentPageProps, {}> {
     return (
       <SafeAreaView style={styles.safe}>
         {this.renderHeader()}
-        <CardList {
-
-
-          ...this.props
-
-        } />
+        <CardList {...this.props} />
       </SafeAreaView>
     );
   }
