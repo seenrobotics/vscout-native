@@ -1,26 +1,22 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from './index';
-import CardProps from './CardProps';
-import {Event} from '../common/types' ;
-const capitalize = (string : string) => {
+import {Event} from '../common/types';
+
+const capitalize = (string: string) => {
   return string
     ? string.charAt(0).toUpperCase() + string.slice(1)
     : 'undefined';
 };
-
-const CardList = (props : any) => {
+const CardList = (props: any) => {
   const {data, type} = props;
-  const cardRenders = data.events.map(
-    (cardProps : Event) => ({
-      id: cardProps.id,
-      leftHeader: cardProps.eventDate,
-      leftBody : cardProps.eventType.substring(0,1),
-      rightHeader : cardProps.eventName,
-      rightContent : [
-      ],
-    })
-  )
+  const cardRenders = data.events.map((cardProps: Event) => ({
+    id: cardProps.id,
+    leftHeader: cardProps.eventDate,
+    leftBody: cardProps.eventType.substring(0, 1),
+    rightHeader: cardProps.eventName,
+    rightContent: [],
+  }));
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
@@ -31,8 +27,7 @@ const CardList = (props : any) => {
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         {cardRenders ? (
-          cardRenders.map((cardProps: CardProps) => (
-            
+          cardRenders.map((cardProps: React.ComponentProps<typeof Card>) => (
             <TouchableOpacity
               activeOpacity={0.8}
               key={`${type}-${cardProps.id}`}>
