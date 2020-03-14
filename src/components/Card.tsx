@@ -3,12 +3,17 @@ import {StyleSheet} from 'react-native';
 
 import {Text, Block} from './index';
 import * as theme from '../constants/theme';
-import CardProps from './CardProps';
 
+export interface CardProps {
+  id: number;
+  leftHeader: string;
+  rightHeader: string;
+  leftBody: string;
+  rightContent: Array<any>;
+}
 
-
-const Card = (props : CardProps) => {
-const rightContentLen = props.rightContent.length;
+const Card = (props: CardProps) => {
+  const rightContentLen = props.rightContent.length;
   return (
     <Block row card shadow color="white" style={styles.request}>
       <Block
@@ -33,13 +38,13 @@ const rightContentLen = props.rightContent.length;
           {props.rightHeader}
         </Text>
         <Text caption semibold>
-            {props.rightContent.map((rightContentItem,i )=> {
-                if (rightContentLen === i+1) {
-                    return rightContentItem
-                } else {
-                return ({rightContentItem} + " • " )
-                }
-            })}
+          {props.rightContent.map((rightContentItem, i) => {
+            if (rightContentLen === i + 1) {
+              return rightContentItem;
+            } else {
+              return {rightContentItem} + ' • ';
+            }
+          })}
         </Text>
       </Block>
     </Block>
