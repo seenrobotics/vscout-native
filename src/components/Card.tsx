@@ -1,11 +1,13 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
-import Text from './Text';
-import Block from './Block';
+import {Text, Block} from './index';
 import * as theme from '../constants/theme';
+import CardProps from './CardProps';
 
-const Card = props => {
+
+
+const Card = (props : CardProps) => {
 const rightContentLen = props.rightContent.length;
   return (
     <Block row card shadow color="white" style={styles.request}>
@@ -43,12 +45,8 @@ const rightContentLen = props.rightContent.length;
     </Block>
   );
 };
-/*
-          {request.age}  {request.gender} • {request.distance}km •{' '}
-          {request.time}hrs
-*/
-export default Card;
 
+export default Card;
 
 const styles = StyleSheet.create({
   requests: {
