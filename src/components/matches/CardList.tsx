@@ -1,26 +1,22 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import {Text, Block, Card} from './index';
-import {Event} from '../common/types';
+import {Text, Block, Card} from '../index';
+import {Match} from '../../common/types';
+import Utils from '../../utils';
 
-const capitalize = (string: string) => {
-  return string
-    ? string.charAt(0).toUpperCase() + string.slice(1)
-    : 'undefined';
-};
 const CardList = (props: any) => {
-  const {events, type} = props;
-  const cardRenders = events.map((cardProps: Event) => ({
+  const {matches, type} = props;
+  const cardRenders = matches.map((cardProps: Match) => ({
     id: cardProps.id,
-    leftHeader: cardProps.eventDate,
-    leftBody: cardProps.eventType.substring(0, 1),
-    rightHeader: cardProps.eventName,
+    leftHeader: `${cardProps.blueScore} - ${cardProps.redScore}`,
+    leftBody: cardProps.id,
+    rightHeader: `${cardProps.blueTeamTop} ${cardProps.blueTeamBottom} vs. ${cardProps.redTeamTop} ${cardProps.redTeamBottom}`,
     rightContent: [],
   }));
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
-        <Text light>Recent {capitalize(type)}s</Text>
+        <Text light>Recent {Utils.capitalize(type)}es</Text>
         <TouchableOpacity activeOpacity={0.8}>
           <Text semibold>View All</Text>
         </TouchableOpacity>
@@ -30,7 +26,8 @@ const CardList = (props: any) => {
           cardRenders.map((cardProps: React.ComponentProps<typeof Card>) => (
             <TouchableOpacity
               activeOpacity={0.8}
-              key={`${type}-${cardProps.id}`}>
+              key={`${type}-${cardProps.id}`}
+              onPress={()=>props.navigate('Matches')}>
               <Card {...cardProps} />
             </TouchableOpacity>
           ))
