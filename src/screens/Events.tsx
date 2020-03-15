@@ -1,28 +1,40 @@
 import * as shape from 'd3-shape';
-import React from 'react';
+import React, { Dispatch } from 'react';
 import {Image, SafeAreaView, StyleSheet} from 'react-native';
 
-import {Types} from '../store/types';
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
 import {Block, CardList, Text} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
-import {Event} from '../common/types';
 
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
+import {types, actions} from '../store';
 
-interface TournamentPageProps {
+const mapStateToProps = (state: types.RootState) => ({
+  events: state.events.events
+});
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  getEvents: () => dispatch(actions.events.getEvents()),
+});
+
+const connecter = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connecter>
+
+export interface TournamentPageProps {
   type: string;
   user: any;
   chart: Array<number>;
-  data: {
-    events: Array<Event>;
-  };
+  
 }
 
-class Events extends React.Component<TournamentPageProps, {}> {
+type Props = TournamentPageProps & PropsFromRedux;
+
+class Events extends React.Component<Props, {}> {
+  componentDidMount() {
+    this.props.getEvents();
+  }
   renderChart() {
     const {chart} = this.props;
 
@@ -91,9 +103,7 @@ class Events extends React.Component<TournamentPageProps, {}> {
     type: 'Event',
     user: mocks.user,
     chart: mocks.chart,
-    data: {
-      events: mocks.events,
-    },
+    events: []
   };
 
   render() {
@@ -106,12 +116,8 @@ class Events extends React.Component<TournamentPageProps, {}> {
   }
 }
 
-const mapStateToProps = (state: Types.RootState) => ({
-  events: state.events.events,
-});
-
-export default connect(mapStateToProps)(Events);
-
+// const mapDispatchToProps = (dispatch: ReactReduxContextValue.)
+export default connecter(Events);
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
   headerChart: {paddingTop: 30, paddingBottom: 30, zIndex: 1},

@@ -1,21 +1,7 @@
-import {RootAction, RootState, Services} from 'MyTypes';
-
-import {applyMiddleware, compose, createStore} from 'redux';
-
-import thunk from 'redux-thunk';
-
-import rootReducer from '../reducers';
-
-const initialState = {};
-
-const middleware = [ thunk ];
-
-const store = createStore(
-    rootReducer,
-    initialState,
-    compose(
-        applyMiddleware(...middleware),
-        ),
-);
-
-export default store;
+import {default as store} from './store';
+import * as reducers from './reducers'
+import * as types from './types'
+import * as actions from './actions'
+export {
+    types, reducers, store, actions
+}

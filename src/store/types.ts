@@ -1,11 +1,4 @@
 import {StateType, ActionType} from 'typesafe-actions';
+import {rootReducer} from './reducers'
 
-export type Store = StateType<typeof import('./index').default>;
-export type RootState = StateType<
-  ReturnType<typeof import('../actions').default>
->;
-export type RootAction = ActionType<typeof import('../actions').default>;
-
-interface Types {
-  RootAction: ActionType<typeof import('../actions').default>;
-}
+export type RootState = ReturnType<typeof rootReducer>;

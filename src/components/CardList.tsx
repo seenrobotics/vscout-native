@@ -1,22 +1,23 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from './index';
-import {Event} from '../common/types';
+import {Event} from '../store/events/types';
 
 const capitalize = (string: string) => {
   return string
     ? string.charAt(0).toUpperCase() + string.slice(1)
     : 'undefined';
 };
-const CardList = (props: any) => {
-  const {data, type} = props;
-  const cardRenders = data.events.map((cardProps: Event) => ({
+const CardList = ({events , type} : {events: Array<Event>, type: string}) => {
+
+  const cardRenders = events.map ? events.map((cardProps: Event) => ({
     id: cardProps.id,
     leftHeader: cardProps.eventDate,
     leftBody: cardProps.eventType.substring(0, 1),
     rightHeader: cardProps.eventName,
     rightContent: [],
-  }));
+  })) : null;
+  
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
