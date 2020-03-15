@@ -1,33 +1,23 @@
-const requests = [
-  {
-    id: 1,
-    bloodType: 'B+',
-    name: 'Ronald Dixon',
-    age: 24,
-    gender: 'Male',
-    distance: 28,
-    time: 12,
-    priority: 'urgent',
-  },
+const matches = [
   {
     id: 2,
-    bloodType: 'O-',
-    name: 'Kathy Bates',
-    age: 19,
-    gender: 'Female',
-    distance: 10,
-    time: 22,
-    priority: 'urgent',
+    eventId: 3,
+    blueTeamTop: '2381C',
+    blueTeamBottom: '2381Y',
+    redTeamTop: '4862B',
+    redTeamBottom: '905A',
+    blueScore: 19,
+    redScore: 24,
   },
   {
     id: 3,
-    bloodType: 'A+',
-    name: 'Edward Sanders',
-    age: 6,
-    gender: 'Male',
-    distance: 15.3,
-    time: 24,
-    priority: 'urgent',
+    eventId: 3,
+    blueTeamTop: '5225A',
+    blueTeamBottom: '1104V',
+    redTeamTop: '4862B',
+    redTeamBottom: '905A',
+    blueScore: 60,
+    redScore: 58,
   },
 ];
 
@@ -79,4 +69,4 @@ const user = {
   avatar: require('./assets/avatar.png'),
 };
 
-export {events, chart, user};
+export {matches, events, chart, user};
