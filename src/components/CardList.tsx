@@ -9,8 +9,8 @@ const capitalize = (string: string) => {
     : 'undefined';
 };
 const CardList = (props: any) => {
-  const {data, type} = props;
-  const cardRenders = data.events.map((cardProps: Event) => ({
+  const {events, type} = props;
+  const cardRenders = events.map((cardProps: Event) => ({
     id: cardProps.id,
     leftHeader: cardProps.eventDate,
     leftBody: cardProps.eventType.substring(0, 1),

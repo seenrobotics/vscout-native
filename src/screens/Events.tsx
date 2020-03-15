@@ -2,7 +2,7 @@ import * as shape from 'd3-shape';
 import React from 'react';
 import {Image, SafeAreaView, StyleSheet} from 'react-native';
 
-import {Types} from '../store/types';
+import {State} from '../reducers';
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
@@ -10,19 +10,32 @@ import {Block, CardList, Text} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {Event} from '../common/types';
+import {getEvents} from '../actions/eventsActions';
 
 import {connect} from 'react-redux';
 
-interface TournamentPageProps {
+interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
-  data: {
-    events: Array<Event>;
-  };
 }
+interface DispatchProps {
+  getEvents: () => any;
+}
+interface StateProps {
+  events: Array<Event>;
+}
+type Props = OwnProps & DispatchProps & StateProps;
 
-class Events extends React.Component<TournamentPageProps, {}> {
+class Events extends React.Component<Props, {}> {
+  public static defaultProps = {
+    type: 'Event',
+    user: mocks.user,
+    chart: mocks.chart,
+  };
+  componentDidMount() {
+    this.props.getEvents();
+  }
   renderChart() {
     const {chart} = this.props;
 
@@ -87,14 +100,6 @@ class Events extends React.Component<TournamentPageProps, {}> {
       </Block>
     );
   }
-  public static defaultProps = {
-    type: 'Event',
-    user: mocks.user,
-    chart: mocks.chart,
-    data: {
-      events: mocks.events,
-    },
-  };
 
   render() {
     return (
@@ -106,11 +111,11 @@ class Events extends React.Component<TournamentPageProps, {}> {
   }
 }
 
-const mapStateToProps = (state: Types.RootState) => ({
+const mapStateToProps = (state: State) => ({
   events: state.events.events,
 });
 
-export default connect(mapStateToProps)(Events);
+export default connect(mapStateToProps, {getEvents})(Events);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
