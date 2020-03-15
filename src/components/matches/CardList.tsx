@@ -23,14 +23,22 @@ const CardList = (props: any) => {
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         {cardRenders ? (
-          cardRenders.map((cardProps: React.ComponentProps<typeof Card>) => (
-            <TouchableOpacity
-              activeOpacity={0.8}
-              key={`${type}-${cardProps.id}`}
-              onPress={()=>props.navigate('Matches')}>
-              <Card {...cardProps} />
-            </TouchableOpacity>
-          ))
+          cardRenders
+            .sort(
+              (
+                cardPropsA: React.ComponentProps<typeof Card>,
+                cardPropsB: React.ComponentProps<typeof Card>,
+              ) => {
+                return cardPropsB.id - cardPropsA.id;
+              },
+            )
+            .map((cardProps: React.ComponentProps<typeof Card>) => (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                key={`${type}-${cardProps.id}`}>
+                <Card {...cardProps} />
+              </TouchableOpacity>
+            ))
         ) : (
           <Text>undefined</Text>
         )}

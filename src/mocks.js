@@ -1,4 +1,4 @@
-const events = [
+const matches = [
   {
     id: 2,
     eventId: 3,
@@ -18,22 +18,6 @@ const events = [
     redTeamBottom: '905A',
     blueScore: 60,
     redScore: 58,
-  },
-];
-[
-  {
-    id: 2,
-    eventName: 'Massey Vanier VEX EDR Qualifying Event ',
-    eventType: 'Tournament',
-    eventDate: '2020-01-11',
-    numberOfMatches: 5,
-  },
-  {
-    id: 3,
-    eventName: 'Vex Ontario Provincial Championship ',
-    eventType: 'Tournament',
-    eventDate: '2020-01-11',
-    numberOfMatches: 5,
   },
 ];
 
@@ -85,4 +69,4 @@ const user = {
   avatar: require('./assets/avatar.png'),
 };
 
-export {events, chart, user};
+export {matches, events, chart, user};

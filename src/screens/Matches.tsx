@@ -7,11 +7,11 @@ import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
 import {Block, Text} from '../components';
-import {CardList} from '../components/events';
+import {CardList} from '../components/matches';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
-import {Event} from '../common/types';
-import {getEvents} from '../actions/eventsActions';
+import {Match} from '../common/types';
+import {getMatches} from '../actions/matchesActions';
 
 import {connect} from 'react-redux';
 
@@ -19,23 +19,24 @@ interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
+  navigation: any;
 }
 interface DispatchProps {
-  getEvents: () => any;
+  getMatches: () => any;
 }
 interface StateProps {
-  events: Array<Event>;
+  matches: Array<Match>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
-class Events extends React.Component<Props, {}> {
+class Matches extends React.Component<Props, {}> {
   public static defaultProps = {
-    type: 'Event',
+    type: 'Match',
     user: mocks.user,
     chart: mocks.chart,
   };
   componentDidMount() {
-    this.props.getEvents();
+    this.props.getMatches();
   }
   renderChart() {
     const {chart} = this.props;
@@ -74,7 +75,7 @@ class Events extends React.Component<Props, {}> {
         <Block flex={false} row style={{paddingVertical: 15}}>
           <Block center>
             <Text h3 white style={{marginRight: -(25 + 5)}}>
-              Events
+              Matches
             </Text>
           </Block>
           <Image style={styles.avatar} source={user.avatar} />
@@ -112,11 +113,13 @@ class Events extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  events: state.events.events,
+const mapStateToProps = (state: State, ownProps: Props) => ({
+  matches: state.matches.matches.filter(
+    match => match.eventId === ownProps.navigation.state.params.eventId,
+  ),
 });
 
-export default connect(mapStateToProps, {getEvents})(Events);
+export default connect(mapStateToProps, {getMatches})(Matches);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
