@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from '../index';
-import {Match} from '../../common/types';
+import {Match} from '../../store/matches/types'
 import Utils from '../../utils';
 
 const CardList = (props: any) => {

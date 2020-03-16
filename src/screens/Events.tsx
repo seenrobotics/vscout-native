@@ -2,7 +2,6 @@ import * as shape from 'd3-shape';
 import React from 'react';
 import {Image, SafeAreaView, StyleSheet} from 'react-native';
 
-import {State} from '../reducers';
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
@@ -10,10 +9,11 @@ import {Block, Text} from '../components';
 import {CardList} from '../components/events';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
-import {Event} from '../common/types';
-import {getEvents} from '../actions/eventsActions';
+import {types, actions} from '../store';
 
-import {connect} from 'react-redux';
+import {connect} from 'react-redux'; 
+
+const getEvents = actions.events.getEvents;
 
 interface OwnProps {
   type: string;
@@ -24,7 +24,7 @@ interface DispatchProps {
   getEvents: () => any;
 }
 interface StateProps {
-  events: Array<Event>;
+  events: Array<types.events.Event>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -112,7 +112,7 @@ class Events extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: types.RootState) => ({
   events: state.events.events,
 });
 

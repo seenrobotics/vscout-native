@@ -2,7 +2,6 @@ import * as shape from 'd3-shape';
 import React from 'react';
 import {Image, SafeAreaView, StyleSheet} from 'react-native';
 
-import {State} from '../reducers';
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
@@ -10,8 +9,7 @@ import {Block, Text} from '../components';
 import {CardList} from '../components/matches';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
-import {Match} from '../common/types';
-import {getMatches} from '../actions/matchesActions';
+import {types, actions} from '../store';
 
 import {connect} from 'react-redux';
 
@@ -25,7 +23,7 @@ interface DispatchProps {
   getMatches: () => any;
 }
 interface StateProps {
-  matches: Array<Match>;
+  matches: Array<types.matches.Match>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -113,12 +111,12 @@ class Matches extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: State, ownProps: Props) => ({
+const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
   matches: state.matches.matches.filter(
     match => match.eventId === ownProps.navigation.state.params.eventId,
   ),
 });
-
+const getMatches =  actions.matches.getMatches;
 export default connect(mapStateToProps, {getMatches})(Matches);
 
 const styles = StyleSheet.create({
