@@ -10,6 +10,7 @@ import {CardList} from '../components/matches';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
+import {Match} from '../models'
 
 import {connect} from 'react-redux';
 
@@ -23,7 +24,7 @@ interface DispatchProps {
   getMatches: () => any;
 }
 interface StateProps {
-  matches: Array<types.matches.Match>;
+  matches: Array<Match>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 

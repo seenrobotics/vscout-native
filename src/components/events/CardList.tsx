@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from '../index';
-import {Event} from '../../store/events/types';
+import {Event} from '../../models'
 import Utils from '../../utils';
 
 const CardList = (props: any) => {
@@ -27,9 +27,10 @@ const CardList = (props: any) => {
             <TouchableOpacity
               activeOpacity={0.8}
               key={`${type}-${cardProps.id}`}
-              onPress={() =>
+              onPress={() => {
+                console.log(cardProps);
                 props.navigation.navigate('Matches', {eventId: cardProps.id})
-              }>
+              }}>
               <Card {...cardProps} />
             </TouchableOpacity>
           ))

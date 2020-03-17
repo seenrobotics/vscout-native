@@ -8,5 +8,5 @@ export const EventSchema : ObjectSchema=  {
         "eventName": "string",
         "eventType": "string",
         "eventDate": "string"
-	}   
+	}
 }

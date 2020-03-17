@@ -1,6 +1,6 @@
 import * as shape from 'd3-shape';
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Button} from 'react-native';
 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
@@ -10,11 +10,12 @@ import {CardList} from '../components/events';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
-
+import {Event} from '../models'
 import {connect} from 'react-redux'; 
 
-const getEvents = actions.events.getEvents;
-const addEvents = actions.events.addEvents;
+const {getEvents, loadEvents} = actions.events;
+const {loadMatches} = actions.matches;
+
 interface OwnProps {
   type: string;
   user: any;
@@ -22,10 +23,11 @@ interface OwnProps {
 }
 interface DispatchProps {
   getEvents: () => any;
-  addEvents: () => any;
+  loadEvents: () => any;
+  loadMatches: () => any;
 }
 interface StateProps {
-  events: Array<types.events.Event>;
+  events: Array<Event>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -37,6 +39,10 @@ class Events extends React.Component<Props, {}> {
   };
   componentDidMount() {
     this.props.getEvents();
+  }
+  loadData () {
+    this.props.loadEvents();
+    this.props.loadMatches();
   }
   renderChart() {
     const {chart} = this.props;
@@ -68,15 +74,16 @@ class Events extends React.Component<Props, {}> {
   }
 
   renderHeader() {
-    const {user, addEvents} = this.props;
+    const {user} = this.props;
 
     return (
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
         <Block flex={false} row style={{paddingVertical: 15}}>
           <Block center>
-            <Text h3 white style={{marginRight: -(25 + 5)}} onPress={() => this.props.addEvents()}>
+            <Text h3 white style={{marginRight: -(25 + 5)}} >
               Events 
             </Text>
+            
           </Block>
           <Image style={styles.avatar} source={user.avatar} />
         </Block>
@@ -99,10 +106,15 @@ class Events extends React.Component<Props, {}> {
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
+        <Button
+            title="Load Data"
+            onPress={() => this.loadData()}
+          />
       </Block>
+      
     );
   }
-  
+
   render() {
     return (
       <SafeAreaView style={styles.safe}>
@@ -117,7 +129,7 @@ const mapStateToProps = (state: types.RootState) => ({
   events: state.events.events,
 });
 
-export default connect(mapStateToProps, {getEvents, addEvents})(Events);
+export default connect(mapStateToProps, {getEvents, loadEvents, loadMatches})(Events);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
