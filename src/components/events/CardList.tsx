@@ -5,7 +5,7 @@ import {Event} from '../../store/events/types';
 import Utils from '../../utils';
 
 const CardList = (props: any) => {
-  const {events, type} = props;
+  const {events, type} : {events : [], type : string}= props;
   const cardRenders = events.map((cardProps: Event) => ({
     id: cardProps.id,
     leftHeader: cardProps.eventDate,

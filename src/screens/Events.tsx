@@ -14,7 +14,7 @@ import {types, actions} from '../store';
 import {connect} from 'react-redux'; 
 
 const getEvents = actions.events.getEvents;
-
+const addEvents = actions.events.addEvents;
 interface OwnProps {
   type: string;
   user: any;
@@ -22,6 +22,7 @@ interface OwnProps {
 }
 interface DispatchProps {
   getEvents: () => any;
+  addEvents: () => any;
 }
 interface StateProps {
   events: Array<types.events.Event>;
@@ -67,14 +68,14 @@ class Events extends React.Component<Props, {}> {
   }
 
   renderHeader() {
-    const {user} = this.props;
+    const {user, addEvents} = this.props;
 
     return (
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
         <Block flex={false} row style={{paddingVertical: 15}}>
           <Block center>
-            <Text h3 white style={{marginRight: -(25 + 5)}}>
-              Events
+            <Text h3 white style={{marginRight: -(25 + 5)}} onPress={() => this.props.addEvents()}>
+              Events 
             </Text>
           </Block>
           <Image style={styles.avatar} source={user.avatar} />
@@ -101,7 +102,7 @@ class Events extends React.Component<Props, {}> {
       </Block>
     );
   }
-
+  
   render() {
     return (
       <SafeAreaView style={styles.safe}>
@@ -116,7 +117,7 @@ const mapStateToProps = (state: types.RootState) => ({
   events: state.events.events,
 });
 
-export default connect(mapStateToProps, {getEvents})(Events);
+export default connect(mapStateToProps, {getEvents, addEvents})(Events);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
