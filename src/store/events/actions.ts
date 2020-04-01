@@ -1,13 +1,33 @@
-import {Event, GET_EVENTS, EventActionTypes} from './types'
-import {bindActionCreators, Dispatch, AnyAction} from 'redux';
-import * as mocks from '../../mocks';
-import {ThunkAction} from 'redux-thunk';
+import {EventData, GET_EVENTS, ADD_EVENTS, EventActionTypes, EventsState} from './types'
+import { Dispatch, AnyAction, ActionCreator } from 'redux';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import { Types as DatabaseTypes, database} from '../../database';
 
-export const getEvents = (): ThunkAction<EventActionTypes, {}, {}, AnyAction> => (
-  dispatch: Dispatch,
+export const getEvents : ActionCreator<
+  ThunkAction<Promise<EventActionTypes>, {}, void, AnyAction>
+> = () => {
+  return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<EventActionTypes> => {
+
+    const events = await database.FetchLocalDB<EventData>(DatabaseTypes.Collections.event);
+    return dispatch({
+      type : GET_EVENTS,
+      events
+    })
+
+  }
+}
+
+export const addEvents = ({events} : {events : Array<EventData>}) :  ThunkAction<EventActionTypes, EventsState, {}, EventActionTypes> => (
+  dispatch: Dispatch<EventActionTypes>, getState : () => EventsState
 ): EventActionTypes => {
+
+  if(!database)
+  {
+    console.log("Database Undefined") 
+  } else {
+    database.AddData(events, DatabaseTypes.Collections.match)
+  }
   return dispatch({
-    type: GET_EVENTS,
-    events: mocks.events,
-  });
-};
+    type: ADD_EVENTS,
+  })
+}
