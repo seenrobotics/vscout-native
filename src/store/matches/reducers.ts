@@ -2,6 +2,7 @@ import {
     MatchesState,
     MatchActionTypes,
     GET_MATCHES,
+    ADD_MATCHES,
 } from './types'
 
 const initialState: MatchesState = {
@@ -14,6 +15,7 @@ export function matchesReducer(state = initialState, action : MatchActionTypes) 
           ...state,
           matches: action.matches,
         };
+
       default:
         return state;
     }

@@ -1,19 +1,27 @@
-export const GET_EVENTS = 'GET_EVENTS';
+import { Types } from '../../database'
 
-export interface Event {
-    id: number;
+export const GET_EVENTS = 'GET_EVENTS';
+export const ADD_EVENTS = 'ADD_EVENTS';
+
+export interface EventData {
     eventName: string;
     eventType: string;
     eventDate: string;
-  }
+}
+
+export type EventDoc = Types.DocumentBase<EventData>
 
 interface GetEventsAction {
-    type : typeof GET_EVENTS,
-    events: Event[]
+    type : typeof GET_EVENTS;
+    events: Array<EventDoc>;
+}
+
+interface AddEventsAction {
+    type : typeof ADD_EVENTS,
 }
 
 export interface EventsState {
-    events: Array<Event>
+    events: Array<EventDoc>;
 }
 
-export type EventActionTypes = GetEventsAction;
+export type EventActionTypes = GetEventsAction | AddEventsAction;

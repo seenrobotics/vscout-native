@@ -39,6 +39,8 @@ target 'vscout' do
 
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
+  pod 'RNSqlite2', :path => '../node_modules/react-native-sqlite-2'
+
   target 'vscoutTests' do
     inherit! :search_paths
     # Pods for testing
