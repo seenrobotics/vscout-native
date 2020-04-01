@@ -25,6 +25,7 @@ const events = [
   {
     id: 1,
     eventName: 'Lockheed Martin VEX EDR Qualifying Event ',
+    eventLocation: '149 Berrigan Dr., Ottawa, Ontario',
     eventType: 'Tournament',
     eventDate: '2020-01-11',
     numberOfMatches: 5,
@@ -32,6 +33,7 @@ const events = [
   {
     id: 2,
     eventName: 'Massey Vanier VEX EDR Qualifying Event ',
+    eventLocation: '222, Rue Mercier, Cowansville, Quebec',
     eventType: 'Tournament',
     eventDate: '2020-01-11',
     numberOfMatches: 5,
@@ -39,6 +41,7 @@ const events = [
   {
     id: 3,
     eventName: 'Vex Ontario Provincial Championship ',
+    eventLocation: '15 Glenview Avenue, St. Catharines, Ontario',
     eventType: 'Tournament',
     eventDate: '2020-01-11',
     numberOfMatches: 5,

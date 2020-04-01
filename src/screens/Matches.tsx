@@ -1,6 +1,6 @@
 import * as shape from 'd3-shape';
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
@@ -48,7 +48,7 @@ class Matches extends React.Component<Props, {}> {
         curve={shape.curveMonotoneX}
         svg={{
           stroke: theme.colors.primary,
-          strokeWidth: 1.25,
+          strokeWidth: 1.5,
         }}
         contentInset={{left: theme.sizes.base, right: theme.sizes.base}}>
         <Line
@@ -59,7 +59,7 @@ class Matches extends React.Component<Props, {}> {
           y2="50%"
           stroke={theme.colors.gray}
           strokeDasharray={[2, 10]}
-          strokeWidth={1}
+          strokeWidth={3}
         />
       </LineChart>
     );
@@ -72,10 +72,14 @@ class Matches extends React.Component<Props, {}> {
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
         <Block flex={false} row style={{paddingVertical: 15}}>
           <Block center>
-            <Text h3 white style={{marginRight: -(25 + 5)}}>
+          <Text h3 white style={{fontSize:21, marginRight: -(100 + 10 + 30 + 5)}}>
               Matches
             </Text>
           </Block>
+          <View style={{width:100, marginRight:10}}>
+            <Text h4 white style={{fontSize:10, textAlign:'right'}}>Eshwar C.</Text>
+            <Text h3 white style={{fontSize:15, textAlign:'right'}}>2381Y</Text>
+          </View>
           <Image style={styles.avatar} source={user.avatar} />
         </Block>
         <Block card shadow color="white" style={styles.headerChart}>
@@ -91,7 +95,7 @@ class Matches extends React.Component<Props, {}> {
             <Text caption light>
               Matches
             </Text>
-            <Text caption light>
+            <Text caption light style={{marginRight:15}}>
               Days
             </Text>
           </Block>
@@ -123,9 +127,9 @@ const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
   headerChart: {paddingTop: 30, paddingBottom: 30, zIndex: 1},
   avatar: {
-    width: 25,
-    height: 25,
-    borderRadius: 25 / 2,
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
     marginRight: 5,
   },
 });

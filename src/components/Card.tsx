@@ -9,6 +9,7 @@ export interface CardProps {
   leftHeader: string;
   rightHeader: string;
   leftBody: string;
+  rightBody: string;
   rightContent: Array<any>;
 }
 
@@ -34,8 +35,12 @@ const Card = (props: CardProps) => {
         </Block>
       </Block>
       <Block flex={0.75} column middle>
-        <Text h3 style={{paddingVertical: 8}}>
+        <Text h3 style={{}}>
           {props.rightHeader}
+        </Text>
+        
+        <Text light style={{}}>
+          {props.rightBody}
         </Text>
         <Text caption semibold>
           {props.rightContent.map((rightContentItem, i) => {
@@ -61,6 +66,6 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   requestsHeader: {paddingHorizontal: 20, paddingBottom: 15},
-  request: {padding: 20, marginBottom: 15},
+  request: {padding: 15, marginBottom: 15},
   requestStatus: {marginRight: 20, overflow: 'hidden', height: 90},
 });

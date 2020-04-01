@@ -11,6 +11,7 @@ const CardList = (props: any) => {
     leftHeader: cardProps.eventDate,
     leftBody: cardProps.eventType.substring(0, 1),
     rightHeader: cardProps.eventName,
+    rightBody: cardProps.eventLocation,
     rightContent: [],
   }));
   return (

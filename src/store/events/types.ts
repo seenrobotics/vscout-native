@@ -5,6 +5,7 @@ export interface Event {
     eventName: string;
     eventType: string;
     eventDate: string;
+    eventLocation: string;
   }
 
 interface GetEventsAction {
