@@ -6,8 +6,9 @@ import Utils from '../../utils';
 
 const CardList = (props: any) => {
   const {events, type} = props;
+  // console.log({events});
   const cardRenders = events.map((cardProps: Event) => ({
-    id: cardProps.id,
+    id: cardProps._id,
     leftHeader: cardProps.eventDate,
     leftBody: cardProps.eventType.substring(0, 1),
     rightHeader: cardProps.eventName,

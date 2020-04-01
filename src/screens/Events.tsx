@@ -1,6 +1,6 @@
 import * as shape from 'd3-shape';
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Button} from 'react-native';
 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
@@ -10,10 +10,10 @@ import {CardList} from '../components/events';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
+import {doSomething, syncDb, onSaveNotePress} from '../database/pouchdb.instance'
 
 import {connect} from 'react-redux'; 
-
-const getEvents = actions.events.getEvents;
+const getEvents = actions.events.syncEvents;
 
 interface OwnProps {
   type: string;
@@ -36,6 +36,9 @@ class Events extends React.Component<Props, {}> {
   };
   componentDidMount() {
     this.props.getEvents();
+  }
+  reee () {
+    onSaveNotePress();
   }
   renderChart() {
     const {chart} = this.props;
@@ -98,6 +101,12 @@ class Events extends React.Component<Props, {}> {
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
+        <Button
+          onPress={this.reee}
+          title="New Note"
+          color="#239571"
+          accessibilityLabel="Learn more about this purple button"
+        />
       </Block>
     );
   }
