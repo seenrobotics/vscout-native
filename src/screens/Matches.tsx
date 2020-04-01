@@ -1,6 +1,6 @@
 import * as shape from 'd3-shape';
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Button} from 'react-native';
 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
@@ -13,17 +13,21 @@ import {types, actions} from '../store';
 
 import {connect} from 'react-redux';
 
+const getMatches  = actions.matches.getMatches;
+
 interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
   navigation: any;
 }
+
 interface DispatchProps {
   getMatches: () => any;
+
 }
 interface StateProps {
-  matches: Array<types.matches.Match>;
+  matches: Array<types.matches.MatchDoc>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -36,6 +40,7 @@ class Matches extends React.Component<Props, {}> {
   componentDidMount() {
     this.props.getMatches();
   }
+
   renderChart() {
     const {chart} = this.props;
 
@@ -97,6 +102,10 @@ class Matches extends React.Component<Props, {}> {
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
+        <Button
+            title="Reload Data"
+            onPress={() => this.props.getMatches()}
+          />
       </Block>
     );
   }
@@ -113,10 +122,10 @@ class Matches extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
   matches: state.matches.matches.filter(
-    match => match.eventId === ownProps.navigation.state.params.eventId,
+    match => match.docData.eventId === ownProps.navigation.state.params.eventId,
   ),
 });
-const getMatches =  actions.matches.getMatches;
+
 export default connect(mapStateToProps, {getMatches})(Matches);
 
 const styles = StyleSheet.create({

@@ -1,13 +1,10 @@
+import { Types } from '../../database'
+
 export const GET_MATCHES = "GET_MATCHES";
+export const ADD_MATCHES = 'ADD_MATCHES';
 
-interface GetMatchesAction {
-    type: 'GET_MATCHES';
-    matches: Array<Match>;
-}
-
-export interface Match {
-    id: number;
-    eventId: number;
+export interface MatchData {
+    eventId: string;
     blueTeamTop: string;
     blueTeamBottom: string;
     redTeamTop: string;
@@ -15,10 +12,18 @@ export interface Match {
     blueScore: number;
     redScore: number;
 }
-
-export interface MatchesState {
-    matches: Array<Match>
+export type MatchDoc = Types.DocumentBase<MatchData>;
+interface GetMatchesAction {
+    type: 'GET_MATCHES';
+    matches: Array<MatchDoc>;
 }
 
-export type MatchActionTypes = GetMatchesAction;
-  
+interface AddMatchesAction {
+    type : typeof ADD_MATCHES,
+}
+
+export interface MatchesState {
+    matches: Array<MatchDoc>;
+}
+
+export type MatchActionTypes = GetMatchesAction | AddMatchesAction;

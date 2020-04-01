@@ -1,13 +1,33 @@
-import {Match, GET_MATCHES, MatchActionTypes} from './types'
-import {bindActionCreators, Dispatch, AnyAction} from 'redux';
-import * as mocks from '../../mocks';
-import {ThunkAction} from 'redux-thunk';
+import {MatchData,  GET_MATCHES, ADD_MATCHES, MatchActionTypes, } from './types'
+import { Dispatch, AnyAction,  ActionCreator} from 'redux';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import { Types as DatabaseTypes, database} from '../../database';
 
-export const getMatches = (): ThunkAction<MatchActionTypes, {}, {}, AnyAction> => (
-  dispatch: Dispatch,
+export const getMatches : ActionCreator<
+  ThunkAction<Promise<MatchActionTypes>, {}, void, AnyAction>
+> = () => {
+  return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<MatchActionTypes> => {
+
+    const matches = await database.FetchLocalDB<MatchData>(DatabaseTypes.Collections.match);
+
+    return dispatch({
+      type : GET_MATCHES,
+      matches
+    })
+
+  }
+}
+
+export const addMatches = ({matches} : {matches : Array<MatchData>}) :  ThunkAction<MatchActionTypes, {}, {}, MatchActionTypes> => (
+  dispatch: Dispatch<MatchActionTypes>
 ): MatchActionTypes => {
+  if(!database)
+  {
+    console.log("Database Undefined") 
+  } else {
+    database.AddData(matches, DatabaseTypes.Collections.match)
+  }
   return dispatch({
-    type: GET_MATCHES,
-    matches: mocks.matches,
-  });
-};
+    type: ADD_MATCHES,
+  })
+}
