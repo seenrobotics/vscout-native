@@ -1,7 +1,7 @@
 const matches = [
   {
     id: 2,
-    eventId: 3,
+    eventId: "13e31744-a363-4579-b59d-90aab3e9ace3",
     blueTeamTop: '2381C',
     blueTeamBottom: '2381Y',
     redTeamTop: '4862B',
@@ -11,7 +11,7 @@ const matches = [
   },
   {
     id: 3,
-    eventId: 3,
+    eventId: "13e31744-a363-4579-b59d-90aab3e9ace3",
     blueTeamTop: '5225A',
     blueTeamBottom: '1104V',
     redTeamTop: '4862B',

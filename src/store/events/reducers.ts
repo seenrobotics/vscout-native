@@ -2,13 +2,14 @@ import {
     EventsState,
     EventActionTypes,
     GET_EVENTS,
-    CLOSE_SYNC,
-    SYNC_EVENTS
+    INIT_EVENTS_DB,
+    DB_EXISTS,
+    ADD_EVENTS,
 } from './types'
 
 const initialState: EventsState = {
     events : [],
-    isSync : false,
+    
 }
 export function eventsReducer(state = initialState, action : EventActionTypes) : EventsState {
     switch (action.type) {
@@ -17,16 +18,24 @@ export function eventsReducer(state = initialState, action : EventActionTypes) :
           ...state,
           events: action.events,
         };
-      case CLOSE_SYNC:
+
+      case INIT_EVENTS_DB: 
+        console.log("initializing db");
         return {
           ...state,
-          isSync : false,
+          database : action.database
         };
-      case SYNC_EVENTS:
+      
+      case ADD_EVENTS:
         return {
-          ...state,
-          isSync : true,
-        };
+          ...state
+        }
+      case DB_EXISTS: 
+        console.log(action.message)
+        return {
+          ...state
+        }
+
       default:
         return state;
     }

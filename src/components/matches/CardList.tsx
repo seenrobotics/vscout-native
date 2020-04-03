@@ -7,9 +7,9 @@ import Utils from '../../utils';
 const CardList = (props: any) => {
   const {matches, type} = props;
   const cardRenders = matches.map((cardProps: Match) => ({
-    id: cardProps.id,
+    id: cardProps._id,
     leftHeader: `${cardProps.blueScore} - ${cardProps.redScore}`,
-    leftBody: cardProps.id,
+    leftBody: cardProps._id,
     rightHeader: `${cardProps.blueTeamTop} ${cardProps.blueTeamBottom} vs. ${cardProps.redTeamTop} ${cardProps.redTeamBottom}`,
     rightContent: [],
   }));

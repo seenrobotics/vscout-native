@@ -1,6 +1,6 @@
 import * as shape from 'd3-shape';
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Button} from 'react-native';
 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
@@ -13,14 +13,18 @@ import {types, actions} from '../store';
 
 import {connect} from 'react-redux';
 
+const initDB  = actions.matches.initializeDatabase;
+
 interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
   navigation: any;
 }
+
 interface DispatchProps {
-  getMatches: () => any;
+  initDB: () => any;
+
 }
 interface StateProps {
   matches: Array<types.matches.Match>;
@@ -34,8 +38,9 @@ class Matches extends React.Component<Props, {}> {
     chart: mocks.chart,
   };
   componentDidMount() {
-    this.props.getMatches();
+    this.props.initDB();
   }
+
   renderChart() {
     const {chart} = this.props;
 
@@ -97,6 +102,7 @@ class Matches extends React.Component<Props, {}> {
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
+        
       </Block>
     );
   }
@@ -116,8 +122,8 @@ const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
     match => match.eventId === ownProps.navigation.state.params.eventId,
   ),
 });
-const getMatches =  actions.matches.getMatches;
-export default connect(mapStateToProps, {getMatches})(Matches);
+
+export default connect(mapStateToProps, {initDB})(Matches);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},

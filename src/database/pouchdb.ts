@@ -14,6 +14,6 @@ export default PouchDB
     .plugin(HttpPouch)
     .plugin(replication)
     .plugin(mapreduce)
-    .plugin(SQLiteAdapter)
+    .plugin(SQLiteAdapter) 
     .plugin(PouchdbFind)
     .plugin(PouchdbUpsert)

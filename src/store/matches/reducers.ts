@@ -2,6 +2,9 @@ import {
     MatchesState,
     MatchActionTypes,
     GET_MATCHES,
+    INIT_MATCHES_DB,
+    ADD_MATCHES,
+    DB_EXISTS,
 } from './types'
 
 const initialState: MatchesState = {
@@ -13,6 +16,12 @@ export function matchesReducer(state = initialState, action : MatchActionTypes) 
         return {
           ...state,
           matches: action.matches,
+        };
+      case INIT_MATCHES_DB :
+        
+        return {
+          ...state, 
+          database : action.database
         };
       default:
         return state;

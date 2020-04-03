@@ -10,18 +10,19 @@ import {CardList} from '../components/events';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
-import {doSomething, syncDb, onSaveNotePress} from '../database/pouchdb.instance'
 
 import {connect} from 'react-redux'; 
-const getEvents = actions.events.syncEvents;
-
+const initDB = actions.events.initializeDatabase;
+const addEvents = actions.events.addEvents;
+type Event = types.events.Event;
 interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
 }
 interface DispatchProps {
-  getEvents: () => any;
+  initDB : () => any;
+  addEvents : ({events} : {events : Array<Event>}) => any;
 }
 interface StateProps {
   events: Array<types.events.Event>;
@@ -35,14 +36,10 @@ class Events extends React.Component<Props, {}> {
     chart: mocks.chart,
   };
   componentDidMount() {
-    this.props.getEvents();
-  }
-  reee () {
-    onSaveNotePress();
+    this.props.initDB();
   }
   renderChart() {
     const {chart} = this.props;
-
     return (
       <LineChart
         yMin={0}
@@ -71,7 +68,6 @@ class Events extends React.Component<Props, {}> {
 
   renderHeader() {
     const {user} = this.props;
-
     return (
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
         <Block flex={false} row style={{paddingVertical: 15}}>
@@ -101,12 +97,7 @@ class Events extends React.Component<Props, {}> {
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
-        <Button
-          onPress={this.reee}
-          title="New Note"
-          color="#239571"
-          accessibilityLabel="Learn more about this purple button"
-        />
+      
       </Block>
     );
   }
@@ -125,7 +116,7 @@ const mapStateToProps = (state: types.RootState) => ({
   events: state.events.events,
 });
 
-export default connect(mapStateToProps, {getEvents})(Events);
+export default connect(mapStateToProps, { initDB, addEvents })(Events);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
