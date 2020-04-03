@@ -2,15 +2,17 @@ import React from 'react';
 import {createAppContainer, withOrientation} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createDrawerNavigator} from 'react-navigation-drawer';
-import Events from '../screens/Events';
+import EventStack from './EventStack';
 import Matches from '../screens/Matches';
 import Settings from '../screens/Settings';
+
 import Summary from '../screens/Summary';
 import * as theme from '../constants/theme';
 
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 // old drawer navigation
 // const routeConfigs = createDrawerNavigator({
@@ -29,23 +31,13 @@ import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommun
             )
         }
     },
-    Scouting: {screen: Events,
+    Scouting: {screen: EventStack,
         navigationOptions: {
             tabBarIcon: () => (
                 <FontAwesome5Icon name="binoculars" size={22} color="white" />            
             )
-        }},
-    Matches: {
-        screen: Matches,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <MaterialCommunityIconsIcon name="robot" size={25} color="white" style={{marginTop:-2}}/>            
-            )
-        },
-        params: {
-            eventId:0
-        }
-    }, Settings: {screen: Settings,
+        }}, 
+    Settings: {screen: Settings,
         navigationOptions: {
             tabBarIcon: () => (
                 <IoniconsIcon name="md-settings" size={26} color="white" style={{marginTop:-2}}/>            
