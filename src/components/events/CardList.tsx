@@ -28,7 +28,8 @@ const CardList = (props: any) => {
             <TouchableOpacity
               activeOpacity={0.8}
               key={`${type}-${cardProps.id}`}
-              onPress={() =>
+              onPress={
+                () =>
                 props.navigation.navigate('Matches', {eventId: cardProps.id})
               }>
               <Card {...cardProps} />

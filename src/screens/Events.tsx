@@ -22,6 +22,7 @@ interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
+  navigation:any;
 }
 interface DispatchProps {
   getEvents: () => any;
@@ -71,6 +72,7 @@ class Events extends React.Component<Props, {}> {
 
   renderHeader() {
     const {user} = this.props;
+    // console.log(this.props.navigation.state)
 
     return (
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
