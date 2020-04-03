@@ -12,7 +12,6 @@ import * as mocks from '../mocks';
 import {types, actions} from '../store';
 
 import {connect} from 'react-redux';
-import {tabBar} from '../navigation/AppNavigator';
 
 interface OwnProps {
   type: string;

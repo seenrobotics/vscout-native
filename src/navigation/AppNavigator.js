@@ -1,9 +1,15 @@
 import React from 'react';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, withOrientation} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import Events from '../screens/Events';
 import Matches from '../screens/Matches';
+import * as theme from '../constants/theme';
+
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 // const routeConfigs = createDrawerNavigator({
 //   Events: {screen: Events},
@@ -14,16 +20,52 @@ import Matches from '../screens/Matches';
 //   });
 
   const routeConfigs = createMaterialTopTabNavigator({
-    Events: {screen: Events,},
+    Summary: {screen: Events,
+        navigationOptions: {
+            tabBarIcon: ({tintColor}) => (
+                <FontAwesome5Icon name="home" size={22} color="white" />            
+            )
+        }
+    },
+    Scouting: {screen: Events,
+        navigationOptions: {
+            tabBarIcon: ({tintColor}) => (
+                <FontAwesome5Icon name="binoculars" size={22} color="white" />            
+            )
+        }},
     Matches: {
         screen: Matches,
+        navigationOptions: {
+            tabBarIcon: ({tintColor}) => (
+                <MaterialCommunityIconsIcon name="robot" size={25} color="white" style={{marginTop:-2}}/>            
+            )
+        },
         params: {
             eventId:0
         }
-    },
+    }, Settings: {screen: Events,
+        navigationOptions: {
+            tabBarIcon: ({tintColor}) => (
+                <IoniconsIcon name="md-settings" size={26} color="white" style={{marginTop:-2}}/>            
+            )
+        }},
     },
     {
-    initialRouteName: 'Events',
+    initialRouteName: 'Summary',
+    tabBarPosition: 'bottom',
+    tabBarOptions: {
+        activeTintColor:'white',
+        inactiveTintColor:'white',
+        showIcon:true,
+        showLabel:false,
+        style: {
+            backgroundColor: theme.colors.primary,
+        },
+        indicatorStyle:{
+            height:2,
+            backgroundColor:'white',
+        }
+    }
     });
 
 export default createAppContainer(routeConfigs);
