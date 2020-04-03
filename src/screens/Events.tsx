@@ -13,8 +13,6 @@ import {types, actions} from '../store';
 
 import {connect} from 'react-redux'; 
 
-// import Icon from 'react-native-vector-icons/Feather';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const getEvents = actions.events.getEvents;
 
@@ -72,7 +70,7 @@ class Events extends React.Component<Props, {}> {
 
   renderHeader() {
     const {user} = this.props;
-    
+
     return (
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
           <Block flex={false} row style={{paddingVertical: 15}}>
@@ -104,11 +102,6 @@ class Events extends React.Component<Props, {}> {
         </Block>
       </Block>
     );
-  }
-
-  openMenu = () => {
-    const {navigation} = this.props;
-    navigation.openDrawer()
   }
 
 

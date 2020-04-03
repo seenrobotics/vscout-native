@@ -4,13 +4,15 @@ import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import Events from '../screens/Events';
 import Matches from '../screens/Matches';
+import Settings from '../screens/Settings';
+import Summary from '../screens/Summary';
 import * as theme from '../constants/theme';
 
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
+// old drawer navigation
 // const routeConfigs = createDrawerNavigator({
 //   Events: {screen: Events},
 //   Matches: {screen: Matches},
@@ -20,32 +22,32 @@ import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommun
 //   });
 
   const routeConfigs = createMaterialTopTabNavigator({
-    Summary: {screen: Events,
+    Summary: {screen: Summary,
         navigationOptions: {
-            tabBarIcon: ({tintColor}) => (
+            tabBarIcon: () => (
                 <FontAwesome5Icon name="home" size={22} color="white" />            
             )
         }
     },
     Scouting: {screen: Events,
         navigationOptions: {
-            tabBarIcon: ({tintColor}) => (
+            tabBarIcon: () => (
                 <FontAwesome5Icon name="binoculars" size={22} color="white" />            
             )
         }},
     Matches: {
         screen: Matches,
         navigationOptions: {
-            tabBarIcon: ({tintColor}) => (
+            tabBarIcon: () => (
                 <MaterialCommunityIconsIcon name="robot" size={25} color="white" style={{marginTop:-2}}/>            
             )
         },
         params: {
             eventId:0
         }
-    }, Settings: {screen: Events,
+    }, Settings: {screen: Settings,
         navigationOptions: {
-            tabBarIcon: ({tintColor}) => (
+            tabBarIcon: () => (
                 <IoniconsIcon name="md-settings" size={26} color="white" style={{marginTop:-2}}/>            
             )
         }},
