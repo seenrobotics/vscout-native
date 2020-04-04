@@ -1,8 +1,6 @@
-export const default_config  = {
-    IP : "167.99.184.96",
-    username : "admin",
-    password : 'li',
-}
+import {default_config} from '../envars'
+
+export {default_config} from '../envars'
 
 export interface config 
 {
