@@ -11,7 +11,11 @@ import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
 
+import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+
 import {connect} from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface OwnProps {
   type: string;
@@ -67,12 +71,14 @@ class Matches extends React.Component<Props, {}> {
 
   renderHeader() {
     const {user} = this.props;
-
     return (
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
         <Block flex={false} row style={{paddingVertical: 15}}>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Events')} style={styles.back}> 
+            <IoniconsIcon name="ios-arrow-round-back" size={45} color="white"/>            
+          </TouchableOpacity>
           <Block center>
-          <Text h3 white style={{fontSize:21, marginRight: -(100 + 10 + 30 + 5)}}>
+          <Text h3 white style={{fontSize:21, marginRight: -(100 + 10 + 30 + 5 - 50 - 10)}}>
               Matches
             </Text>
           </Block>
@@ -105,11 +111,16 @@ class Matches extends React.Component<Props, {}> {
     );
   }
 
+  returnToEvents() {
+    const {navigation} = this.props;
+    navigation.navigate('Events');
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.safe}>
         {this.renderHeader()}
-        <CardList {...this.props} />
+        <CardList {...this.props} navigation={this.props.navigation}/>
       </SafeAreaView>
     );
   }
@@ -131,5 +142,10 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 30 / 2,
     marginRight: 5,
+  },
+  back:{
+    width:50,
+    marginTop:-5,
+    marginLeft:10,
   },
 });

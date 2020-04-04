@@ -13,16 +13,6 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
-// old drawer navigation
-// const routeConfigs = createDrawerNavigator({
-//   Events: {screen: Events},
-//   Matches: {screen: Matches},
-//   },
-//   {
-//   initialRouteName: 'Events',
-//   });
-
   const routeConfigs = createMaterialTopTabNavigator({
     Summary: {screen: Summary,
         navigationOptions: {
