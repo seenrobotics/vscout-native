@@ -12,32 +12,34 @@ import * as mocks from '../mocks';
 import {types, actions} from '../store';
 
 import {connect} from 'react-redux';
+import { user } from '../store/actions';
 
 const getMatches  = actions.matches.getMatches;
-
+const {getUser} = actions.user;
 interface OwnProps {
   type: string;
-  user: any;
   chart: Array<number>;
   navigation: any;
 }
 
 interface DispatchProps {
   getMatches: () => any;
+  getUser:() => any;
 
 }
 interface StateProps {
   matches: Array<types.matches.MatchDoc>;
+  user ?: types.user.User;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
 class Matches extends React.Component<Props, {}> {
   public static defaultProps = {
     type: 'Match',
-    user: mocks.user,
     chart: mocks.chart,
   };
   componentDidMount() {
+    this.props.getUser();
     this.props.getMatches();
   }
 
@@ -81,7 +83,7 @@ class Matches extends React.Component<Props, {}> {
               Matches
             </Text>
           </Block>
-          <Image style={styles.avatar} source={user.avatar} />
+          <Image style={styles.avatar} source={user?.avatar} />
         </Block>
         <Block card shadow color="white" style={styles.headerChart}>
           <Block row space="between" style={{paddingHorizontal: 30}}>
@@ -124,9 +126,10 @@ const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
   matches: state.matches.matches.filter(
     match => match.docData.eventId === ownProps.navigation.state.params.eventId,
   ),
+  user : state.user.user,
 });
 
-export default connect(mapStateToProps, {getMatches})(Matches);
+export default connect(mapStateToProps, {getMatches, getUser})(Matches);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},

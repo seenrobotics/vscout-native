@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
-import {eventsReducer} from './events/reducers';
-import {matchesReducer} from './matches/reducers';
+import {eventsReducer as events} from './events/reducers';
+import {matchesReducer as matches} from './matches/reducers';
+import { userReducer as user } from './user/reducers'
 
-
-export const rootReducer = combineReducers({events: eventsReducer, matches: matchesReducer});
+export const rootReducer = combineReducers({events, matches, user});

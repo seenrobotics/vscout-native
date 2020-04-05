@@ -6,15 +6,18 @@
  * @flow
  */
 
-import React from 'react';
-import {Platform, StatusBar, StyleSheet, Text, View} from 'react-native';
+import React, { useEffect } from 'react';
+import {Platform, StatusBar, StyleSheet, Text, View, } from 'react-native';
 
 import {Provider} from 'react-redux';
 import {store} from './store';
 
 import AppNavigator from './navigation/AppNavigator';
 
-const App: () => React$Node = () => {
+const App: () => React.ReactNode = () => {
+  useEffect(() => {
+
+  })
   return (
     <>
       <Provider store={store}>
