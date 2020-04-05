@@ -6,8 +6,8 @@
  * @flow
  */
 
-import React, { useEffect } from 'react';
-import {Platform, StatusBar, StyleSheet, Text, View, } from 'react-native';
+import React from 'react';
+import {Platform, StatusBar, StyleSheet, Text, View, SafeAreaView} from 'react-native';
 
 import {Provider} from 'react-redux';
 import {store} from './store';
@@ -18,9 +18,11 @@ const App: () => React.ReactNode = () => {
   return (
     <>
       <Provider store={store}>
-        <View style={styles.container}>
-          <AppNavigator />
-        </View>
+        <SafeAreaView style={{flex:1}}>
+          <View style={styles.container}>
+            <AppNavigator />
+          </View>
+        </SafeAreaView>
       </Provider>
     </>
   );
