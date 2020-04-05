@@ -1,9 +1,9 @@
-import {createStackNavigator} from 'react-navigation-stack';
+import {createStackNavigator, TransitionPresets } from 'react-navigation-stack';
 import {createAppContainer} from 'react-navigation';
 import Events from '../screens/Events';
 import MatchStack from './MatchStack';
 
-const screens = {
+const EventStack = createStackNavigator({
     Events: {
         screen: Events,
         navigationOptions: {
@@ -16,8 +16,11 @@ const screens = {
             headerShown: false,
           }
     },
-}
-
-const EventStack = createStackNavigator(screens);
+},
+{
+    defaultNavigationOptions: {
+        ...TransitionPresets.SlideFromRightIOS,
+      },
+});
 
 export default createAppContainer(EventStack);

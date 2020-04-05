@@ -1,9 +1,9 @@
-import {createStackNavigator} from 'react-navigation-stack';
+import {createStackNavigator, TransitionPresets} from 'react-navigation-stack';
 import {createAppContainer} from 'react-navigation';
 import Matches from '../screens/Matches';
 import MatchDetails from '../screens/MatchDetails';
 
-const screens = {
+const MatchStack = createStackNavigator({
     Matches: {
         screen: Matches,
         params: {
@@ -19,8 +19,11 @@ const screens = {
             headerShown: false,
           }
     },
-}
-
-const MatchStack = createStackNavigator(screens);
+},
+{
+    defaultNavigationOptions: {
+        ...TransitionPresets.SlideFromRightIOS,
+      },
+});
 
 export default createAppContainer(MatchStack);
