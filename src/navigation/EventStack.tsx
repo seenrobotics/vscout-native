@@ -1,17 +1,20 @@
 import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer} from 'react-navigation';
 import Events from '../screens/Events';
-import Matches from '../screens/Matches';
+import MatchStack from './MatchStack';
 
 const screens = {
     Events: {
         screen: Events,
+        navigationOptions: {
+            headerShown: false,
+          }
     },
     Matches: {
-        screen: Matches,
-        params: {
-            eventId:0
-        }
+        screen: MatchStack,
+        navigationOptions: {
+            headerShown: false,
+          }
     },
 }
 
