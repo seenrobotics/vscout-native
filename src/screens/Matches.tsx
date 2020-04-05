@@ -12,6 +12,7 @@ import * as mocks from '../mocks';
 import {types, actions} from '../store';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import {NavigationStackProp} from 'react-navigation-stack';
 
 import {connect} from 'react-redux';
 
@@ -20,7 +21,7 @@ interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
-  navigation: any;
+  navigation: NavigationStackProp;
 }
 interface DispatchProps {
   getMatches: () => any;

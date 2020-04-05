@@ -1,46 +1,33 @@
 import React from 'react';
 import {createAppContainer, withOrientation} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
-import {createDrawerNavigator} from 'react-navigation-drawer';
 import EventStack from './EventStack';
-import Matches from '../screens/Matches';
+import * as theme from '../constants/theme';
 import Settings from '../screens/Settings';
 
 import Summary from '../screens/Summary';
-import * as theme from '../constants/theme';
 
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIconsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-
-// old drawer navigation
-// const routeConfigs = createDrawerNavigator({
-//   Events: {screen: Events},
-//   Matches: {screen: Matches},
-//   },
-//   {
-//   initialRouteName: 'Events',
-//   });
 
   const routeConfigs = createMaterialTopTabNavigator({
     Summary: {screen: Summary,
         navigationOptions: {
             tabBarIcon: () => (
-                <FontAwesome5Icon name="home" size={22} color="white" />            
+                <FontAwesome5Icon name="home" size={22} color={theme.colors.white} />            
             )
         }
     },
     Scouting: {screen: EventStack,
         navigationOptions: {
             tabBarIcon: () => (
-                <FontAwesome5Icon name="binoculars" size={22} color="white" />            
+                <FontAwesome5Icon name="binoculars" size={22} color={theme.colors.white} />            
             )
         }}, 
     Settings: {screen: Settings,
         navigationOptions: {
             tabBarIcon: () => (
-                <IoniconsIcon name="md-settings" size={26} color="white" style={{marginTop:-2}}/>            
+                <IoniconsIcon name="md-settings" size={26} color={theme.colors.white} style={{marginTop:-2}}/>            
             )
         }},
     },

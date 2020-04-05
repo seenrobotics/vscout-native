@@ -1,19 +1,17 @@
 import React from 'react';
-import * as shape from 'd3-shape';
 import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Block, Text} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
-import {Line} from 'react-native-svg';
-import {LineChart, Path} from 'react-native-svg-charts';
+import {NavigationTabProp} from 'react-navigation-tabs';
+
 
 import {connect} from 'react-redux'; 
 
 interface OwnProps {
     type: string;
     user: any;
-    chart: Array<number>;
-    navigation:any;
+    navigation:NavigationTabProp;
   }
 
   type Props = OwnProps;
@@ -21,36 +19,7 @@ interface OwnProps {
 export default class Settings extends React.Component<Props, {}> {
     public static defaultProps = {
         user: mocks.user,
-        chart: mocks.chart,
       };
-    renderChart() {
-        const {chart} = this.props;
-    
-        return (
-          <LineChart
-            yMin={0}
-            yMax={10}
-            data={chart}
-            style={{flex: 2}}
-            curve={shape.curveMonotoneX}
-            svg={{
-              stroke: theme.colors.primary,
-              strokeWidth: 1.75,
-            }}
-            contentInset={{left: theme.sizes.base, right: theme.sizes.base}}>
-            <Line
-              key="zero-axis"
-              x1="0%"
-              x2="100%"
-              y1="50%"
-              y2="50%"
-              stroke={theme.colors.gray}
-              strokeDasharray={[2, 10]}
-              strokeWidth={3}
-            />
-          </LineChart>
-        );
-      }
     
       renderHeader() {
         const {user} = this.props;
@@ -69,21 +38,6 @@ export default class Settings extends React.Component<Props, {}> {
               </View>
               <Image style={styles.avatar} source={user.avatar} />
             </Block>
-            <Block card shadow color="white" style={styles.headerChart}>
-              <Block row space="between" style={{paddingHorizontal: 30}}>
-                <Block flex={false} row center>
-                  <Text h1>291 </Text>
-                </Block>
-                <Block flex={false} row center>
-                  <Text h1>481 </Text>
-                </Block>
-              </Block>
-              <Block flex={0.5} row space="between" style={{paddingHorizontal: 30}}>
-                <Text caption light>Matches</Text>
-                <Text caption light style={{marginRight:15}}>Days</Text>
-              </Block>
-              <Block flex={1}>{this.renderChart()}</Block>
-            </Block>
           </Block>
         );
       }
@@ -91,7 +45,6 @@ export default class Settings extends React.Component<Props, {}> {
         return (
           <SafeAreaView style={styles.safe}>
                 {this.renderHeader()}
-                <Text h1 style={{textAlign:'center',marginTop:20,color:'white',}}>Settings Page</Text>
           </SafeAreaView>
         );
       }

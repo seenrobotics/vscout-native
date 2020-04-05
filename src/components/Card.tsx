@@ -35,11 +35,11 @@ const Card = (props: CardProps) => {
         </Block>
       </Block>
       <Block flex={0.75} column middle>
-        <Text h3 style={{}}>
+        <Text h3>
           {props.rightHeader}
         </Text>
         
-        <Text light style={{}}>
+        <Text light>
           {props.rightBody}
         </Text>
         <Text caption semibold>

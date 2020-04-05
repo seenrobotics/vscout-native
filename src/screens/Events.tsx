@@ -1,6 +1,7 @@
 import * as shape from 'd3-shape';
 import React from 'react';
 import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
+import {NavigationTabProp} from 'react-navigation-tabs';
 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
@@ -20,7 +21,7 @@ interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
-  navigation:any;
+  navigation:NavigationTabProp;
 }
 interface DispatchProps {
   getEvents: () => any;

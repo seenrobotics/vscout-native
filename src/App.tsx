@@ -18,8 +18,10 @@ const App: () => React$Node = () => {
   return (
     <>
       <Provider store={store}>
-        <SafeAreaView style={styles.container}>
-          <AppNavigator />
+        <SafeAreaView style={{flex:1}}>
+          <View style={styles.container}>
+            <AppNavigator />
+          </View>
         </SafeAreaView>
       </Provider>
     </>

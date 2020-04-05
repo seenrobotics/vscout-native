@@ -9,6 +9,8 @@ import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {NavigationStackProp} from 'react-navigation-stack';
+
 
 import {connect} from 'react-redux'; 
 import { NavigationActions } from 'react-navigation';
@@ -17,7 +19,7 @@ interface OwnProps {
     type: string;
     user: any;
     chart: Array<number>;
-    navigation:any;
+    navigation:NavigationStackProp;
   }
 
   type Props = OwnProps;
