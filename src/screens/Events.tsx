@@ -1,6 +1,7 @@
 import * as shape from 'd3-shape';
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet, Button} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, View, Button} from 'react-native';
+import {NavigationTabProp} from 'react-navigation-tabs';
 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
@@ -16,6 +17,7 @@ const { getUser } = actions.user;
 interface OwnProps {
   type: string;
   chart: Array<number>;
+  navigation:NavigationTabProp;
 }
 interface DispatchProps {
   getEvents: () => any;
@@ -24,7 +26,7 @@ interface DispatchProps {
 }
 interface StateProps {
   events: Array<types.events.EventDoc>;
-  user: any;
+  user?: types.user.User;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -50,7 +52,7 @@ class Events extends React.Component<Props, {}> {
         curve={shape.curveMonotoneX}
         svg={{
           stroke: theme.colors.primary,
-          strokeWidth: 1.25,
+          strokeWidth: 1.75,
         }}
         contentInset={{left: theme.sizes.base, right: theme.sizes.base}}>
         <Line
@@ -61,7 +63,7 @@ class Events extends React.Component<Props, {}> {
           y2="50%"
           stroke={theme.colors.gray}
           strokeDasharray={[2, 10]}
-          strokeWidth={1}
+          strokeWidth={3}
         />
       </LineChart>
     );
@@ -71,13 +73,17 @@ class Events extends React.Component<Props, {}> {
     const {user} = this.props;
     return (
       <Block flex={0.42} column style={{paddingHorizontal: 15}}>
-        <Block flex={false} row style={{paddingVertical: 15}}>
+          <Block flex={false} row style={{paddingVertical: 15}}>
           <Block center>
-            <Text h3 white style={{marginRight: -(25 + 5)}}>
+            <Text h3 white style={{fontSize:21, marginRight: -(100 + 10 + 30)}}>
               Events
             </Text>
           </Block>
-          <Image style={styles.avatar} source={user.avatar} />
+          <View style={{width:100, marginRight:10}}>
+    <Text h4 white style={{fontSize:10, textAlign:'right'}}>{user?.userName}</Text>
+            <Text h3 white style={{fontSize:15, textAlign:'right'}}>{user?.team}</Text>
+          </View>
+          <Image style={styles.avatar} source={user?.avatar} />
         </Block>
         <Block card shadow color="white" style={styles.headerChart}>
           <Block row space="between" style={{paddingHorizontal: 30}}>
@@ -89,12 +95,8 @@ class Events extends React.Component<Props, {}> {
             </Block>
           </Block>
           <Block flex={0.5} row space="between" style={{paddingHorizontal: 30}}>
-            <Text caption light>
-              Matches
-            </Text>
-            <Text caption light>
-              Days
-            </Text>
+            <Text caption light>Matches</Text>
+            <Text caption light style={{marginRight:15}}>Days</Text>
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
@@ -105,6 +107,7 @@ class Events extends React.Component<Props, {}> {
       </Block>
     );
   }
+
 
   render() {
     return (
@@ -127,9 +130,9 @@ const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
   headerChart: {paddingTop: 30, paddingBottom: 30, zIndex: 1},
   avatar: {
-    width: 25,
-    height: 25,
-    borderRadius: 25 / 2,
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
     marginRight: 5,
   },
 });

@@ -6,6 +6,7 @@ export interface User {
     _id : string, 
     userName : string, 
     fullName : string, 
+    team : string,
     avatar ?: any,
 }
 interface GetUserAction {
