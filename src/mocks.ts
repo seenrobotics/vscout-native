@@ -66,6 +66,9 @@ const chart = [
 ];
 
 const user = {
+  _id : '1', 
+  userName: "C9WIN",
+  fullName : "Cloud9BestTeam",
   avatar: require('./assets/avatar.png'),
 };
 
