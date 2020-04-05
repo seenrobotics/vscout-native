@@ -15,9 +15,6 @@ import {store} from './store';
 import AppNavigator from './navigation/AppNavigator';
 
 const App: () => React.ReactNode = () => {
-  useEffect(() => {
-
-  })
   return (
     <>
       <Provider store={store}>
