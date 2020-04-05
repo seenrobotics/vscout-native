@@ -7,7 +7,7 @@ export const Collections = {
 export type Collection = keyof typeof Collections;
 
 export interface DocumentBase<T> {
-    DocData : T;
+    docData : T;
     _id : string;
     updated_at : number;
     type : Collection;   

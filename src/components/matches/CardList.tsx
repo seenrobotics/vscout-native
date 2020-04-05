@@ -6,11 +6,11 @@ import Utils from '../../utils';
 
 const CardList = (props: any) => {
   const {matches, type} = props;
-  const cardRenders = matches.map(({_id, DocData} : { _id : string, DocData : MatchData}) => ({
+  const cardRenders = matches.map(({_id, docData} : { _id : string, docData : MatchData}) => ({
     id: _id,
-    leftHeader: `${DocData.blueScore} - ${DocData.redScore}`,
+    leftHeader: `${docData.blueScore} - ${docData.redScore}`,
     leftBody: _id,
-    rightHeader: `${DocData.blueTeamTop} ${DocData.blueTeamBottom} vs. ${DocData.redTeamTop} ${DocData.redTeamBottom}`,
+    rightHeader: `${docData.blueTeamTop} ${docData.blueTeamBottom} vs. ${docData.redTeamTop} ${docData.redTeamBottom}`,
     rightContent: [],
   }));
   return (

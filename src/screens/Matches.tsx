@@ -122,7 +122,7 @@ class Matches extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
   matches: state.matches.matches.filter(
-    match => match.DocData.eventId === ownProps.navigation.state.params.eventId,
+    match => match.docData.eventId === ownProps.navigation.state.params.eventId,
   ),
 });
 

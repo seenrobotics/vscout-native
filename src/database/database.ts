@@ -82,13 +82,13 @@ export default class Database
     }
 
     AddData<DataType>(data : Array<DataType>, type : Collection) {
-        data.forEach(DocData => {
+        data.forEach(docData => {
            
             const entry = {
                 _id : collate.toIndexableString([
                     type, v4(),
                 ]).replace(/\u0000/g, '\u0001'),
-                DocData,
+                docData,
                 updated_at : Date.now(),
                 type
             }
@@ -98,7 +98,7 @@ export default class Database
                     if (response.ok) {
                         console.log(this.TAG(), response)
                     } else {
-                        console.log(this.TAG(), "add new note fail")
+                        console.log(this.TAG(), "add new doc fail")
                     }
                 })
                 .catch(err => {
@@ -114,9 +114,8 @@ export default class Database
                 type : {$eq : type},
                 updated_at: {$gt: true}
             },
-            fields: ['_id', 'DocData', 'updated_at', 'type'],
+            fields: ['_id', 'docData', 'updated_at', 'type'],
             use_index: nameIndex.TYPE_UPDATED_AT,
-            // sort: ["updated_at"]
         }
     }
 
@@ -143,7 +142,7 @@ export default class Database
                 type,
                 updated_at: {$gt: true}
             },
-            fields: ['_id', 'DocData', 'updated_at', 'type'],
+            fields: ['_id', 'docData', 'updated_at', 'type'],
             use_index: nameIndex.TYPE_UPDATED_AT,
             sort: [{updated_at: 'desc'}]
         })
