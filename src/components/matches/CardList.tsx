@@ -1,16 +1,16 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from '../index';
-import {MatchDoc} from '../../store/matches/types'
+import {MatchData} from '../../store/matches/types'
 import Utils from '../../utils';
 
 const CardList = (props: any) => {
   const {matches, type} = props;
-  const cardRenders = matches.map((matchDoc: MatchDoc) => ({
-    id: matchDoc._id,
-    leftHeader: `${matchDoc.DocData.blueScore} - ${matchDoc.DocData.redScore}`,
-    leftBody: matchDoc._id,
-    rightHeader: `${matchDoc.DocData.blueTeamTop} ${matchDoc.DocData.blueTeamBottom} vs. ${matchDoc.DocData.redTeamTop} ${matchDoc.DocData.redTeamBottom}`,
+  const cardRenders = matches.map(({_id, DocData} : { _id : string, DocData : MatchData}) => ({
+    id: _id,
+    leftHeader: `${DocData.blueScore} - ${DocData.redScore}`,
+    leftBody: _id,
+    rightHeader: `${DocData.blueTeamTop} ${DocData.blueTeamBottom} vs. ${DocData.redTeamTop} ${DocData.redTeamBottom}`,
     rightContent: [],
   }));
   return (
