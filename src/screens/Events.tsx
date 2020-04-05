@@ -10,9 +10,6 @@ import {CardList} from '../components/events';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
-
-import {database} from '../database';
-
 import {connect} from 'react-redux'; 
 const {addEvents, getEvents } = actions.events;
 
@@ -39,9 +36,7 @@ class Events extends React.Component<Props, {}> {
   componentDidMount() {
     this.props.getEvents();
   }
-  yeet = () => {
-    this.props.addEvents({events :[]});
-  } 
+
   renderChart() {
     const {chart} = this.props;
     return (
@@ -102,8 +97,8 @@ class Events extends React.Component<Props, {}> {
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
         <Button
-            title="Load Data"
-            onPress={this.yeet}
+            title="Reload Data"
+            onPress={() => this.props.getEvents()}
           />
       </Block>
     );

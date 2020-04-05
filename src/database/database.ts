@@ -79,31 +79,9 @@ export default class Database
                 this.syncing = false;
                 console.log(this.TAG(), 'onError', err)
             })
-        this.LocalDB.on('change', () => {
-            console.log("changes yeet");
-        })
-        this.LocalDB.changes({
-            live: true,
-            since : 'now'
-        }).on("change", (info) => {
-            console.log("freet");
-            // info.doc ? 
-            //     this.ReloadLocalDB(info.doc.type) : false;            
-        })
-        console.log('after sync');
     }
 
     AddData<DataType>(data : Array<DataType>, type : Collection) {
-        // console.log(PouchCollate.toIndexableString([
-        //     type, "asdf", "awefwef"
-        // ]).replace(/\u0000/g, '\u0001'));
-        // console.log('hi');
-        // const yeet = PouchCollate.toIndexableString([
-        //     'sadf', 'asdf ', 'asdf'
-        // ])
-        // console.log(PouchCollate);
-        console.log({collate});
-        // console.log({yeet});
         data.forEach(DocData => {
            
             const entry = {
@@ -119,18 +97,12 @@ export default class Database
                 .then(response => {
                     if (response.ok) {
                         console.log(this.TAG(), response)
-                        // Toast.show('Add new note success')
-                        // this.handleBackPress()
                     } else {
                         console.log(this.TAG(), "add new note fail")
-                        // Toast.show('Add new note fail')
-                        // this.setState({isLoading: false})
                     }
                 })
                 .catch(err => {
                     console.log(this.TAG(), err)
-                    // Toast.show(err.message)
-                    // this.setState({isLoading: false})
                 })
         })
     }

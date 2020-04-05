@@ -1,10 +1,7 @@
-import {MatchData, MatchDoc, GET_MATCHES, ADD_MATCHES, INIT_MATCHES_DB,  DB_EXISTS, MatchActionTypes, MatchesState} from './types'
-import {bindActionCreators, Dispatch, AnyAction,  ActionCreator} from 'redux';
+import {MatchData,  GET_MATCHES, ADD_MATCHES, MatchActionTypes, } from './types'
+import { Dispatch, AnyAction,  ActionCreator} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import { Database, Types as DatabaseTypes, database} from '../../database';
-import { databaseConfig } from '../../database/config';
-
-import { RootState } from '../types';
+import { Types as DatabaseTypes, database} from '../../database';
 
 export const getMatches : ActionCreator<
   ThunkAction<Promise<MatchActionTypes>, {}, void, AnyAction>
@@ -21,10 +18,9 @@ export const getMatches : ActionCreator<
   }
 }
 
-export const addMatches = ({matches} : {matches : Array<MatchData>}) :  ThunkAction<MatchActionTypes, RootState, {}, MatchActionTypes> => (
-  dispatch: Dispatch<MatchActionTypes>, getState : () => RootState
+export const addMatches = ({matches} : {matches : Array<MatchData>}) :  ThunkAction<MatchActionTypes, {}, {}, MatchActionTypes> => (
+  dispatch: Dispatch<MatchActionTypes>
 ): MatchActionTypes => {
-
   if(!database)
   {
     console.log("Database Undefined") 

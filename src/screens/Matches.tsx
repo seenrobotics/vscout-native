@@ -102,7 +102,10 @@ class Matches extends React.Component<Props, {}> {
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
-        
+        <Button
+            title="Reload Data"
+            onPress={() => this.props.getMatches()}
+          />
       </Block>
     );
   }

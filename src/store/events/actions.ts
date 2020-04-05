@@ -1,9 +1,8 @@
-import {EventData, GET_EVENTS, ADD_EVENTS, INIT_EVENTS_DB,  DB_EXISTS, EventActionTypes, EventsState} from './types'
-import {bindActionCreators, Dispatch, AnyAction, ActionCreator } from 'redux';
+import {EventData, GET_EVENTS, ADD_EVENTS, EventActionTypes, EventsState} from './types'
+import { Dispatch, AnyAction, ActionCreator } from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import { Types as DatabaseTypes, database, Database} from '../../database';
-import { databaseConfig } from '../../database/config';
-import { matches  as altEvents} from '../../mocks'
+import { Types as DatabaseTypes, database} from '../../database';
+
 export const getEvents : ActionCreator<
   ThunkAction<Promise<EventActionTypes>, {}, void, AnyAction>
 > = () => {
@@ -26,7 +25,7 @@ export const addEvents = ({events} : {events : Array<EventData>}) :  ThunkAction
   {
     console.log("Database Undefined") 
   } else {
-    database.AddData(altEvents, DatabaseTypes.Collections.match)
+    database.AddData(events, DatabaseTypes.Collections.match)
   }
   return dispatch({
     type: ADD_EVENTS,

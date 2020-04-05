@@ -2,8 +2,6 @@ import {
     EventsState,
     EventActionTypes,
     GET_EVENTS,
-    INIT_EVENTS_DB,
-    DB_EXISTS,
     ADD_EVENTS,
 } from './types'
 
@@ -20,11 +18,6 @@ export function eventsReducer(state = initialState, action : EventActionTypes) :
         };
       
       case ADD_EVENTS:
-        return {
-          ...state
-        }
-      case DB_EXISTS: 
-        console.log(action.message)
         return {
           ...state
         }
