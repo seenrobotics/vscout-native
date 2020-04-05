@@ -1,12 +1,12 @@
-import DB from '../../database/database'
+import { database, Types } from '../../database'
+import { types } from '../events';
 
 export const GET_MATCHES = "GET_MATCHES";
 export const INIT_MATCHES_DB = 'INIT_MATCHES_DB';
 export const DB_EXISTS = 'DB_EXISTS';
 export const ADD_MATCHES = 'ADD_MATCHES';
 
-export interface Match {
-    _id : string;
+export interface MatchData {
     eventId: string;
     blueTeamTop: string;
     blueTeamBottom: string;
@@ -15,10 +15,10 @@ export interface Match {
     blueScore: number;
     redScore: number;
 }
-
+export type MatchDoc = Types.DocumentBase<MatchData>;
 interface GetMatchesAction {
     type: 'GET_MATCHES';
-    matches: Array<Match>;
+    matches: Array<MatchDoc>;
 }
 
 interface AddMatchesAction {
@@ -27,7 +27,6 @@ interface AddMatchesAction {
 
 interface InitMatchesDBAction {
     type : typeof INIT_MATCHES_DB;
-    database : DB<Match>;
 }
 
 interface DBExistsAction {
@@ -36,8 +35,7 @@ interface DBExistsAction {
 }
 
 export interface MatchesState {
-    matches: Array<Match>;
-    database ?: DB<Match>;
+    matches: Array<MatchDoc>;
 }
 
 export type MatchActionTypes = GetMatchesAction | InitMatchesDBAction | DBExistsAction | AddMatchesAction;

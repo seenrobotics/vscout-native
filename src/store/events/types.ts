@@ -1,21 +1,21 @@
-import DB from '../../database/database'
+import { Types } from '../../database'
 
 export const GET_EVENTS = 'GET_EVENTS';
 export const INIT_EVENTS_DB = 'INIT_EVENTS_DB';
 export const DB_EXISTS = 'DB_EXISTS';
 export const ADD_EVENTS = 'ADD_EVENTS';
 
-
-export interface Event {
-    _id: string;
+export interface EventData {
     eventName: string;
     eventType: string;
     eventDate: string;
 }
 
+export type EventDoc = Types.DocumentBase<EventData>
+
 interface GetEventsAction {
     type : typeof GET_EVENTS;
-    events: Array<Event>;
+    events: Array<EventDoc>;
 }
 
 interface AddEventsAction {
@@ -24,7 +24,6 @@ interface AddEventsAction {
 
 interface InitEventsDBAction {
     type : typeof INIT_EVENTS_DB;
-    database : DB<Event>;
 }
 
 interface DBExistsAction {
@@ -33,8 +32,7 @@ interface DBExistsAction {
 }
 
 export interface EventsState {
-    events: Array<Event>;
-    database ?: DB<Event>;
+    events: Array<EventDoc>;
 }
 
 export type EventActionTypes = GetEventsAction | InitEventsDBAction | DBExistsAction | AddEventsAction;

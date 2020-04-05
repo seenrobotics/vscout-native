@@ -17,12 +17,8 @@ export function matchesReducer(state = initialState, action : MatchActionTypes) 
           ...state,
           matches: action.matches,
         };
-      case INIT_MATCHES_DB :
-        
-        return {
-          ...state, 
-          database : action.database
-        };
+
+      
       default:
         return state;
     }

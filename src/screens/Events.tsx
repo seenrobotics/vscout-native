@@ -11,21 +11,22 @@ import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
 
+import {database} from '../database';
+
 import {connect} from 'react-redux'; 
-const initDB = actions.events.initializeDatabase;
-const addEvents = actions.events.addEvents;
-type Event = types.events.Event;
+const {addEvents, getEvents } = actions.events;
+
 interface OwnProps {
   type: string;
   user: any;
   chart: Array<number>;
 }
 interface DispatchProps {
-  initDB : () => any;
-  addEvents : ({events} : {events : Array<Event>}) => any;
+  getEvents: () => any;
+  addEvents: ({events} : {events : Array<types.events.EventData>}) => any;
 }
 interface StateProps {
-  events: Array<types.events.Event>;
+  events: Array<types.events.EventDoc>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -36,8 +37,11 @@ class Events extends React.Component<Props, {}> {
     chart: mocks.chart,
   };
   componentDidMount() {
-    this.props.initDB();
+    this.props.getEvents();
   }
+  yeet = () => {
+    this.props.addEvents({events :[]});
+  } 
   renderChart() {
     const {chart} = this.props;
     return (
@@ -97,7 +101,10 @@ class Events extends React.Component<Props, {}> {
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
-      
+        <Button
+            title="Load Data"
+            onPress={this.yeet}
+          />
       </Block>
     );
   }
@@ -116,7 +123,7 @@ const mapStateToProps = (state: types.RootState) => ({
   events: state.events.events,
 });
 
-export default connect(mapStateToProps, { initDB, addEvents })(Events);
+export default connect(mapStateToProps, { getEvents , addEvents })(Events);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},

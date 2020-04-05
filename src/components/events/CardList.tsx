@@ -1,17 +1,16 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from '../index';
-import {Event} from '../../store/events/types';
+import {EventData} from '../../store/events/types';
 import Utils from '../../utils';
 
 const CardList = (props: any) => {
   const {events, type} = props;
-  // console.log({events});
-  const cardRenders = events.map((cardProps: Event) => ({
-    id: cardProps._id,
-    leftHeader: cardProps.eventDate,
-    leftBody: cardProps.eventType.substring(0, 1),
-    rightHeader: cardProps.eventName,
+  const cardRenders = events.map(({_id, DocData} : {_id : string, DocData: EventData}) => ({
+    id: _id,
+    leftHeader: DocData.eventDate,
+    leftBody: DocData.eventType.substring(0, 1),
+    rightHeader: DocData.eventName,
     rightContent: [],
   }));
   return (

@@ -13,7 +13,7 @@ import {types, actions} from '../store';
 
 import {connect} from 'react-redux';
 
-const initDB  = actions.matches.initializeDatabase;
+const getMatches  = actions.matches.getMatches;
 
 interface OwnProps {
   type: string;
@@ -23,11 +23,11 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  initDB: () => any;
+  getMatches: () => any;
 
 }
 interface StateProps {
-  matches: Array<types.matches.Match>;
+  matches: Array<types.matches.MatchDoc>;
 }
 type Props = OwnProps & DispatchProps & StateProps;
 
@@ -38,7 +38,7 @@ class Matches extends React.Component<Props, {}> {
     chart: mocks.chart,
   };
   componentDidMount() {
-    this.props.initDB();
+    this.props.getMatches();
   }
 
   renderChart() {
@@ -119,11 +119,11 @@ class Matches extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
   matches: state.matches.matches.filter(
-    match => match.eventId === ownProps.navigation.state.params.eventId,
+    match => match.DocData.eventId === ownProps.navigation.state.params.eventId,
   ),
 });
 
-export default connect(mapStateToProps, {initDB})(Matches);
+export default connect(mapStateToProps, {getMatches})(Matches);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},

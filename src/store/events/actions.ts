@@ -1,50 +1,32 @@
-import {Event, GET_EVENTS, ADD_EVENTS, INIT_EVENTS_DB,  DB_EXISTS, EventActionTypes, EventsState} from './types'
-import {bindActionCreators, Dispatch, AnyAction,  } from 'redux';
-import {ThunkAction,} from 'redux-thunk';
-import { Database, Types as DatabaseTypes, config} from '../../database';
+import {EventData, GET_EVENTS, ADD_EVENTS, INIT_EVENTS_DB,  DB_EXISTS, EventActionTypes, EventsState} from './types'
+import {bindActionCreators, Dispatch, AnyAction, ActionCreator } from 'redux';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import { Types as DatabaseTypes, database, Database} from '../../database';
 import { databaseConfig } from '../../database/config';
+import { matches  as altEvents} from '../../mocks'
+export const getEvents : ActionCreator<
+  ThunkAction<Promise<EventActionTypes>, {}, void, AnyAction>
+> = () => {
+  return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<EventActionTypes> => {
 
-
-export const initializeDatabase = (): ThunkAction<EventActionTypes, EventsState, {}, EventActionTypes> => (
-  dispatch: Dispatch<EventActionTypes>, getState : () => EventsState
-): EventActionTypes => {
-
-  if(getState().database)
-  {
+    const events = await database.FetchLocalDB<EventData>(DatabaseTypes.Collections.event);
     return dispatch({
-      type : DB_EXISTS,
-      message : "Events Database Already Created"
+      type : GET_EVENTS,
+      events
     })
-  }
 
-  const config =  databaseConfig('events');
-  const OnData  = (docs : Array<DatabaseTypes.Document<Event>>) => {
-    // Tell The Store About the data
-    dispatch({
-      type: GET_EVENTS,
-      events : docs.filter(dbEntry => dbEntry.DocData).map(({DocData, _id}) => { 
-        return {...DocData, _id}
-      })
-    })
   }
-  
-  const database = new Database<Event>({config, OnData});
-  database.Sync();
-  return dispatch({
-    type: INIT_EVENTS_DB,
-    database
-  });
-};
+}
 
-export const addEvents = ({events} : {events : Array<Event>}) :  ThunkAction<EventActionTypes, EventsState, {}, EventActionTypes> => (
+export const addEvents = ({events} : {events : Array<EventData>}) :  ThunkAction<EventActionTypes, EventsState, {}, EventActionTypes> => (
   dispatch: Dispatch<EventActionTypes>, getState : () => EventsState
 ): EventActionTypes => {
-  const database = getState().database;
+
   if(!database)
   {
     console.log("Database Undefined") 
   } else {
-    database.AddData(events)
+    database.AddData(altEvents, DatabaseTypes.Collections.match)
   }
   return dispatch({
     type: ADD_EVENTS,

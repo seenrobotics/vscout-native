@@ -20,4 +20,4 @@ export const databaseConfig = (db : string) =>
 {
     return {...default_config, db};
 }
-export const nameIndex = {UPDATED_AT: 'index-updated_at'}
+export const nameIndex = {UPDATED_AT: 'index-updated_at', TYPE_UPDATED_AT : 'type-update_at'}

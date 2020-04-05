@@ -18,13 +18,6 @@ export function eventsReducer(state = initialState, action : EventActionTypes) :
           ...state,
           events: action.events,
         };
-
-      case INIT_EVENTS_DB: 
-        console.log("initializing db");
-        return {
-          ...state,
-          database : action.database
-        };
       
       case ADD_EVENTS:
         return {
