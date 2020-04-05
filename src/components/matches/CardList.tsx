@@ -3,7 +3,6 @@ import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from '../index';
 import {Match} from '../../store/matches/types'
 import Utils from '../../utils';
-import { NavigationActions } from 'react-navigation';
 
 const CardList = (props: any) => {
   const {matches, type} = props;
@@ -14,7 +13,6 @@ const CardList = (props: any) => {
     rightHeader: `${cardProps.blueTeamTop} ${cardProps.blueTeamBottom} vs. ${cardProps.redTeamTop} ${cardProps.redTeamBottom}`,
     rightContent: [],
   }));
-
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
@@ -37,9 +35,7 @@ const CardList = (props: any) => {
             .map((cardProps: React.ComponentProps<typeof Card>) => (
               <TouchableOpacity
                 activeOpacity={0.8}
-                key={`${type}-${cardProps.id}`}
-                onPress={() => props.navigation.navigate('MatchDetails', cardProps)}
-                >
+                key={`${type}-${cardProps.id}`}>
                 <Card {...cardProps} />
               </TouchableOpacity>
             ))
