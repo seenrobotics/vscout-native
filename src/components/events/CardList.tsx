@@ -11,6 +11,7 @@ const CardList = (props: any) => {
     leftHeader: docData.eventDate,
     leftBody: docData.eventType.substring(0, 1),
     rightHeader: docData.eventName,
+    rightBody: docData.eventLocation,
     rightContent: [],
   }));
   return (
@@ -27,7 +28,8 @@ const CardList = (props: any) => {
             <TouchableOpacity
               activeOpacity={0.8}
               key={`${type}-${cardProps.id}`}
-              onPress={() =>
+              onPress={
+                () =>
                 props.navigation.navigate('Matches', {eventId: cardProps.id})
               }>
               <Card {...cardProps} />

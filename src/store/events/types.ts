@@ -7,9 +7,11 @@ export interface EventData {
     eventName: string;
     eventType: string;
     eventDate: string;
+    eventLocation: string;
 }
 
 export type EventDoc = Types.DocumentBase<EventData>
+
 
 interface GetEventsAction {
     type : typeof GET_EVENTS;
