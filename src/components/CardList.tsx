@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import {Text, Block, Card} from '../index';
-import {MatchData} from '../../store/matches/types'
-import Utils from '../../utils';
+import {Text, Block, Card} from './index';
+import {MatchData} from '../store/matches/types'
+import Utils from '../utils';
 
 const CardList : (props : any) => React.ReactElement = (props: any) => {
   console.log(' CardList props', {props})

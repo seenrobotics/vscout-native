@@ -15,16 +15,8 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import {NavigationStackProp} from 'react-navigation-stack';
-import {createAppContainer, withOrientation, } from 'react-navigation';
-import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {connect} from 'react-redux';
-import { user } from '../store/actions';
-import { createStackNavigator } from '@react-navigation/stack'
-// add this after other import statements
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import header from '../components/Header';
-import { createMaterialTopTabNavigator as TopTabNavigator } from '@react-navigation/material-top-tabs';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, TabBar } from 'react-native-tab-view';
 
 
 interface InfoPageProps {
@@ -36,34 +28,34 @@ interface MatchesPageProps {
 
 type tabPropTypes = InfoPageProps & MatchesPageProps;
 
+const InfoField = (title : string, info : string | any) => {
+  return <Block flex={1} style={{padding:5, marginVertical:5, flexDirection:'row', flexWrap:'wrap'}}>
+  <Text h3 style={{fontSize:20, marginRight: 3}}>
+    {title}
+  </Text>
+  <Text style={{fontSize:20, marginRight: 3}}>
+    {info}
+  </Text>
+</Block>
+}
+
 const InfoPage = (props : InfoPageProps) => {
   const {event} = props;
-  console.log({event})
+
   return <Block flex={1} style={styles.requests} column color="gray2">
-    <Block color="white" column card style={{padding: 15, marginHorizontal : 15, marginBottom: 15}} shadow>
+    <Block color="white" column card style={{padding: 15, marginHorizontal : 15, marginBottom: 15, paddingHorizontal: 20}} shadow>
 
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Block flex={5} card shadow>
-      <Text h3 style={{fontSize:20, marginRight: 3}}>
+      <Block flex={5} card shadow style={{marginVertical: 10}}>
+      <Text h2 style={{marginRight: 3}}>
         {event.docData.eventName}
       </Text>
       </Block>
-      <Block flex={1} style={{padding:5, marginVertical:10}}>
-        <Text h3 style={{fontSize:20, marginRight: 3}}>
-          {event.docData.eventType}
-        </Text>
-      </Block>
-
-      <Block flex={1} style={{padding:5, marginVertical:10}}>
-        <Text h3 style={{fontSize:20, marginRight: 3}}>
-          Date : {event.docData.eventDate}
-        </Text>
-      </Block>
-      
-      
-      
-    
-      
+      {InfoField("Type: ", event.docData.eventType)}
+      {InfoField("Date: ", event.docData.eventDate)}
+      {InfoField("Location: ", `${event.docData.address} ${event.docData.city}, ${event.docData.region}`)}
+      {InfoField("Teams: ", event.docData.teamsRegistered)}
+      {InfoField("Qual Matches: ", event.docData.numberOfMatches)}
     </ScrollView>
     </Block>
   </Block>
@@ -91,6 +83,7 @@ export function MatchesTabView(props :  tabPropTypes) {
       onIndexChange={setIndex}
       style={{flex:1}}
       initialLayout={initialLayout}
+      lazy={true}
       renderTabBar={props => <TabBar {...{...props, renderIcon : scene => <FontAwesome5Icon name={`${scene.route.icon}`} size={22} color={theme.colors.white} />, renderLabel : () => null}}/>}
 
     />
@@ -99,61 +92,7 @@ export function MatchesTabView(props :  tabPropTypes) {
   );
 }
 
-const Tab = TopTabNavigator();
-const a = connect( (state : types.RootState)=> ({ matches : state.matches.matches }))(Yoyeet);
-
-function MyTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Matches" component={a} />
-    </Tab.Navigator>
-  );
-}
-
-function Yoyeet({ matches} : { matches : any}) {
-  return <CardList {...{matches, type : 'Match'}}/>
-}
-
-const Navigator = (props : any) => {
-    const navigator =  createMaterialTopTabNavigator({
-    MatchList: {screen : ConnectedNav,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <FontAwesome5Icon name="home" size={22} color={theme.colors.white} />            
-            )
-        }
-      },
-      Otherthing: {screen : ConnectedNav,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <FontAwesome5Icon name="home" size={22} color={theme.colors.white} />            
-            )
-        }
-      }
-    },
-    {
-    initialRouteName: 'MatchList',
-    tabBarPosition: 'top',
-    tabBarOptions: {
-        activeTintColor:'white',
-        inactiveTintColor:'white',
-        showIcon:true,
-        showLabel:false,
-        style: {
-            backgroundColor: theme.colors.primary,
-        },
-        indicatorStyle:{
-            height:2,
-            backgroundColor:'white',
-        }
-    }
-    });
-    const Yee = createAppContainer(navigator);
-    return <Yee/>
-}
-
-
-const getMatches  = actions.matches.getMatches;
+const {getMatches}  = actions.matches;
 const {getUser} = actions.user;
 interface OwnProps {
   type: string;
@@ -172,13 +111,6 @@ interface StateProps {
   user ?: types.user.User;
 }
 type Props = OwnProps & DispatchProps & StateProps;
-
-class Yeetus extends React.Component<any, {}> {
-  render() {
-    return (<CardList {...{...this.props, type : "Match"}}/>)
-  }
-}
-const ConnectedNav = connect( (state : types.RootState)=> ({ matches : state.matches.matches }))(Yeetus);
 
 class Matches extends React.Component<Props, {}> {
   public static defaultProps = {
@@ -237,9 +169,6 @@ class Matches extends React.Component<Props, {}> {
       </Block>
     );
   }
-
-  cardList = () => <CardList {...this.props}/>
-
 
   render() {
       

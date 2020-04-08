@@ -4,7 +4,8 @@ const collate = require("pouchdb-collate");
 import { config, configToURL, nameIndex, default_config } from './config'
 import 'react-native-get-random-values';
 import {v4} from 'uuid';
-import {DocumentBase, Document, OnDataFn, Collection} from './types'
+import {DocumentBase, DocumentData, OnDataFn, Collection} from './types'
+import { Types } from '.';
 
 export default class Database
 {
@@ -19,6 +20,7 @@ export default class Database
     constructor({config} : {config : config}) 
     {
         this.Config = config;
+
         this.RemoteDB = new PouchDB(configToURL(config));
         this.LocalDB = new PouchDB(config.db,  {adapter: 'react-native-sqlite'});
     }
@@ -107,7 +109,8 @@ export default class Database
         })
     }
 
-    queryRequestParams = <T>(type : Collection) : PouchDB.Find.FindRequest<DocumentBase<T>> => {
+    queryRequestParams = <T extends DocumentData>(type : Collection) : PouchDB.Find.FindRequest<DocumentBase<T>> => {
+
         console.log({type});
         return {
             selector : {
@@ -119,11 +122,18 @@ export default class Database
         }
     }
 
-    async FetchLocalDB<DocumentData>(type : Collection) : 
-    Promise<PouchDB.Core.ExistingDocument<DocumentBase<DocumentData>>[]>{
-        console.log(this.queryRequestParams<DocumentData>(type));
+    async FetchLocalDB<DocData extends DocumentData>(type : Collection) : 
+    Promise<PouchDB.Core.ExistingDocument<DocumentBase<DocData>>[]>{
+        const yeet = "2";
+       if( yeet as  "k")
+       {
+           const ree = yeet as "k";
+        console.log({type, yeet, ree}, 1)
+       }
+        // let a : DocData['DOCUMENT_TYPE'];
+        console.log(this.queryRequestParams<DocData>(type));
         try {
-            const { docs } = await this.LocalDB.find(this.queryRequestParams<DocumentData>(type));
+            const { docs } = await this.LocalDB.find(this.queryRequestParams<DocData>(type));
             console.log({docs});
             return docs;
 

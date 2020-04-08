@@ -1,22 +1,33 @@
-import React from 'react';
+import React, { ReactNode, ReactComponentElement, ReactElement,  } from 'react';
 import {StyleSheet} from 'react-native';
 
 import {Text, Block} from './index';
 import * as theme from '../constants/theme';
 
 export interface CardProps {
-  id: number;
+  _id : string,
   leftHeader: string;
   rightHeader: string;
   leftBody: string;
   rightBody: string;
   rightContent: Array<any>;
+  children ?: ReactNode;
 }
 
-const Card = (props: CardProps) => {
-  const rightContentLen = props.rightContent.length;
-  return (
-    <Block row card shadow color="white" style={styles.request}>
+export interface CardBaseProps {
+  _id : string, 
+  leftHeader : ReactNode;
+  rightHeader : ReactNode;
+  leftBody: ReactNode;
+  rightBody: ReactNode;
+  rightContent: Array<any>;
+}
+
+
+export class CardBase extends React.Component<CardBaseProps, {}> {
+  render () {
+    return (
+      <Block row card shadow color="white" style={styles.request}>
       <Block
         flex={0.25}
         card
@@ -24,35 +35,46 @@ const Card = (props: CardProps) => {
         color="secondary"
         style={styles.requestStatus}>
         <Block flex={0.25} middle center color={theme.colors.primary}>
-          <Text small white style={{textTransform: 'uppercase'}}>
-            {props.leftHeader}
-          </Text>
+            {this.props.leftHeader}
         </Block>
-        <Block flex={0.7} center middle>
-          <Text h2 white>
-            {props.leftBody}
-          </Text>
+        <Block flex={0.7} center middle >
+            {this.props.leftBody}
+ 
         </Block>
       </Block>
       <Block flex={0.75} column middle>
-        <Text h3>
-          {props.rightHeader}
-        </Text>
-        
-        <Text light>
-          {props.rightBody}
-        </Text>
+
+          {this.props.rightHeader}
+
+        {this.props.children}
+
+          {this.props.rightBody}
+
         <Text caption semibold>
-          {props.rightContent.map((rightContentItem, i) => {
-            if (rightContentLen === i + 1) {
+          {this.props.rightContent.map((rightContentItem, i) => {
+            if (this.props.rightContent.length === i + 1) {
               return rightContentItem;
             } else {
-              return {rightContentItem} + ' • ';
+              return rightContentItem + ' • ';
             }
           })}
         </Text>
       </Block>
     </Block>
+    )
+  }
+}
+
+const Card = (props: CardProps)  => {
+  return (
+    <CardBase {...{
+      ...props,
+      leftHeader : <Text small white style={{textTransform: 'uppercase'}}>  {props.leftHeader} </Text>,
+      leftBody : <Text h3 white style={{marginHorizontal : 6, fontSize: 14}}> {props.leftBody}  </Text>,
+      rightHeader : <Text h3> {props.rightHeader} </Text>,
+      rightBody : <Text light> {props.rightBody}</Text>
+    }}
+      />
   );
 };
 

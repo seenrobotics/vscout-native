@@ -7,12 +7,12 @@ import Utils from '../../utils';
 const CardList = (props: any) => {
   const {events, type} = props;
   const cardRenders = events.map(({_id, docData} : {_id : string, docData: EventData}) => ({
-    id: _id,
+    _id,
     leftHeader: docData.eventDate,
-    leftBody: docData.eventType.substring(0, 1),
+    leftBody: docData.qualificationSpots || 0 + " Quals",
     rightHeader: docData.eventName,
-    rightBody: docData.eventLocation,
-    rightContent: [],
+    rightBody: `${docData.address} ${docData.city}, ${docData.region}`,
+    rightContent: [`${docData.numberOfMatches} Matches`, `${docData.teamsRegistered} Teams`],
   }));
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
@@ -27,10 +27,10 @@ const CardList = (props: any) => {
           cardRenders.map((cardProps: React.ComponentProps<typeof Card>) => (
             <TouchableOpacity
               activeOpacity={0.8}
-              key={`${type}-${cardProps.id}`}
+              key={`${type}-${cardProps._id}`}
               onPress={
                 () =>
-                props.navigation.navigate('Matches', {eventId: cardProps.id})
+                props.navigation.navigate('Matches', {eventId: cardProps._id})
               }>
               <Card {...cardProps} />
             </TouchableOpacity>
