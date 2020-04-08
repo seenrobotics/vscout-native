@@ -41,7 +41,6 @@ const InfoField = (title : string, info : string | any) => {
 
 const InfoPage = (props : InfoPageProps) => {
   const {event} = props;
-
   return <Block flex={1} style={styles.requests} column color="gray2">
     <Block color="white" column card style={{padding: 15, marginHorizontal : 15, marginBottom: 15, paddingHorizontal: 20}} shadow>
 
@@ -76,7 +75,6 @@ export function MatchesTabView(props :  tabPropTypes) {
   }
   return (
     <Block column style={styles.requests}>
-
       <TabView
       navigationState={{ index, routes }}
       renderScene={renderScene}
@@ -85,7 +83,6 @@ export function MatchesTabView(props :  tabPropTypes) {
       initialLayout={initialLayout}
       lazy={true}
       renderTabBar={props => <TabBar {...{...props, renderIcon : scene => <FontAwesome5Icon name={`${scene.route.icon}`} size={22} color={theme.colors.white} />, renderLabel : () => null}}/>}
-
     />
     </Block>
     
@@ -161,11 +158,6 @@ class Matches extends React.Component<Props, {}> {
          pageName : `${event.docData.eventName}`,
          user : user
        })}
-       
-        {/* <Button
-            title="Reload Data"
-            onPress={() => this.props.getMatches()}
-          /> */}
       </Block>
     );
   }

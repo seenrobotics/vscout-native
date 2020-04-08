@@ -13,7 +13,7 @@ export interface headerProps {
     user ?: types.user.User;
 }
 
-const header = (props : headerProps) => {
+const Header = (props : headerProps) => {
     const { pageName, backNavigationCB, user } = props;
     return  <Block row style={{paddingVertical: 15}}>
     {
@@ -36,4 +36,4 @@ const header = (props : headerProps) => {
     </Block>
 }
 
-export default header;
+export default Header;

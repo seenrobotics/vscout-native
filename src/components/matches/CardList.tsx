@@ -1,26 +1,18 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from '../index';
-import {MatchData} from '../../store/matches/types'
+import {MatchData, MatchDoc} from '../../store/matches/types'
 import Utils from '../../utils';
+import MatchCard from './MatchCard'
 
 const CardList : (props : any) => React.ReactElement = (props: any) => {
   console.log(' CardList props', {props})
   const {matches, type} = props;
-  const cardRenders = matches.map(({_id, docData} : { _id : string, docData : MatchData}) => ({
-    _id,
-    leftHeader: `${docData.blueScore} - ${docData.redScore}`,
-    leftBody: _id,
-    rightHeader: `${docData.blueTeamTop} ${docData.blueTeamBottom} vs. ${docData.redTeamTop} ${docData.redTeamBottom}`,
-    rightContent: [],
-  }));
+  const cardRenders = matches;
   return (
     <Block flex={1} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
-        <Text light>Recent {Utils.capitalize(type)}es</Text>
-        <TouchableOpacity activeOpacity={0.8}>
-          <Text semibold>View All</Text>
-        </TouchableOpacity>
+        <Text h3>{Utils.capitalize(type)}es</Text>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         {cardRenders ? (
@@ -33,13 +25,13 @@ const CardList : (props : any) => React.ReactElement = (props: any) => {
                 return cardPropsB._id > cardPropsA._id;
               },
             )
-            .map((cardProps: React.ComponentProps<typeof Card>) => (
+            .map((cardProps: MatchDoc) => (
               <TouchableOpacity
                 activeOpacity={0.8}
                 key={`${type}-${cardProps._id}`}
                 onPress={() => props.navigation.navigate('MatchDetails', cardProps)}
                 >
-                <Card {...cardProps} />
+                <MatchCard {...{match : cardProps}} />
               </TouchableOpacity>
             ))
         ) : (
@@ -59,7 +51,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     zIndex: -1,
   },
-  requestsHeader: {paddingHorizontal: 20, paddingBottom: 15},
+  requestsHeader: {paddingHorizontal: 20, paddingVertical:5, marginBottom: 10},
   request: {padding: 20, marginBottom: 15},
   requestStatus: {marginRight: 20, overflow: 'hidden', height: 90},
 });

@@ -9,7 +9,7 @@ const CardList = (props: any) => {
   const cardRenders = events.map(({_id, docData} : {_id : string, docData: EventData}) => ({
     _id,
     leftHeader: docData.eventDate,
-    leftBody: docData.qualificationSpots || 0 + " Quals",
+    leftBody: docData.qualificationSpots ||"0 Quals",
     rightHeader: docData.eventName,
     rightBody: `${docData.address} ${docData.city}, ${docData.region}`,
     rightContent: [`${docData.numberOfMatches} Matches`, `${docData.teamsRegistered} Teams`],

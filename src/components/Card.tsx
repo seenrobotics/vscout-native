@@ -4,78 +4,54 @@ import {StyleSheet} from 'react-native';
 import {Text, Block} from './index';
 import * as theme from '../constants/theme';
 
+type ComponentFn = () => JSX.Element;
+
 export interface CardProps {
   _id : string,
-  leftHeader: string;
-  rightHeader: string;
-  leftBody: string;
-  rightBody: string;
+  leftHeader: string | ComponentFn;
+  rightHeader: string | ComponentFn;
+  leftBody: string | ComponentFn;
+  rightBody: string | ComponentFn;
   rightContent: Array<any>;
-  children ?: ReactNode;
-}
-
-export interface CardBaseProps {
-  _id : string, 
-  leftHeader : ReactNode;
-  rightHeader : ReactNode;
-  leftBody: ReactNode;
-  rightBody: ReactNode;
-  rightContent: Array<any>;
-}
-
-
-export class CardBase extends React.Component<CardBaseProps, {}> {
-  render () {
-    return (
-      <Block row card shadow color="white" style={styles.request}>
-      <Block
-        flex={0.25}
-        card
-        column
-        color="secondary"
-        style={styles.requestStatus}>
-        <Block flex={0.25} middle center color={theme.colors.primary}>
-            {this.props.leftHeader}
-        </Block>
-        <Block flex={0.7} center middle >
-            {this.props.leftBody}
- 
-        </Block>
-      </Block>
-      <Block flex={0.75} column middle>
-
-          {this.props.rightHeader}
-
-        {this.props.children}
-
-          {this.props.rightBody}
-
-        <Text caption semibold>
-          {this.props.rightContent.map((rightContentItem, i) => {
-            if (this.props.rightContent.length === i + 1) {
-              return rightContentItem;
-            } else {
-              return rightContentItem + ' • ';
-            }
-          })}
-        </Text>
-      </Block>
-    </Block>
-    )
-  }
 }
 
 const Card = (props: CardProps)  => {
+
+  const leftHeader = (typeof props.leftHeader === "string") ? () => <Text small white style={{textTransform: 'uppercase'}}>{props.leftHeader}</Text> : props.leftHeader;
+  const leftBody = (typeof props.leftBody === "string") ? () =>  <Text h3 white style={{marginHorizontal : 6, fontSize: 14}}>{props.leftBody}</Text>: props.leftBody;
+  const rightHeader = (typeof props.rightHeader === "string") ? () => <Text h3 numberOfLines={2}>{props.rightHeader}</Text> : props.rightHeader;
+  const rightBody = (typeof props.rightBody === "string") ? () => <Text light>{props.rightBody}</Text> : props.rightBody;
+
   return (
-    <CardBase {...{
-      ...props,
-      leftHeader : <Text small white style={{textTransform: 'uppercase'}}>  {props.leftHeader} </Text>,
-      leftBody : <Text h3 white style={{marginHorizontal : 6, fontSize: 14}}> {props.leftBody}  </Text>,
-      rightHeader : <Text h3> {props.rightHeader} </Text>,
-      rightBody : <Text light> {props.rightBody}</Text>
-    }}
-      />
-  );
+    <Block row card shadow color="white" style={styles.request}>
+    <Block
+      flex={0.2}
+      card
+      column
+      color="secondary"
+      style={styles.requestStatus}>
+      <Block flex={0.25} middle center color={theme.colors.primary}>
+          {leftHeader()}
+      </Block>
+      <Block flex={0.7} center middle>
+          {leftBody()}
+      </Block>
+    </Block>
+    <Block flex={0.75} column middle>
+        {rightHeader()}
+        {rightBody()}
+      <Text caption semibold>
+        {props.rightContent.map((rightContentItem, i) => {
+          if (props.rightContent.length === i + 1) {
+            return rightContentItem;
+          } else {
+            return rightContentItem + ' • ';
+          }
+        })}
+      </Text>
+    </Block>
+  </Block>
+  )
 };
 
 export default Card;
