@@ -72,7 +72,7 @@ const user = {
   _id : '1', 
   userName: "C9WIN",
   fullName : "Cloud9BestTeam",
-  team : "Cloud9",
+  team : "CLOUD9",
   avatar: require('./assets/avatar.png'),
 };
 

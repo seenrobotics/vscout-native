@@ -9,7 +9,6 @@ import Summary from '../screens/Summary';
 
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-
   const routeConfigs = createMaterialTopTabNavigator({
     Summary: {screen: Summary,
         navigationOptions: {
