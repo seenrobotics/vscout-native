@@ -124,13 +124,7 @@ export default class Database
 
     async FetchLocalDB<DocData extends DocumentData>(type : Collection) : 
     Promise<PouchDB.Core.ExistingDocument<DocumentBase<DocData>>[]>{
-        const yeet = "2";
-       if( yeet as  "k")
-       {
-           const ree = yeet as "k";
-        console.log({type, yeet, ree}, 1)
-       }
-        // let a : DocData['DOCUMENT_TYPE'];
+       
         console.log(this.queryRequestParams<DocData>(type));
         try {
             const { docs } = await this.LocalDB.find(this.queryRequestParams<DocData>(type));
