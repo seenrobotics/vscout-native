@@ -3,8 +3,10 @@ import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Block, Card} from '../index';
 import {MatchData} from '../../store/matches/types'
 import Utils from '../../utils';
+import { AppRegistry } from 'react-native'; //these lines
 
-const CardList = (props: any) => {
+const CardList : (props : any) => React.ReactElement = (props: any) => {
+  console.log(' CardList props', {props})
   const {matches, type} = props;
   const cardRenders = matches.map(({_id, docData} : { _id : string, docData : MatchData}) => ({
     id: _id,
@@ -14,7 +16,7 @@ const CardList = (props: any) => {
     rightContent: [],
   }));
   return (
-    <Block flex={0.8} column color="gray2" style={styles.requests}>
+    <Block flex={1} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
         <Text light>Recent {Utils.capitalize(type)}es</Text>
         <TouchableOpacity activeOpacity={0.8}>
