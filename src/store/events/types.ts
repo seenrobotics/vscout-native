@@ -4,6 +4,8 @@ export const GET_EVENTS = 'GET_EVENTS';
 export const ADD_EVENTS = 'ADD_EVENTS';
 
 export interface EventData {
+    DOCUMENT_TYPE : typeof Types.Collections.event;
+
     eventName: string;
     eventType: string;
     eventDate: string;
@@ -13,7 +15,9 @@ export interface EventData {
     region : string;
     country : string;
     teamsRegistered: number;
-    qualMatches: number;
+    numberOfMatches: number;
+    qualificationSpots ?: number;
+    qualifiesFor : string;
 }
 
 export type EventDoc = Types.DocumentBase<EventData>
