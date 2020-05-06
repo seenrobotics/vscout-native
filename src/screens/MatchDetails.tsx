@@ -30,33 +30,6 @@ export default class MatchDetails extends React.Component<Props, {}> {
         chart: mocks.chart,
       };
 
-    renderChart() {
-        const {chart} = this.props;
-        return (
-          <LineChart
-            yMin={0}
-            yMax={10}
-            data={chart}
-            style={{flex: 2}}
-            curve={shape.curveMonotoneX}
-            svg={{
-              stroke: theme.colors.primary,
-              strokeWidth: 1.75,
-            }}
-            contentInset={{left: theme.sizes.base, right: theme.sizes.base}}>
-            <Line
-              key="zero-axis"
-              x1="0%"
-              x2="100%"
-              y1="50%"
-              y2="50%"
-              stroke={theme.colors.gray}
-              strokeDasharray={[2, 10]}
-              strokeWidth={3}
-            />
-          </LineChart>
-        );
-      }
     
       renderHeader() {
         const {user} = this.props;
@@ -78,39 +51,27 @@ export default class MatchDetails extends React.Component<Props, {}> {
               </View>
               <Image style={styles.avatar} source={user.avatar} />
             </Block>
-            <Block card shadow color="white" style={styles.headerChart}>
-              <Block row space="between" style={{paddingHorizontal: 30}}>
-                <Block flex={false} row center>
-                  <Text h1>291 </Text>
-                </Block>
-                <Block flex={false} row center>
-                  <Text h1>481 </Text>
-                </Block>
-              </Block>
-              <Block flex={0.5} row space="between" style={{paddingHorizontal: 30}}>
-                <Text caption light>Matches</Text>
-                <Text caption light style={{marginRight:15}}>Days</Text>
-              </Block>
-              <Block flex={1}>{this.renderChart()}</Block>
-            </Block>
           </Block>
         );
       }
 
     renderCard() {
-        const id = this.props.navigation.getParam('id');
-        const leftHeader = this.props.navigation.getParam('leftHeader'); 
-        const rightHeader = this.props.navigation.getParam('rightHeader'); 
-        const leftBody = this.props.navigation.getParam('leftBody'); 
-        const rightBody = this.props.navigation.getParam('rightBody'); 
-        
+        const matchData = this.props.navigation.state.params.docData;
+        const redTeam1 = matchData.redTeamTop;
+        const redTeam2 = matchData.redTeamBottom;
+        const blueTeam1 = matchData.blueTeamTop;
+        const blueTeam2 = matchData.blueTeamBottom;
+        const redScore = matchData.redScore;
+        const blueScore = matchData.blueScore;
+        const id = matchData.id;
+        console.log(matchData);
         return (
-        <Block center style={{marginTop:20,}}>
-            <Text h1 style={{color:'white',}}>Match Details</Text>
-            <Text h2 style={{color:'white', marginTop:10,}}>{leftHeader}</Text>
-            <Text h2 style={{color:'white',}}>{leftBody}</Text>
-            <Text h2 style={{color:'white',}}>{rightHeader}</Text>
-            <Text h2 style={{color:'white',}}>{rightBody}</Text>
+        <Block center style={{marginTop:-100,}}>
+            <Text h1 style={{color:'white',}}>QUALIFIER {id}</Text>
+            <Text h2 style={{color:'white', marginTop:75, fontSize:30,}}>{redTeam1} {redTeam2}</Text>
+            <Text h1 style={{color:'white', marginTop:20, fontSize:50,}}>{redScore}</Text>
+            <Text h1 style={{color:'white', marginTop:10, fontSize:50,}}>{blueScore}</Text>
+            <Text h2 style={{color:'white', marginTop:20, fontSize:30,}}>{blueTeam1} {blueTeam2}</Text>
         </Block>
         )
     }
