@@ -1,8 +1,8 @@
 import React, { ReactNode, ReactComponentElement, ReactElement,  } from 'react';
 import {StyleSheet} from 'react-native';
 
-import {Text, Block} from './index';
-import * as theme from '../constants/theme';
+import {Text, Block} from '../index';
+import * as theme from '../../constants/theme';
 
 type ComponentFn = () => JSX.Element;
 
@@ -23,7 +23,7 @@ const Card = (props: CardProps)  => {
   const rightBody = (typeof props.rightBody === "string") ? () => <Text light>{props.rightBody}</Text> : props.rightBody;
 
   return (
-    <Block row card shadow color="white" style={styles.request}>
+    <Block row card shadow color={theme.colors.white} style={styles.request}>
     <Block
       flex={0.2}
       card
