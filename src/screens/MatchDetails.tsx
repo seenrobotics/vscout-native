@@ -66,13 +66,28 @@ export default class MatchDetails extends React.Component<Props, {}> {
         const id = matchData.id;
         console.log(matchData);
         return (
-        <Block center style={{marginTop:-100,}}>
-            <Text h1 style={{color:'white',}}>QUALIFIER {id}</Text>
-            <Text h2 style={{color:'white', marginTop:75, fontSize:30,}}>{redTeam1} {redTeam2}</Text>
-            <Text h1 style={{color:'white', marginTop:20, fontSize:50,}}>{redScore}</Text>
-            <Text h1 style={{color:'white', marginTop:10, fontSize:50,}}>{blueScore}</Text>
-            <Text h2 style={{color:'white', marginTop:20, fontSize:30,}}>{blueTeam1} {blueTeam2}</Text>
+        <Block flex={0.8}>
+        <Block flex={4} center style={{marginTop:-150,}}>
+          <Block card shadow color="white" style={styles.headerChart}>
+          <Block>
+          <Text h1 style={{color:theme.colors.primary, fontSize:20,}}>QUALIFIER {id}</Text>
+          <Text h1 style={{color:theme.colors.secondary, fontSize:40,}}>RED</Text>
+        <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{blueScore}</Text></Text>
+          </Block>
         </Block>
+        </Block>
+
+          <Block flex={6} center>
+            <Block flex={1} card shadow color="white">
+            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:30,}}>{redTeam1} {redTeam2}</Text>
+            </Block>
+            
+            <Block flex={1} card shadow color="white">
+            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:30,}}>{blueTeam1} {blueTeam2}</Text>
+            </Block>
+        </Block>
+        </Block>
+        
         )
     }
       
@@ -88,7 +103,7 @@ export default class MatchDetails extends React.Component<Props, {}> {
 
 const styles = StyleSheet.create({
     safe: {flex: 1, backgroundColor: theme.colors.primary},
-    headerChart: {paddingTop: 30, paddingBottom: 30, zIndex: 1},
+    headerChart: {padding: 30, marginRight:30, marginLeft:30, zIndex: 1, flex:1, flexDirection: 'row'},
   avatar: {
     width: 30,
     height: 30,
