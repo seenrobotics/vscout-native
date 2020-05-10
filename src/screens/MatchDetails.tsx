@@ -35,7 +35,7 @@ export default class MatchDetails extends React.Component<Props, {}> {
         const {user} = this.props;
     
         return (
-          <Block flex={0.42} column style={{paddingHorizontal: 15}}>
+          <Block flex={0.12} column style={{paddingHorizontal: 15}}>
               <Block flex={false} row style={{paddingVertical: 15}}>
               <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={styles.back}> 
             <IoniconsIcon name="ios-arrow-round-back" size={45} color="white"/>            
@@ -66,24 +66,27 @@ export default class MatchDetails extends React.Component<Props, {}> {
         const id = matchData.id;
         console.log(matchData);
         return (
-        <Block flex={0.8}>
-        <Block flex={4} center style={{marginTop:-150,}}>
+        <Block flex={0.58} style={{}}>
+        <Block flex={7} center style={{marginTop:0,}}>
           <Block card shadow color="white" style={styles.headerChart}>
           <Block>
-          <Text h1 style={{color:theme.colors.primary, fontSize:20,}}>QUALIFIER {id}</Text>
-          <Text h1 style={{color:theme.colors.secondary, fontSize:40,}}>RED</Text>
+          <Text h1 style={{color:'dimgray', fontSize:25,paddingBottom:10,}}>QUALIFIER {id}</Text>
+          <Text h1 style={{color:theme.colors.secondary, fontSize:40,}}>BLUE</Text>
         <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{blueScore}</Text></Text>
           </Block>
         </Block>
         </Block>
 
-          <Block flex={6} center>
-            <Block flex={1} card shadow color="white">
-            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:30,}}>{redTeam1} {redTeam2}</Text>
+          <Block flex={5} stretch style={{justifyContent: 'space-between',}}>
+          
+            <Block style={{margin: 30, padding:20, marginBottom:0,paddingBottom:100,}} card shadow color="white">
+            <Text h1 style={{color:'dimgray', fontSize:20,paddingBottom:5,}}>RED ALLIANCE</Text>
+            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:35,}}>{redTeam1}  {redTeam2}</Text>
             </Block>
             
-            <Block flex={1} card shadow color="white">
-            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:30,}}>{blueTeam1} {blueTeam2}</Text>
+            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}} card shadow color="white">
+            <Text h1 style={{color:'dimgray', fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
+            <Text h2 style={{color:'dodgerblue', marginTop:0, fontSize:35,}}>{blueTeam1}  {blueTeam2}</Text>
             </Block>
         </Block>
         </Block>
@@ -103,7 +106,7 @@ export default class MatchDetails extends React.Component<Props, {}> {
 
 const styles = StyleSheet.create({
     safe: {flex: 1, backgroundColor: theme.colors.primary},
-    headerChart: {padding: 30, marginRight:30, marginLeft:30, zIndex: 1, flex:1, flexDirection: 'row'},
+    headerChart: {padding: 30, marginRight:30, marginLeft:30, zIndex: 1, flex:1, flexDirection: 'row',},
   avatar: {
     width: 30,
     height: 30,
