@@ -10,6 +10,7 @@ import {LineChart, Path} from 'react-native-svg-charts';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {NavigationStackProp} from 'react-navigation-stack';
+import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
 
 
 import {connect} from 'react-redux'; 
@@ -67,10 +68,20 @@ export default class MatchDetails extends React.Component<Props, {}> {
         console.log(matchData);
         return (
         <Block flex={0.88} style={{}}>
-        <Block flex={3} center style={{marginTop:0,}}>
+        <Block flex={1} row center style={{justifyContent:'space-between',paddingBottom:10,marginTop:-20,}}>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={{}}> 
+          <MaterialIconsIcon name='navigate-before' size={50} color='white'/>
+          </TouchableOpacity>
+          <Text h1 style={{color:'white', fontSize:25, paddingBottom:0,}}>QUALIFIER {id}
+          </Text>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={{}}> 
+          <MaterialIconsIcon name='navigate-next' size={50} color='white'/>
+          </TouchableOpacity>
+        </Block>
+
+        <Block flex={2.5} center style={{marginTop:0,}}>
           <Block card shadow color="white" style={styles.headerChart}>
           <Block>
-          <Text h1 style={{color:theme.colors.secondary, fontSize:25,paddingBottom:10,}}>QUALIFIER {id}</Text>
           <Text h1 style={{color:'dimgray', fontSize:40,}}>BLUE</Text>
         <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{blueScore}</Text></Text>
           </Block>
