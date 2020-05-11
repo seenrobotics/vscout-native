@@ -6,6 +6,7 @@ import 'react-native-get-random-values';
 import {v4} from 'uuid';
 import {DocumentBase, DocumentData, OnDataFn, Collection} from './types'
 import { Types } from '.';
+import Axios from 'axios';
 
 export default class Database
 {
@@ -16,16 +17,28 @@ export default class Database
     Config : config;
     TAG = () => `Sync ${this.Config.db}`;
     OnData ?: OnDataFn<any>;
+    static instance ?: Database; 
+    static reference = () => {
 
-    constructor({config} : {config : config}) 
+        if(Database.instance)
+        {
+            return Database.instance;
+        }
+        console.trace("db not initialized");
+        throw "Database Not Initialized";
+    }
+    static initialize = (config : config) => {
+        Database.instance = new Database(config);
+        return Database.instance;
+    }
+    private constructor(config : config) 
     {
         this.Config = config;
-
         this.RemoteDB = new PouchDB(configToURL(config));
         this.LocalDB = new PouchDB(config.db,  {adapter: 'react-native-sqlite'});
     }
 
-    Initialize () {
+    Initialize_Index () {
         this.RemoteDB.createIndex({
             index: {
                 fields: ['type', 'updated_at'],
@@ -49,7 +62,7 @@ export default class Database
             console.log(Object.getOwnPropertyNames(err), err)
         })
     }
-
+    
     Sync() {
         if(this.syncing)
         {
@@ -130,7 +143,6 @@ export default class Database
             const { docs } = await this.LocalDB.find(this.queryRequestParams<DocData>(type));
             console.log({docs});
             return docs;
-
             
         }   catch (err) {
 
@@ -160,5 +172,4 @@ export default class Database
     }
 }
 
-export const database = new Database({ config : default_config });
-database.Sync();
+export const database = Database.reference;
