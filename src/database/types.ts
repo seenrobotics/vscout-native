@@ -1,12 +1,13 @@
 export const Collections = {
     match : "match",
-    event : "event"
+    event : "event",
+    team : 'team'
 } as const;
 
 export type Collection = keyof typeof Collections;
 
 export interface DocumentData {
-    DOCUMENT_TYPE : Collection
+    DOCUMENT_TYPE : Collection // match or event or team
 }
 
 export interface DocumentBase<T extends DocumentData> {

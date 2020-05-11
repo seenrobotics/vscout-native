@@ -130,7 +130,6 @@ export default class Database
             const { docs } = await this.LocalDB.find(this.queryRequestParams<DocData>(type));
             console.log({docs});
             return docs;
-
             
         }   catch (err) {
 

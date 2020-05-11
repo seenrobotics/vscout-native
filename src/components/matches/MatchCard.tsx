@@ -15,8 +15,6 @@ export interface CardProps {
   rightContent: Array<any>;
 }
 
-
-
 const MatchCard = (props: { match : MatchDoc}) =>  {
   const {match} = props;
   const cardProps = {
