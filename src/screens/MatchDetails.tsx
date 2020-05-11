@@ -66,27 +66,30 @@ export default class MatchDetails extends React.Component<Props, {}> {
         const id = matchData.id;
         console.log(matchData);
         return (
-        <Block flex={0.58} style={{}}>
-        <Block flex={7} center style={{marginTop:0,}}>
+        <Block flex={0.88} style={{}}>
+        <Block flex={3} center style={{marginTop:0,}}>
           <Block card shadow color="white" style={styles.headerChart}>
           <Block>
-          <Text h1 style={{color:'dimgray', fontSize:25,paddingBottom:10,}}>QUALIFIER {id}</Text>
-          <Text h1 style={{color:theme.colors.secondary, fontSize:40,}}>BLUE</Text>
+          <Text h1 style={{color:theme.colors.secondary, fontSize:25,paddingBottom:10,}}>QUALIFIER {id}</Text>
+          <Text h1 style={{color:'dimgray', fontSize:40,}}>BLUE</Text>
         <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{blueScore}</Text></Text>
           </Block>
         </Block>
         </Block>
 
-          <Block flex={5} stretch style={{justifyContent: 'space-between',}}>
+          <Block flex={5} stretch color="gray2" style={{marginTop:-100,paddingTop:100,}}>
           
             <Block style={{margin: 30, padding:20, marginBottom:0,paddingBottom:100,}} card shadow color="white">
-            <Text h1 style={{color:'dimgray', fontSize:20,paddingBottom:5,}}>RED ALLIANCE</Text>
+            <Text h1 style={{color:theme.colors.primary, fontSize:20,paddingBottom:5,}}>RED ALLIANCE</Text>
             <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:35,}}>{redTeam1}  {redTeam2}</Text>
             </Block>
             
             <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}} card shadow color="white">
-            <Text h1 style={{color:'dimgray', fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
+            <Text h1 style={{color:'dodgerblue', fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
             <Text h2 style={{color:'dodgerblue', marginTop:0, fontSize:35,}}>{blueTeam1}  {blueTeam2}</Text>
+            </Block>
+            
+            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}}>
             </Block>
         </Block>
         </Block>
