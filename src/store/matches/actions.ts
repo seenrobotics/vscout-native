@@ -8,7 +8,7 @@ export const getMatches : ActionCreator<
 > = () => {
   return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<MatchActionTypes> => {
 
-    const matches = await database.FetchLocalDB<MatchData>(DatabaseTypes.Collections.match);
+    const matches = await database().FetchLocalDB<MatchData>(DatabaseTypes.Collections.match);
 
     return dispatch({
       type : GET_MATCHES,
@@ -25,7 +25,7 @@ export const addMatches = ({matches} : {matches : Array<MatchData>}) :  ThunkAct
   {
     console.log("Database Undefined") 
   } else {
-    database.AddData(matches, DatabaseTypes.Collections.match)
+    database().AddData(matches, DatabaseTypes.Collections.match)
   }
   return dispatch({
     type: ADD_MATCHES,

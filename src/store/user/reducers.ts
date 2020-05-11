@@ -1,5 +1,6 @@
 import {
   GET_USER,
+  AUTH_USER,
   UserActionTypes,
   UserState
 } from './types'
@@ -12,9 +13,14 @@ export function userReducer(state = initialState, action : UserActionTypes) : Us
       case GET_USER:
         return {
           ...state,
-          user : action.user,
+          ...action
         };
-
+      case AUTH_USER:
+        return {
+          ...state,
+          signedIn : true,
+          ...action
+        };
       default:
         return state;
     }

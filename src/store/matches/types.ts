@@ -4,7 +4,7 @@ export const GET_MATCHES = "GET_MATCHES";
 export const ADD_MATCHES = 'ADD_MATCHES';
 
 export type MatchType = "QUALIFIER" | "R16" | "R8" | "R4" | "R2";
-export interface MatchData {
+export interface MatchData extends Types.DocumentData {
     DOCUMENT_TYPE : typeof Types.Collections.match;
 
     eventId: string;
