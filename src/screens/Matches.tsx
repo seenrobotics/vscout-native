@@ -6,7 +6,7 @@ import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
 import {Block, Text, Header, Card} from '../components';
-import {CardList} from '../components/matches';
+import {default as CardList, CardListProps} from '../components/matches/CardList';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
@@ -23,10 +23,10 @@ interface InfoPageProps {
   event : types.events.EventDoc;
 }
 interface MatchesPageProps {
-
+  
 }
 
-type tabPropTypes = InfoPageProps & MatchesPageProps;
+type tabPropTypes = InfoPageProps & MatchesPageProps & CardListProps;
 
 const InfoField = (title : string, info : string | any) => {
   return <Block flex={1} style={{padding:5, marginVertical:5, flexDirection:'row', flexWrap:'wrap'}}>
@@ -105,6 +105,7 @@ interface DispatchProps {
 interface StateProps {
   matches: Array<types.matches.MatchDoc>;
   event : types.events.EventDoc;
+  eventId : number;
   user ?: types.user.User;
 }
 type Props = OwnProps & DispatchProps & StateProps;
@@ -183,6 +184,7 @@ const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
     match => match.docData.eventId === ownProps.navigation.state.params?.eventId,
     
   ),
+  eventId : ownProps.navigation.state.params?.eventId,
   user : state.user.user,
 });
 

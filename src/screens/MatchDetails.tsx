@@ -11,30 +11,47 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {NavigationStackProp} from 'react-navigation-stack';
 import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
+import {connect} from 'react-redux';
+import {MatchDoc} from '../store/matches/types'
+import { NavigationActions, NavigationRoute } from 'react-navigation';
+import {types, actions} from '../store';
 
 
-import {connect} from 'react-redux'; 
-import { NavigationActions } from 'react-navigation';
-
+interface NavigationParams {
+  matches : Array<MatchDoc>;
+  currentMatchId : number;
+}
 interface OwnProps {
     type: string;
     user: any;
     chart: Array<number>;
-    navigation:NavigationStackProp;
-  }
+    navigation:NavigationStackProp<NavigationRoute<NavigationParams>>;
+}
+interface StateProps {
+    matches: Array<MatchDoc>;
+}
+interface OwnState{
+  currentMatchId : number;
+  eventId : number;
+}
 
-  type Props = OwnProps;
-
-export default class MatchDetails extends React.Component<Props, {}> {
+type Props = OwnProps & StateProps;
+export class MatchDetails extends React.Component<Props, OwnState> {
     public static defaultProps = {
         user: mocks.user,
         chart: mocks.chart,
       };
-
+      constructor (props: Props) {
+        super(props)
+        this.state = {
+          eventId: this.props.navigation.state.params?.eventId || 0,
+          currentMatchId: this.props.navigation.state.params?.currentMatchId || 0,
+        }
+     }
     
       renderHeader() {
         const {user} = this.props;
-    
+        
         return (
           <Block flex={0.12} column style={{paddingHorizontal: 15}}>
               <Block flex={false} row style={{paddingVertical: 15}}>
@@ -56,25 +73,30 @@ export default class MatchDetails extends React.Component<Props, {}> {
         );
       }
 
+    displayPreviousMatch = () => {
+      if (this.state.currentMatchId >= 1) {
+      this.setState(state => ({...state, currentMatchId :  state.currentMatchId - 1}));    
+      }
+    }
+    
+      displayNextMatch = () => {
+        if (this.state.currentMatchId < this.props.matches.length - 1) {
+        this.setState(state => ({...state, currentMatchId :  state.currentMatchId + 1}));    
+        }
+      }
+
     renderCard() {
-        const matchData = this.props.navigation.state.params.docData;
-        const redTeam1 = matchData.redTeamTop;
-        const redTeam2 = matchData.redTeamBottom;
-        const blueTeam1 = matchData.blueTeamTop;
-        const blueTeam2 = matchData.blueTeamBottom;
-        const redScore = matchData.redScore;
-        const blueScore = matchData.blueScore;
-        const id = matchData.id;
-        console.log(matchData);
+      const {currentMatchId} = this.state;
+      const {matches} = this.props;
+      console.log(matches);
         return (
         <Block flex={0.88} style={{}}>
         <Block flex={1} row center style={{justifyContent:'space-between',paddingBottom:10,marginTop:-20,}}>
-          <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={{}}> 
+          <TouchableOpacity activeOpacity={0.8} onPress={this.displayPreviousMatch} style={{}}> 
           <MaterialIconsIcon name='navigate-before' size={50} color='white'/>
           </TouchableOpacity>
-          <Text h1 style={{color:'white', fontSize:25, paddingBottom:0,}}>QUALIFIER {id}
-          </Text>
-          <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={{}}> 
+          <Text h1 style={{color:'white', fontSize:25, paddingBottom:0,}}>QUALIFIER {matches[currentMatchId].docData.matchNumber}</Text>
+          <TouchableOpacity activeOpacity={0.8} onPress={this.displayNextMatch} style={{}}> 
           <MaterialIconsIcon name='navigate-next' size={50} color='white'/>
           </TouchableOpacity>
         </Block>
@@ -83,7 +105,7 @@ export default class MatchDetails extends React.Component<Props, {}> {
           <Block card shadow color="white" style={styles.headerChart}>
           <Block>
           <Text h1 style={{color:'dimgray', fontSize:40,}}>BLUE</Text>
-        <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{blueScore}</Text></Text>
+        <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{matches[currentMatchId].docData.redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{matches[currentMatchId].docData.blueScore}</Text></Text>
           </Block>
         </Block>
         </Block>
@@ -92,12 +114,12 @@ export default class MatchDetails extends React.Component<Props, {}> {
           
             <Block style={{margin: 30, padding:20, marginBottom:0,paddingBottom:100,}} card shadow color="white">
             <Text h1 style={{color:theme.colors.primary, fontSize:20,paddingBottom:5,}}>RED ALLIANCE</Text>
-            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:35,}}>{redTeam1}  {redTeam2}</Text>
+            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:35,}}>{matches[currentMatchId].docData.redTeamTop}  {matches[currentMatchId].docData.redTeamBottom}</Text>
             </Block>
             
             <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}} card shadow color="white">
             <Text h1 style={{color:'dodgerblue', fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
-            <Text h2 style={{color:'dodgerblue', marginTop:0, fontSize:35,}}>{blueTeam1}  {blueTeam2}</Text>
+            <Text h2 style={{color:'dodgerblue', marginTop:0, fontSize:35,}}>{matches[currentMatchId].docData.blueTeamTop}  {matches[currentMatchId].docData.blueTeamBottom}</Text>
             </Block>
             
             <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}}>
@@ -117,6 +139,15 @@ export default class MatchDetails extends React.Component<Props, {}> {
         );
       }
 }
+
+
+const mapStateToProps = (state: types.RootState, ownProps: Props) => {
+return {
+  matches: state.matches.matches.filter(
+      match => match.docData.eventId === ownProps.navigation.state.params?.eventId,  ),}
+};
+
+export default connect(mapStateToProps)(MatchDetails);
 
 const styles = StyleSheet.create({
     safe: {flex: 1, backgroundColor: theme.colors.primary},
