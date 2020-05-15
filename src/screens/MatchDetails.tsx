@@ -33,6 +33,7 @@ interface StateProps {
 interface OwnState{
   currentMatchId : number;
   eventId : number;
+  winner: string;
 }
 
 type Props = OwnProps & StateProps;
@@ -46,12 +47,24 @@ export class MatchDetails extends React.Component<Props, OwnState> {
         this.state = {
           eventId: this.props.navigation.state.params?.eventId || 0,
           currentMatchId: this.props.navigation.state.params?.currentMatchId || 0,
+          winner:"BLUE",
         }
-     }
+
+    }
+    componentDidMount() {
+      if (this.props.matches[this.state.currentMatchId].docData.redScore == this.props.matches[this.state.currentMatchId].docData.blueScore) {
+        this.setState(state => ({...state, winner :  "TIE"}));    
+      }
+      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) > (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+        this.setState(state => ({...state, winner :  "RED"}));    
+      }
+      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) < (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+        this.setState(state => ({...state, winner :  "BLUE"}));    
+      } 
+    }     
     
       renderHeader() {
         const {user} = this.props;
-        
         return (
           <Block flex={0.12} column style={{paddingHorizontal: 15}}>
               <Block flex={false} row style={{paddingVertical: 15}}>
@@ -75,27 +88,44 @@ export class MatchDetails extends React.Component<Props, OwnState> {
 
     displayPreviousMatch = () => {
       if (this.state.currentMatchId >= 1) {
-      this.setState(state => ({...state, currentMatchId :  state.currentMatchId - 1}));    
+      this.setState({currentMatchId :  this.state.currentMatchId - 1}, () => {if (this.props.matches[this.state.currentMatchId].docData.redScore == this.props.matches[this.state.currentMatchId].docData.blueScore) {
+        this.setState(state => ({...state, winner :  "TIE"}));    
       }
-    }
+      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) > (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+        this.setState(state => ({...state, winner :  "RED"}));    
+      }
+      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) < (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+        this.setState(state => ({...state, winner :  "BLUE"}));    
+      } 
+    }); 
+    }}
     
       displayNextMatch = () => {
-        if (this.state.currentMatchId < this.props.matches.length - 1) {
-        this.setState(state => ({...state, currentMatchId :  state.currentMatchId + 1}));    
+      if (this.state.currentMatchId < this.props.matches.length -1) {
+        this.setState({currentMatchId :  this.state.currentMatchId + 1}, () => {if (this.props.matches[this.state.currentMatchId].docData.redScore == this.props.matches[this.state.currentMatchId].docData.blueScore) {
+          this.setState(state => ({...state, winner :  "TIE"}));    
         }
+        else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) > (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+          this.setState(state => ({...state, winner :  "RED"}));    
+        }
+        else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) < (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+          this.setState(state => ({...state, winner :  "BLUE"}));    
+        } 
+      });
+      }
       }
 
     renderCard() {
       const {currentMatchId} = this.state;
       const {matches} = this.props;
-      console.log(matches);
-        return (
+      
+      return (
         <Block flex={0.88} style={{}}>
         <Block flex={1} row center style={{justifyContent:'space-between',paddingBottom:10,marginTop:-20,}}>
           <TouchableOpacity activeOpacity={0.8} onPress={this.displayPreviousMatch} style={{}}> 
           <MaterialIconsIcon name='navigate-before' size={50} color='white'/>
           </TouchableOpacity>
-          <Text h1 style={{color:'white', fontSize:25, paddingBottom:0,}}>QUALIFIER {matches[currentMatchId].docData.matchNumber}</Text>
+          <Text h1 style={{color:'white', fontSize:25, paddingBottom:0,}}>QUALIFIER {matches[currentMatchId].docData.id}</Text>
           <TouchableOpacity activeOpacity={0.8} onPress={this.displayNextMatch} style={{}}> 
           <MaterialIconsIcon name='navigate-next' size={50} color='white'/>
           </TouchableOpacity>
@@ -104,7 +134,7 @@ export class MatchDetails extends React.Component<Props, OwnState> {
         <Block flex={2.5} center style={{marginTop:0,}}>
           <Block card shadow color="white" style={styles.headerChart}>
           <Block>
-          <Text h1 style={{color:'dimgray', fontSize:40,}}>BLUE</Text>
+        <Text h1 style={{color:'dimgray', fontSize:40,}}>{this.state.winner}</Text>
         <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{matches[currentMatchId].docData.redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{matches[currentMatchId].docData.blueScore}</Text></Text>
           </Block>
         </Block>
