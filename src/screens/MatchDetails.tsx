@@ -42,16 +42,13 @@ export class MatchDetails extends React.Component<Props, OwnState> {
         user: mocks.user,
         chart: mocks.chart,
       };
-      constructor (props: Props) {
-        super(props)
-        this.state = {
+        state = {
           eventId: this.props.navigation.state.params?.eventId || 0,
           currentMatchId: this.props.navigation.state.params?.currentMatchId || 0,
           winner:"BLUE",
         }
 
-    }
-    componentDidMount() {
+    updateWinner() {
       if (this.props.matches[this.state.currentMatchId].docData.redScore == this.props.matches[this.state.currentMatchId].docData.blueScore) {
         this.setState(state => ({...state, winner :  "TIE"}));    
       }
@@ -61,6 +58,10 @@ export class MatchDetails extends React.Component<Props, OwnState> {
       else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) < (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
         this.setState(state => ({...state, winner :  "BLUE"}));    
       } 
+    }
+
+    componentDidMount() {
+      this.updateWinner();
     }     
     
       renderHeader() {
@@ -69,7 +70,7 @@ export class MatchDetails extends React.Component<Props, OwnState> {
           <Block flex={0.12} column style={{paddingHorizontal: 15}}>
               <Block flex={false} row style={{paddingVertical: 15}}>
               <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={styles.back}> 
-            <IoniconsIcon name="ios-arrow-round-back" size={45} color="white"/>            
+            <IoniconsIcon name="ios-arrow-round-back" size={45} color={theme.colors.white}/>            
           </TouchableOpacity>
               <Block center>
               <Text h3 white style={{fontSize:19, marginRight: -(100 + 10 + 30 - 50 - 10), marginTop:3,}}>
@@ -88,30 +89,12 @@ export class MatchDetails extends React.Component<Props, OwnState> {
 
     displayPreviousMatch = () => {
       if (this.state.currentMatchId >= 1) {
-      this.setState({currentMatchId :  this.state.currentMatchId - 1}, () => {if (this.props.matches[this.state.currentMatchId].docData.redScore == this.props.matches[this.state.currentMatchId].docData.blueScore) {
-        this.setState(state => ({...state, winner :  "TIE"}));    
-      }
-      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) > (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
-        this.setState(state => ({...state, winner :  "RED"}));    
-      }
-      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) < (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
-        this.setState(state => ({...state, winner :  "BLUE"}));    
-      } 
-    }); 
+      this.setState({currentMatchId :  this.state.currentMatchId - 1}, () => {this.updateWinner()}); 
     }}
     
       displayNextMatch = () => {
       if (this.state.currentMatchId < this.props.matches.length -1) {
-        this.setState({currentMatchId :  this.state.currentMatchId + 1}, () => {if (this.props.matches[this.state.currentMatchId].docData.redScore == this.props.matches[this.state.currentMatchId].docData.blueScore) {
-          this.setState(state => ({...state, winner :  "TIE"}));    
-        }
-        else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) > (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
-          this.setState(state => ({...state, winner :  "RED"}));    
-        }
-        else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) < (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
-          this.setState(state => ({...state, winner :  "BLUE"}));    
-        } 
-      });
+        this.setState({currentMatchId :  this.state.currentMatchId + 1}, () => {this.updateWinner()});
       }
       }
 
@@ -123,33 +106,33 @@ export class MatchDetails extends React.Component<Props, OwnState> {
         <Block flex={0.88} style={{}}>
         <Block flex={1} row center style={{justifyContent:'space-between',paddingBottom:10,marginTop:-20,}}>
           <TouchableOpacity activeOpacity={0.8} onPress={this.displayPreviousMatch} style={{}}> 
-          <MaterialIconsIcon name='navigate-before' size={50} color='white'/>
+          <MaterialIconsIcon name='navigate-before' size={50} color={theme.colors.white}/>
           </TouchableOpacity>
-          <Text h1 style={{color:'white', fontSize:25, paddingBottom:0,}}>QUALIFIER {matches[currentMatchId].docData.id}</Text>
+          <Text h1 style={{color:theme.colors.white, fontSize:25, paddingBottom:0,}}>QUALIFIER {matches[currentMatchId].docData.id}</Text>
           <TouchableOpacity activeOpacity={0.8} onPress={this.displayNextMatch} style={{}}> 
-          <MaterialIconsIcon name='navigate-next' size={50} color='white'/>
+          <MaterialIconsIcon name='navigate-next' size={50} color={theme.colors.white}/>
           </TouchableOpacity>
         </Block>
 
         <Block flex={2.5} center style={{marginTop:0,}}>
-          <Block card shadow color="white" style={styles.headerChart}>
+          <Block card shadow color={theme.colors.white} style={styles.headerChart}>
           <Block>
         <Text h1 style={{color:'dimgray', fontSize:40,}}>{this.state.winner}</Text>
-        <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{matches[currentMatchId].docData.redScore} <Text style={{color:'dodgerblue', fontSize:50,}}>{matches[currentMatchId].docData.blueScore}</Text></Text>
+        <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{matches[currentMatchId].docData.redScore} <Text style={{color:theme.colors.blue, fontSize:50,}}>{matches[currentMatchId].docData.blueScore}</Text></Text>
           </Block>
         </Block>
         </Block>
 
           <Block flex={5} stretch color="gray2" style={{marginTop:-100,paddingTop:100,}}>
           
-            <Block style={{margin: 30, padding:20, marginBottom:0,paddingBottom:100,}} card shadow color="white">
+            <Block style={{margin: 30, padding:20, marginBottom:0,paddingBottom:100,}} card shadow color={theme.colors.white}>
             <Text h1 style={{color:theme.colors.primary, fontSize:20,paddingBottom:5,}}>RED ALLIANCE</Text>
             <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:35,}}>{matches[currentMatchId].docData.redTeamTop}  {matches[currentMatchId].docData.redTeamBottom}</Text>
             </Block>
             
-            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}} card shadow color="white">
-            <Text h1 style={{color:'dodgerblue', fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
-            <Text h2 style={{color:'dodgerblue', marginTop:0, fontSize:35,}}>{matches[currentMatchId].docData.blueTeamTop}  {matches[currentMatchId].docData.blueTeamBottom}</Text>
+            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}} card shadow color={theme.colors.white}>
+            <Text h1 style={{color:theme.colors.blue, fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
+            <Text h2 style={{color:theme.colors.blue, marginTop:0, fontSize:35,}}>{matches[currentMatchId].docData.blueTeamTop}  {matches[currentMatchId].docData.blueTeamBottom}</Text>
             </Block>
             
             <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}}>

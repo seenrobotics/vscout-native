@@ -13,7 +13,6 @@ import {types, actions} from '../store';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {connect} from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
@@ -82,7 +81,7 @@ export function MatchesTabView(props :  tabPropTypes) {
       style={{flex:1}}
       initialLayout={initialLayout}
       lazy={true}
-      renderTabBar={props => <TabBar {...{...props, renderIcon : scene => <FontAwesome5Icon name={`${scene.route.icon}`} size={22} color={theme.colors.white} />, renderLabel : () => null}}/>}
+      renderTabBar={props => <TabBar style={{backgroundColor:theme.colors.primary}} indicatorStyle={{height:2, backgroundColor:theme.colors.white,}} {...{...props, renderIcon : scene => <FontAwesome5Icon name={`${scene.route.icon}`} size={22} color={theme.colors.white} />, renderLabel : () => null} } />}
     />
     </Block>
     
