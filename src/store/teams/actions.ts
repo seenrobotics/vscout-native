@@ -8,7 +8,7 @@ export const getTeams : ActionCreator<
 > = () => {
   return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<TeamActionTypes> => {
 
-    const teams = await database.FetchLocalDB<TeamData>(DatabaseTypes.Collections.team);
+    const teams = await database().FetchLocalDB<TeamData>(DatabaseTypes.Collections.team);
     return dispatch({
       type : GET_TEAMS,
       teams
@@ -21,11 +21,11 @@ export const addTeams = ({teams} : {teams : Array<TeamData>}) :  ThunkAction<Tea
   dispatch: Dispatch<TeamActionTypes>, getState : () => TeamsState
 ): TeamActionTypes => {
 
-  if(!database)
+  if(!database())
   {
     console.log("Database Undefined") 
   } else {
-    database.AddData(teams, DatabaseTypes.Collections.team)
+    database().AddData(teams, DatabaseTypes.Collections.team)
   }
   return dispatch({
     type: ADD_TEAMS,

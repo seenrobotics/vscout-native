@@ -1,6 +1,6 @@
-import {default_config} from '../envars'
+import {config_database} from '../envars'
 
-export {default_config} from '../envars'
+export {config_database as default_config} from '../envars'
 
 export interface config 
 {
@@ -13,11 +13,11 @@ export interface config
 export const configToURL = (config : config) => 
 {
     const {IP, username, password, db} = config;
-    return `http://${username}:${password}@${IP}:5984/${db}`;
+    return `http://${username}:${password}@${IP}:${config_database.ports.db}/${db}`;
 }
 
 export const databaseConfig = (db : string) => 
 {
-    return {...default_config, db};
+    return {...config_database, db};
 }
 export const nameIndex = {UPDATED_AT: 'index-updated_at', TYPE_UPDATED_AT : 'type-update_at'}

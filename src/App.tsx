@@ -12,7 +12,7 @@ import {Platform, StatusBar, StyleSheet, Text, View, SafeAreaView} from 'react-n
 import {Provider} from 'react-redux';
 import {store} from './store';
 
-import AppNavigator from './navigation/AppNavigator';
+import AppStack from './navigation/AppStack';
 
 const App: () => React.ReactNode = () => {
   return (
@@ -20,7 +20,7 @@ const App: () => React.ReactNode = () => {
       <Provider store={store}>
         <SafeAreaView style={{flex:1}}>
           <View style={styles.container}>
-            <AppNavigator />
+            <AppStack />
           </View>
         </SafeAreaView>
       </Provider>

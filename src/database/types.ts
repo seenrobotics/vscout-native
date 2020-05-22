@@ -14,7 +14,7 @@ export interface DocumentBase<T extends DocumentData> {
     docData : T;
     _id : string;
     updated_at : number;
-    type : Collection;   
+    type : Collection;
 }
 
 export type Document<T extends DocumentData> = PouchDB.Core.ExistingDocument<DocumentBase<T>>;
