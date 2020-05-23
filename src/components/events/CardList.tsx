@@ -1,8 +1,9 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import {Text, Block, Card} from '../index';
+import {Text, Block} from '../index';
 import {EventData} from '../../store/events/types';
 import Utils from '../../utils';
+import Card from './Card';
 
 const CardList = (props: any) => {
   const {events, type} = props;

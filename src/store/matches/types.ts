@@ -18,6 +18,7 @@ export interface MatchData extends Types.DocumentData {
     time : string;
     matchNumber : number;
     completed : boolean;
+    id:number;
 }
 
 export type MatchDoc = Types.DocumentBase<MatchData>;

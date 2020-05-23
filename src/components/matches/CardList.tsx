@@ -1,14 +1,22 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import {Text, Block, Card} from '../index';
+import {Text, Block} from '../index';
 import {MatchData, MatchDoc} from '../../store/matches/types'
 import Utils from '../../utils';
 import MatchCard from './MatchCard'
+import {NavigationRoute, NavigationParams} from 'react-navigation'
+import {NavigationStackProp} from 'react-navigation-stack';
 
-const CardList : (props : any) => React.ReactElement = (props: any) => {
-  console.log(' CardList props', {props})
+export interface CardListProps {
+  matches : Array<MatchDoc>;
+  eventId : number;
+  type : string;
+  navigation : NavigationStackProp<NavigationRoute<NavigationParams>>,
+}
+const CardList : (props : CardListProps) => React.ReactElement = (props: CardListProps) => {
+  console.log(props)
   const {matches, type} = props;
-  const cardRenders = matches;
+  const cardRenders : Array<MatchDoc> = matches;
   return (
     <Block flex={1} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
@@ -19,19 +27,19 @@ const CardList : (props : any) => React.ReactElement = (props: any) => {
           cardRenders
             .sort(
               (
-                cardPropsA: React.ComponentProps<typeof Card>,
-                cardPropsB: React.ComponentProps<typeof Card>,
+                cardPropsA: MatchDoc,
+                cardPropsB: MatchDoc,
               ) => {
-                return cardPropsB._id > cardPropsA._id;
+                return cardPropsB._id > cardPropsA._id ? 1 : 0;
               },
             )
-            .map((cardProps: MatchDoc) => (
+            .map((matchDoc: MatchDoc, index : number) => (
               <TouchableOpacity
                 activeOpacity={0.8}
-                key={`${type}-${cardProps._id}`}
-                onPress={() => props.navigation.navigate('MatchDetails', cardProps)}
+                key={`${type}-${matchDoc._id}`}
+                onPress={() => props.navigation.navigate('MatchDetails', { currentMatchId:index, eventId:matchDoc.docData.eventId})}
                 >
-                <MatchCard {...{match : cardProps}} />
+                <MatchCard {...{match : matchDoc}} />
               </TouchableOpacity>
             ))
         ) : (

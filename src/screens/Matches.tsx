@@ -5,15 +5,14 @@ import {Image, SafeAreaView, StyleSheet, Button, View, Dimensions, ScrollView } 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
-import {Block, Text, Header, Card} from '../components';
-import {CardList} from '../components/matches';
+import {Block, Text, Header} from '../components';
+import {default as CardList, CardListProps} from '../components/matches/CardList';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {connect} from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
@@ -23,10 +22,10 @@ interface InfoPageProps {
   event : types.events.EventDoc;
 }
 interface MatchesPageProps {
-
+  
 }
 
-type tabPropTypes = InfoPageProps & MatchesPageProps;
+type tabPropTypes = InfoPageProps & MatchesPageProps & CardListProps;
 
 const InfoField = (title : string, info : string | any) => {
   return <Block flex={1} style={{padding:5, marginVertical:5, flexDirection:'row', flexWrap:'wrap'}}>
@@ -82,7 +81,7 @@ export function MatchesTabView(props :  tabPropTypes) {
       style={{flex:1}}
       initialLayout={initialLayout}
       lazy={true}
-      renderTabBar={props => <TabBar {...{...props, renderIcon : scene => <FontAwesome5Icon name={`${scene.route.icon}`} size={22} color={theme.colors.white} />, renderLabel : () => null}}/>}
+      renderTabBar={props => <TabBar style={{backgroundColor:theme.colors.primary}} indicatorStyle={{height:2, backgroundColor:theme.colors.white,}} {...{...props, renderIcon : scene => <FontAwesome5Icon name={`${scene.route.icon}`} size={22} color={theme.colors.white} />, renderLabel : () => null} } />}
     />
     </Block>
     
@@ -105,6 +104,7 @@ interface DispatchProps {
 interface StateProps {
   matches: Array<types.matches.MatchDoc>;
   event : types.events.EventDoc;
+  eventId : number;
   user ?: types.user.User;
 }
 type Props = OwnProps & DispatchProps & StateProps;
@@ -183,6 +183,7 @@ const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
     match => match.docData.eventId === ownProps.navigation.state.params?.eventId,
     
   ),
+  eventId : ownProps.navigation.state.params?.eventId,
   user : state.user.user,
 });
 

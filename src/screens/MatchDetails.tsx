@@ -4,68 +4,72 @@ import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Block, Text} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
-import {Card} from '../components/index';
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {NavigationStackProp} from 'react-navigation-stack';
+import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
+import {connect} from 'react-redux';
+import {MatchDoc} from '../store/matches/types'
+import { NavigationActions, NavigationRoute } from 'react-navigation';
+import {types, actions} from '../store';
 
 
-import {connect} from 'react-redux'; 
-import { NavigationActions } from 'react-navigation';
-
+interface NavigationParams {
+  matches : Array<MatchDoc>;
+  currentMatchId : number;
+}
 interface OwnProps {
     type: string;
     user: any;
     chart: Array<number>;
-    navigation:NavigationStackProp;
-  }
+    navigation:NavigationStackProp<NavigationRoute<NavigationParams>>;
+}
+interface StateProps {
+    matches: Array<MatchDoc>;
+}
+interface OwnState{
+  currentMatchId : number;
+  eventId : number;
+  winner: string;
+}
 
-  type Props = OwnProps;
-
-export default class MatchDetails extends React.Component<Props, {}> {
+type Props = OwnProps & StateProps;
+export class MatchDetails extends React.Component<Props, OwnState> {
     public static defaultProps = {
         user: mocks.user,
         chart: mocks.chart,
       };
+        state = {
+          eventId: this.props.navigation.state.params?.eventId || 0,
+          currentMatchId: this.props.navigation.state.params?.currentMatchId || 0,
+          winner:"BLUE",
+        }
 
-    renderChart() {
-        const {chart} = this.props;
-        return (
-          <LineChart
-            yMin={0}
-            yMax={10}
-            data={chart}
-            style={{flex: 2}}
-            curve={shape.curveMonotoneX}
-            svg={{
-              stroke: theme.colors.primary,
-              strokeWidth: 1.75,
-            }}
-            contentInset={{left: theme.sizes.base, right: theme.sizes.base}}>
-            <Line
-              key="zero-axis"
-              x1="0%"
-              x2="100%"
-              y1="50%"
-              y2="50%"
-              stroke={theme.colors.gray}
-              strokeDasharray={[2, 10]}
-              strokeWidth={3}
-            />
-          </LineChart>
-        );
+    updateWinner() {
+      if (this.props.matches[this.state.currentMatchId].docData.redScore == this.props.matches[this.state.currentMatchId].docData.blueScore) {
+        this.setState(state => ({...state, winner :  "TIE"}));    
       }
+      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) > (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+        this.setState(state => ({...state, winner :  "RED"}));    
+      }
+      else if ((this.props.matches[this.state.currentMatchId].docData.redScore || 0) < (this.props.matches[this.state.currentMatchId].docData.blueScore || 0)) {
+        this.setState(state => ({...state, winner :  "BLUE"}));    
+      } 
+    }
+
+    componentDidMount() {
+      this.updateWinner();
+    }     
     
       renderHeader() {
         const {user} = this.props;
-    
         return (
-          <Block flex={0.42} column style={{paddingHorizontal: 15}}>
+          <Block flex={0.12} column style={{paddingHorizontal: 15}}>
               <Block flex={false} row style={{paddingVertical: 15}}>
               <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={styles.back}> 
-            <IoniconsIcon name="ios-arrow-round-back" size={45} color="white"/>            
+            <IoniconsIcon name="ios-arrow-round-back" size={45} color={theme.colors.white}/>            
           </TouchableOpacity>
               <Block center>
               <Text h3 white style={{fontSize:19, marginRight: -(100 + 10 + 30 - 50 - 10), marginTop:3,}}>
@@ -78,40 +82,63 @@ export default class MatchDetails extends React.Component<Props, {}> {
               </View>
               <Image style={styles.avatar} source={user.avatar} />
             </Block>
-            <Block card shadow color="white" style={styles.headerChart}>
-              <Block row space="between" style={{paddingHorizontal: 30}}>
-                <Block flex={false} row center>
-                  <Text h1>291 </Text>
-                </Block>
-                <Block flex={false} row center>
-                  <Text h1>481 </Text>
-                </Block>
-              </Block>
-              <Block flex={0.5} row space="between" style={{paddingHorizontal: 30}}>
-                <Text caption light>Matches</Text>
-                <Text caption light style={{marginRight:15}}>Days</Text>
-              </Block>
-              <Block flex={1}>{this.renderChart()}</Block>
-            </Block>
           </Block>
         );
       }
 
+    displayPreviousMatch = () => {
+      if (this.state.currentMatchId >= 1) {
+      this.setState({currentMatchId :  this.state.currentMatchId - 1}, () => {this.updateWinner()}); 
+    }}
+    
+      displayNextMatch = () => {
+      if (this.state.currentMatchId < this.props.matches.length -1) {
+        this.setState({currentMatchId :  this.state.currentMatchId + 1}, () => {this.updateWinner()});
+      }
+      }
+
     renderCard() {
-        const id = this.props.navigation.getParam('id');
-        const leftHeader = this.props.navigation.getParam('leftHeader'); 
-        const rightHeader = this.props.navigation.getParam('rightHeader'); 
-        const leftBody = this.props.navigation.getParam('leftBody'); 
-        const rightBody = this.props.navigation.getParam('rightBody'); 
-        
-        return (
-        <Block center style={{marginTop:20,}}>
-            <Text h1 style={{color:'white',}}>Match Details</Text>
-            <Text h2 style={{color:'white', marginTop:10,}}>{leftHeader}</Text>
-            <Text h2 style={{color:'white',}}>{leftBody}</Text>
-            <Text h2 style={{color:'white',}}>{rightHeader}</Text>
-            <Text h2 style={{color:'white',}}>{rightBody}</Text>
+      const {currentMatchId} = this.state;
+      const {matches} = this.props;
+      
+      return (
+        <Block flex={0.88} style={{}}>
+        <Block flex={1} row center style={{justifyContent:'space-between',paddingBottom:10,marginTop:-20,}}>
+          <TouchableOpacity activeOpacity={0.8} onPress={this.displayPreviousMatch} style={{}}> 
+          <MaterialIconsIcon name='navigate-before' size={50} color={theme.colors.white}/>
+          </TouchableOpacity>
+          <Text h1 style={{color:theme.colors.white, fontSize:25, paddingBottom:0,}}>QUALIFIER {matches[currentMatchId].docData.id}</Text>
+          <TouchableOpacity activeOpacity={0.8} onPress={this.displayNextMatch} style={{}}> 
+          <MaterialIconsIcon name='navigate-next' size={50} color={theme.colors.white}/>
+          </TouchableOpacity>
         </Block>
+
+        <Block flex={2.5} center style={{marginTop:0,}}>
+          <Block card shadow color={theme.colors.white} style={styles.headerChart}>
+          <Block>
+        <Text h1 style={{color:'dimgray', fontSize:40,}}>{this.state.winner}</Text>
+        <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>{matches[currentMatchId].docData.redScore} <Text style={{color:theme.colors.blue, fontSize:50,}}>{matches[currentMatchId].docData.blueScore}</Text></Text>
+          </Block>
+        </Block>
+        </Block>
+
+          <Block flex={5} stretch color="gray2" style={{marginTop:-100,paddingTop:100,}}>
+          
+            <Block style={{margin: 30, padding:20, marginBottom:0,paddingBottom:100,}} card shadow color={theme.colors.white}>
+            <Text h1 style={{color:theme.colors.primary, fontSize:20,paddingBottom:5,}}>RED ALLIANCE</Text>
+            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:35,}}>{matches[currentMatchId].docData.redTeamTop}  {matches[currentMatchId].docData.redTeamBottom}</Text>
+            </Block>
+            
+            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}} card shadow color={theme.colors.white}>
+            <Text h1 style={{color:theme.colors.blue, fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
+            <Text h2 style={{color:theme.colors.blue, marginTop:0, fontSize:35,}}>{matches[currentMatchId].docData.blueTeamTop}  {matches[currentMatchId].docData.blueTeamBottom}</Text>
+            </Block>
+            
+            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}}>
+            </Block>
+        </Block>
+        </Block>
+        
         )
     }
       
@@ -125,9 +152,18 @@ export default class MatchDetails extends React.Component<Props, {}> {
       }
 }
 
+
+const mapStateToProps = (state: types.RootState, ownProps: Props) => {
+return {
+  matches: state.matches.matches.filter(
+      match => match.docData.eventId === ownProps.navigation.state.params?.eventId,  ),}
+};
+
+export default connect(mapStateToProps)(MatchDetails);
+
 const styles = StyleSheet.create({
     safe: {flex: 1, backgroundColor: theme.colors.primary},
-    headerChart: {paddingTop: 30, paddingBottom: 30, zIndex: 1},
+    headerChart: {padding: 30, marginRight:30, marginLeft:30, zIndex: 1, flex:1, flexDirection: 'row',},
   avatar: {
     width: 30,
     height: 30,
