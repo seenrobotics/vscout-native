@@ -1,33 +1,9 @@
 import { Types } from '../../database'
+import {TeamData as Model} from '../../models'
 
+export type TeamData = Model;
 export const GET_TEAMS = 'GET_TEAMS';
 export const ADD_TEAMS = 'ADD_TEAMS';
-
-export interface TeamData {
-    DOCUMENT_TYPE : typeof Types.Collections.team;
-
-    teamOrg: number;
-    organizationName : string;
-    teamLetter : string;
-    region : string;
-
-    tournamentStats : {
-        tournamentsAttended : number;
-        matchWins : number;
-        matchLosses : number;
-        matchTies : number;
-        matchWinPercentage : number;
-        averagePlacement : number;
-        totalAwards : number;
-        averagePPG : number;
-        averagePPGAgainst: number;
-    }
-    
-    skillsStats : {
-        bestDriverScore : number;
-        bestProgrammingScore: number;
-    }
-}
 
 export type TeamDoc = Types.DocumentBase<TeamData>
 
