@@ -7,13 +7,11 @@ export const getTeams : ActionCreator<
   ThunkAction<Promise<TeamActionTypes>, {}, void, AnyAction>
 > = () => {
   return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<TeamActionTypes> => {
-
     const teams = await database().FetchLocalDB<TeamData>(DatabaseTypes.Collections.team);
     return dispatch({
       type : GET_TEAMS,
       teams
     })
-
   }
 }
 
