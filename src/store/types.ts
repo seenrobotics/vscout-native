@@ -3,9 +3,9 @@ import {rootReducer} from './reducers'
 import {types as events} from './events';
 import {types as matches} from './matches';
 import {types as user} from './user'
-
+import {types as teams} from './teams'
 export type RootState = ReturnType<typeof rootReducer>;
 
 export {
-    events, matches, user
+    events, matches, user, teams
 }
