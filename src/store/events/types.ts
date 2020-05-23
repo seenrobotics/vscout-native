@@ -1,24 +1,10 @@
 import { Types } from '../../database'
+import {EventData as Model} from '../../models'
+
+export type EventData = Model;
 
 export const GET_EVENTS = 'GET_EVENTS';
 export const ADD_EVENTS = 'ADD_EVENTS';
-
-export interface EventData {
-    DOCUMENT_TYPE : typeof Types.Collections.event;
-
-    eventName: string;
-    eventType: string;
-    eventDate: string;
-    venue: string;
-    address : string;
-    city : string;
-    region : string;
-    country : string;
-    teamsRegistered: number;
-    numberOfMatches: number;
-    qualificationSpots ?: number;
-    qualifiesFor : string;
-}
 
 export type EventDoc = Types.DocumentBase<EventData>
 
