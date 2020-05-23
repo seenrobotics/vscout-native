@@ -5,7 +5,7 @@ import {Image, SafeAreaView, StyleSheet, Button, View, Dimensions, ScrollView } 
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
-import {Block, Text, Header, Card} from '../components';
+import {Block, Text, Header} from '../components';
 import {CardList} from '../components/matches';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
