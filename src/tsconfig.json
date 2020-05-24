@@ -10,10 +10,6 @@
         "noEmit": true,
         "strict": true,
         "target": "esnext",
-        
-        "path": [
-            "./types/*"
-        ]
     },
     "exclude": [
         "node_modules",
