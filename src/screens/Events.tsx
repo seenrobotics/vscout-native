@@ -13,7 +13,7 @@ import * as mocks from '../mocks';
 import {types, actions} from '../store';
 import {connect} from 'react-redux'; 
 const {addEvents, getEvents } = actions.events;
-const { getUser, authUser } = actions.user;
+const { getUser} = actions.user;
 interface OwnProps {
   type: string;
   chart: Array<number>;
@@ -122,7 +122,7 @@ const mapStateToProps = (state: types.RootState) => ({
   user : state.user.user,
 });
 
-export default connect(mapStateToProps, { getEvents , addEvents, getUser : authUser })(Events);
+export default connect(mapStateToProps, { getEvents , addEvents, getUser })(Events);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
