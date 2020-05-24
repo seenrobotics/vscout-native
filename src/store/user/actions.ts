@@ -1,4 +1,4 @@
-import {User,  UserActionTypes, GET_USER, AUTH_USER, UserState, Database_Credentials, Stored, User_Credentials} from './types'
+import {User,  UserActionTypes, GET_USER, AUTH_USER, INVALID_CACHED_CREDENTIALS, UserState, Database_Credentials, Stored, User_Credentials} from './types'
 import { Dispatch, AnyAction,  ActionCreator} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import { Types as DatabaseTypes, database, Database} from '../../database';
@@ -70,53 +70,111 @@ const auth_database = async (creds : Database_Credentials) => {
   return confirm_session
 }
 
-export const authUser : ActionCreator<
+export const authUserFresh : ActionCreator<
   ThunkAction<Promise<UserActionTypes>, {}, void, AnyAction>
 > = () => {
-  return authUserFn;
+  return authUserFreshFn;
 }
 
-const authUserFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<UserActionTypes> => {
+export const authUserCached : ActionCreator<
+  ThunkAction<Promise<UserActionTypes>, {}, void, AnyAction>
+> = () => {
+  return authUserCachedFn;
+}
+
+const clearCachedCredentials = async () => await Promise.all([Keychain.resetGenericPassword({service : "discord"}), Keychain.resetGenericPassword({service : "discord"})]);
+
+const getCachedCredentials = async () => {
+  try {
+  const discordCredentials = await Keychain.getGenericPassword({service : "discord"});
+  const databaseCredentials = await Keychain.getGenericPassword({service : "database"});
+
+  if(databaseCredentials && discordCredentials) {
+    const discord : Stored<AuthorizeResult> = JSON.parse(discordCredentials.password);
+    const database : Stored<Database_Credentials> = JSON.parse(databaseCredentials.password);
+    return {discord, database};
+  }
+
+  await clearCachedCredentials();
+  return false;
+}
+  catch (error)
+  {
+    console.log({trace: "Fetch Cached Credentials Error", error });
+    throw error;
+  }
+}
+const setCachedCredentials = async ({database, discord} : {database : Stored<Database_Credentials>, discord : Stored<AuthorizeResult>}) => {
+  return await Promise.all([
+    Keychain.setGenericPassword("discord", JSON.stringify({...discord, cached : true}), {service : "discord"}),
+    Keychain.setGenericPassword("database", JSON.stringify({...database, cached : true}), {service : "database"})
+  ]);
+}
+const connect_database = async (creds : Database_Credentials) => {
+  try {
+    const auth = await auth_database(creds);
+    const database_config = {...config_database, username : creds.token, password : creds.password};
+    await Database.initialize(database_config).Sync();
+    return "OK_STATUS";
+  } catch (error)
+  {
+    return {status : error.status, error : error}
+  }
+}
+
+const authUserCachedFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<UserActionTypes> => {
+    const credentials = await getCachedCredentials();
+    // If cached credentials are corrupted / don't exist.
+    if(!credentials) return dispatch({type : INVALID_CACHED_CREDENTIALS});
+    
+    try{
+      const connect = await connect_database(credentials.database);
+      if(connect == "OK_STATUS")
+      {
+        console.log("Log in successful")
+        return dispatch({
+          type : AUTH_USER,
+          user_credentials : credentials.discord,
+          database_credentials : credentials.database
+        });
+      }
+      // Handle server not available
+      await clearCachedCredentials();
+      return dispatch({type : INVALID_CACHED_CREDENTIALS});
+    } catch (error)
+    {
+      console.log({trace: "Fetch Cached Credentials Error, Authorize Database Invalid", error });
+      throw error;
+    }
+}
+
+const authUserFreshFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<UserActionTypes> => {
   // Retrieve credentials
   try {
-    const storedDiscordCredentials = await Keychain.getGenericPassword({service : "discord"});
-    const storedDBCredentials = await Keychain.getGenericPassword({service : "database"});
-    const discord_credentials : Stored<AuthorizeResult> = storedDiscordCredentials ? JSON.parse(storedDiscordCredentials.password) : await login_discord(); 
-    const database_credentials : Stored<Database_Credentials> = storedDBCredentials ? JSON.parse(storedDBCredentials.password) : await login_database(discord_credentials);
-    const database_config = {...config_database, username : database_credentials.token, password : database_credentials.password};
-    console.log({database_credentials, discord_credentials});
-    try{
-      await auth_database(database_credentials);
-    }
-    catch(error)
+    const discord_credentials : Stored<AuthorizeResult> = await login_discord(); 
+    const database_credentials : Stored<Database_Credentials> = await login_database(discord_credentials);
+    const connect = await connect_database(database_credentials);
+    if(connect == "OK_STATUS")
     {
-      
-      console.log("database token error")
-      if(database_credentials.cached)
-      {
-        await Keychain.resetGenericPassword({service: "discord"})
-        await Keychain.resetGenericPassword({service: "database"});
-        return authUserFn(dispatch)
-      }
-      throw(error);
+      await setCachedCredentials({
+        discord : discord_credentials,
+        database : database_credentials,
+      });
+      console.log("Log in successful")
+      return dispatch({
+        type : AUTH_USER,
+        user_credentials : discord_credentials,
+        database_credentials
+      })
     }
-    const database_sync = Database.initialize(database_config).Sync();
-
-    await Keychain.setGenericPassword("discord", JSON.stringify({...discord_credentials, cached : true}), {service : "discord"});
-    await Keychain.setGenericPassword("database", JSON.stringify({...database_credentials, cached : true}), {service : "database"});
-    console.log("Log in successful")
+    // Severe error or Server not up
     return dispatch({
-      type : AUTH_USER,
-      user_credentials : discord_credentials,
-      database_credentials
+      type : INVALID_CACHED_CREDENTIALS,
     })
   }
   catch(error)
   {
-    await Keychain.resetGenericPassword({service: "discord"})
-    await Keychain.resetGenericPassword({service: "database"});
     console.log(error)
     throw(error);
   }
-    
 }
