@@ -11,7 +11,7 @@ import {NavigationStackProp} from 'react-navigation-stack';
 
 import {connect} from 'react-redux'; 
 import { User_Credentials, Database_Credentials } from '../store/user/types';
-const authUser = actions.user.authUser;
+const {authUserFresh, authUserCached} = actions.user;
 
 interface OwnProps {
     user: any;
@@ -19,12 +19,16 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-    authUser: () => any;
+    authUserCached: () => any;
+    authUserFresh: () => any;
+
 }
 
 interface StateProps {
     user_credentials ?: User_Credentials;
-    database_credentials ?: Database_Credentials
+    database_credentials ?: Database_Credentials;
+    signedIn : boolean;
+    auth_attempted : boolean;
 }
 
 type Props = OwnProps & DispatchProps & StateProps;
@@ -38,14 +42,19 @@ class Login extends React.Component<Props, {error_text ?: string }> {
   }
   async attemptAuthorize () {
     try {
-      this.props.authUser();
+      this.props.authUserFresh();
     }
     catch (error)
     {
       this.setState({...this.state, error_text:  `LOGIN FAILED : ${error.message}`});
     }
   }
-
+  async componentDidMount() {
+    if(!this.props.auth_attempted)
+    {
+      await this.props.authUserCached();
+    }
+  }
   renderHeader() {
     const {user} = this.props;
     const {error_text} = this.state;
@@ -80,22 +89,27 @@ class Login extends React.Component<Props, {error_text ?: string }> {
       </Block>
     );
   }
+  renderLoading() {
+    return (
+    <View style={[styles.container, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
+    )
+  }
   render() 
   {
-    return (
+    return  (
       <SafeAreaView style={styles.safe}>
-            {this.renderHeader()}
+            {this.props.auth_attempted ? this.renderHeader() : this.renderLoading()}
       </SafeAreaView>
     );
   }
 }
 const mapStateToProps = (state: types.RootState) => ({
-  user_credentials : state.user.user_credentials,
-  database_credentials : state.user.database_credentials,
-  user : state.user.user,
+  ...state.user
 });
   
-export default connect(mapStateToProps, { authUser })(Login);
+export default connect(mapStateToProps, { authUserFresh, authUserCached })(Login);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary,  },
@@ -116,5 +130,14 @@ const styles = StyleSheet.create({
     borderRadius: 30 / 2,
     marginRight: 5,
   },
+  container: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
+  }
 });
   
