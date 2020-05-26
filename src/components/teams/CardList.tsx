@@ -6,19 +6,18 @@ import Utils from '../../utils';
 import Card from './Card';
 
 const CardList = (props: any) => {
-  const {events, type} = props;
-  const cardRenders = events.map(({_id, docData} : {_id : string, docData: EventData}) => ({
-    _id,
-    leftHeader: docData.eventDate,
-    leftBody: docData.qualificationSpots ||"0 Quals",
-    rightHeader: docData.eventName,
-    rightBody: `${docData.address} ${docData.city}, ${docData.region}`,
-    rightContent: [`${docData.numberOfMatches} Matches`, `${docData.teamsRegistered} Teams`],
+  const {events, type, teams} = props;
+  const cardRenders = teams.map((team) => ({
+    key:team.key,
+    leftBody: team.skillsRanking.toString(),
+    rightHeader: team.teamOrg + team.teamLetter,
+    rightBody: team.location,
+    rightContent:[team.averagePlacement, team.averagePPG, team.totalAwards, team.bestDriverScore + team.bestProgrammingScore],
   }));
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
-        <Text light>Recent {Utils.capitalize(type)}s</Text>
+        <Text light>Recently Scouted Teams</Text>
         <TouchableOpacity activeOpacity={0.8}>
           <Text semibold>View All</Text>
         </TouchableOpacity>
