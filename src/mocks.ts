@@ -76,10 +76,11 @@ const user = {
   avatar: require('./assets/avatar.png'),
 };
 
-const teams = [
-  {
-    teamOrg: 2381,
+const userTeam = {
+    key:1,
+    teamOrg: "2381",
     teamLetter : "Y",
+    teamName: "Kernel Bye",
     location : "Ottawa, Ontario, Canada",
     tournamentsAttended : 5,
     averagePlacement : 10,
@@ -88,10 +89,15 @@ const teams = [
     averagePPGAgainst: 45,
     bestDriverScore : 90,
     bestProgrammingScore: 5,
-  },
+    skillsRanking: 218,
+}
+
+const teams = [
   {
-    teamOrg: 2381,
+    key:1,
+    teamOrg: "2381",
     teamLetter : "W",
+    teamName: "Kernel Bye ω",
     location : "Ottawa, Ontario, Canada",
     tournamentsAttended : 4,
     averagePlacement : 9,
@@ -100,10 +106,13 @@ const teams = [
     averagePPGAgainst: 35,
     bestDriverScore : 130,
     bestProgrammingScore: 5,
+    skillsRanking: 38,
   },
   {
-    teamOrg: 905,
+    key:2,
+    teamOrg: "905",
     teamLetter : "A",
+    teamName: "#RIPWORLDS2020",
     location : "Toronto, Ontario, Canada",
     tournamentsAttended : 6,
     averagePlacement : 6,
@@ -112,7 +121,53 @@ const teams = [
     averagePPGAgainst: 40,
     bestDriverScore : 120,
     bestProgrammingScore:20,
-  }
+    skillsRanking: 28,
+  },
+  {
+    key:3,
+    teamOrg: "5225",
+    teamLetter : "A",
+    teamName: "E-Bots PiLons",
+    location : "Oakville, Ontario, Canada",
+    tournamentsAttended : 7,
+    averagePlacement : 1,
+    totalAwards : 9,
+    averagePPG : 65,
+    averagePPGAgainst: 30,
+    bestDriverScore : 168,
+    bestProgrammingScore: 90,
+    skillsRanking: 2,
+  },
+  {
+    key:4,
+    teamOrg: "1104",
+    teamLetter : "Z",
+    teamName: "Discobots ζ",
+    location : "Brampton, Ontario, Canada",
+    tournamentsAttended : 6,
+    averagePlacement : 6,
+    totalAwards : 5,
+    averagePPG : 60,
+    averagePPGAgainst: 30,
+    bestDriverScore : 90,
+    bestProgrammingScore: 5,
+    skillsRanking: 100,
+  },
+  {
+    key:5,
+    teamOrg: "4862",
+    teamLetter : "B",
+    teamName: "Coltenoids Banana",
+    location : "Ottawa, Ontario, Canada",
+    tournamentsAttended : 6,
+    averagePlacement : 6,
+    totalAwards : 6,
+    averagePPG : 80,
+    averagePPGAgainst: 26,
+    bestDriverScore : 100,
+    bestProgrammingScore: 20,
+    skillsRanking: 87,
+  },
 ]
 
-export {matches, events, chart, user, teams};
+export {matches, events, chart, user, teams, userTeam};

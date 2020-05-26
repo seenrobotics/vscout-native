@@ -21,11 +21,13 @@ export class Teams extends React.Component<Props, {}> {
     public static defaultProps = {
         user: mocks.user,
         events: mocks.events,
+        userTeam: mocks.userTeam,
         teams: mocks.teams,
       };
     
       renderHeader() {
         const {user} = this.props;
+        const {userTeam} = this.props;
         const {teams} = this.props;
         return (
           <Block flex={0.42} column style={{paddingHorizontal: 15}}>
@@ -44,15 +46,15 @@ export class Teams extends React.Component<Props, {}> {
             <Block>
             <Block row card shadow color={theme.colors.accent} style={styles.headerChart}>
                 <Block flex={1}>
-        <Block flex={3} color="" style={{justifyContent: 'center',}}><Text h1 style={{paddingLeft:15, fontSize:50, color:"white",}}>{teams[0].teamOrg}{teams[0].teamLetter}</Text></Block>
-        <Block flex={2} color="" style={{justifyContent: 'flex-start',}}><Text h3 style={{paddingLeft:15, fontSize:15,color:"white",}}>{teams[0].location}</Text></Block>
+        <Block flex={3} color="" style={{justifyContent: 'center',}}><Text h1 style={{paddingLeft:15, fontSize:38, color:"white",}}>{userTeam.teamOrg + userTeam.teamLetter}</Text></Block>
+        <Block flex={2} color="" style={{justifyContent: 'flex-start',}}><Text h3 style={{paddingLeft:15, fontSize:15,color:"white",}}>{userTeam.location}</Text></Block>
                 </Block>
                 <Block flex={1} row>
                   <Block color="" flex={1} style={{alignItems:"center",}}>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center"}}>{teams[0].averagePlacement}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center"}}>{teams[0].averagePPG}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center"}}>{teams[0].totalAwards}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center"}}>{teams[0].bestDriverScore + teams[0].bestProgrammingScore}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.averagePlacement}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.averagePPG}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.totalAwards}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.bestDriverScore + userTeam.bestProgrammingScore}</Text></TouchableHighlight>
                   </Block>
                   <Block color="" flex={3}>
                   <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. Placement</Text>
