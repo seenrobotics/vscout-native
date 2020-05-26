@@ -76,4 +76,43 @@ const user = {
   avatar: require('./assets/avatar.png'),
 };
 
-export {matches, events, chart, user};
+const teams = [
+  {
+    teamOrg: 2381,
+    teamLetter : "Y",
+    location : "Ottawa, Ontario, Canada",
+    tournamentsAttended : 5,
+    averagePlacement : 10,
+    totalAwards : 1,
+    averagePPG : 60,
+    averagePPGAgainst: 45,
+    bestDriverScore : 90,
+    bestProgrammingScore: 5,
+  },
+  {
+    teamOrg: 2381,
+    teamLetter : "W",
+    location : "Ottawa, Ontario, Canada",
+    tournamentsAttended : 4,
+    averagePlacement : 9,
+    totalAwards : 1,
+    averagePPG : 65,
+    averagePPGAgainst: 35,
+    bestDriverScore : 130,
+    bestProgrammingScore: 5,
+  },
+  {
+    teamOrg: 905,
+    teamLetter : "A",
+    location : "Toronto, Ontario, Canada",
+    tournamentsAttended : 6,
+    averagePlacement : 6,
+    totalAwards : 5,
+    averagePPG : 70,
+    averagePPGAgainst: 40,
+    bestDriverScore : 120,
+    bestProgrammingScore:20,
+  }
+]
+
+export {matches, events, chart, user, teams};

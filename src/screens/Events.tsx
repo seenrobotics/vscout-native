@@ -34,6 +34,7 @@ class Events extends React.Component<Props, {}> {
   public static defaultProps = {
     type: 'Event',
     chart: mocks.chart,
+    user: mocks.user,
   };
   componentDidMount() {
     this.props.getEvents();

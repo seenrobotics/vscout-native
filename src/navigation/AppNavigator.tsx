@@ -6,7 +6,7 @@ import * as theme from '../constants/theme';
 import Settings from '../screens/Settings';
 import Login from '../screens/Login';
 import Summary from '../screens/Summary';
-
+import Teams from '../screens/Teams';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
   const routeConfigs = createMaterialTopTabNavigator({
@@ -18,6 +18,12 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
             )
         }
     },
+    Teams: {screen: Teams,
+        navigationOptions: {
+            tabBarIcon: () => (
+                <IoniconsIcon name="md-people" size={30} color={theme.colors.white} style={{marginTop:-3}}/>            
+            )
+        }},
     Scouting: {screen: EventStack,
         navigationOptions: {
             tabBarIcon: () => (
