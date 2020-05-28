@@ -27,11 +27,12 @@ const CardList = (props: any) => {
           cardRenders.map((cardProps: React.ComponentProps<typeof Card>) => (
             <TouchableOpacity
               activeOpacity={0.8}
-              key={`${type}-${cardProps._id}`}
-              onPress={
-                () =>
-                props.navigation.navigate('Matches', {eventId: cardProps._id})
-              }>
+              key={`${type}-${cardProps.key}`}
+              // onPress={
+              //   () =>
+              //   props.navigation.navigate('Matches', {eventId: cardProps._id})
+              // }
+              >
               <Card {...cardProps} />
             </TouchableOpacity>
           ))

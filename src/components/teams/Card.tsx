@@ -3,6 +3,8 @@ import {StyleSheet} from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import {Text, Block} from '../index';
 import * as theme from '../../constants/theme';
+import { Tooltip} from 'react-native-elements';
+
 
 type ComponentFn = () => JSX.Element;
 
@@ -41,10 +43,18 @@ const Card = (props: CardProps)  => {
       </Block>
         <Block>
                   <Block style={{flexDirection:'row', flexWrap:'wrap'}}>
-                  <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[0]}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[1]}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[2]}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[3]}</Text></TouchableHighlight>
+                    <Tooltip backgroundColor="white" overlayColor="rgba(0,0,0,0.15)" skipAndroidStatusBar={true} popover={<Text>Average placement</Text>}>
+                      <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[0]}</Text></TouchableHighlight>
+                    </Tooltip>
+                    <Tooltip backgroundColor="white" overlayColor="rgba(0,0,0,0.15)" skipAndroidStatusBar={true} popover={<Text>Average PPG</Text>}>
+                      <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[1]}</Text></TouchableHighlight>
+                    </Tooltip>
+                    <Tooltip backgroundColor="white" overlayColor="rgba(0,0,0,0.15)" skipAndroidStatusBar={true} popover={<Text>Total Awards</Text>}>
+                      <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[2]}</Text></TouchableHighlight>
+                    </Tooltip>
+                    <Tooltip backgroundColor="white" overlayColor="rgba(0,0,0,0.15)" skipAndroidStatusBar={true} popover={<Text>Best Skills Score</Text>}>
+                      <TouchableHighlight style={{width:30, height:30, borderRadius:30, marginRight:5, marginTop:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:14,}}>{props.rightContent[3]}</Text></TouchableHighlight>
+                    </Tooltip>
                   </Block>
         </Block>
     </Block>
