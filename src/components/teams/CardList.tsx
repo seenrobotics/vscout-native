@@ -4,11 +4,13 @@ import {Text, Block} from '../index';
 import {EventData} from '../../store/events/types';
 import Utils from '../../utils';
 import Card from './Card';
+import { parseSync } from '@babel/core';
 
 const CardList = (props: any) => {
-  const {events, type, teams} = props;
+  const {events, type, teams} = props[0];
+  const search = props[1].toLowerCase();
   const cardRenders = teams.map((team) => ({
-    key:team.key,
+    key:team.teamOrg + team.teamLetter,
     leftBody: team.skillsRanking.toString(),
     rightHeader: team.teamOrg + team.teamLetter,
     rightBody: team.location,
@@ -24,7 +26,8 @@ const CardList = (props: any) => {
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         {cardRenders ? (
-          cardRenders.map((cardProps: React.ComponentProps<typeof Card>) => (
+          cardRenders.filter((team)=> team.key.toLowerCase().includes(search))
+          .map((cardProps: React.ComponentProps<typeof Card>) => (
             <TouchableOpacity
               activeOpacity={0.8}
               key={`${type}-${cardProps.key}`}

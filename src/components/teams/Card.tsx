@@ -9,7 +9,7 @@ import { Tooltip} from 'react-native-elements';
 type ComponentFn = () => JSX.Element;
 
 export interface CardProps {
-  key: number,
+  key: string,
   leftHeader: string | ComponentFn;
   rightHeader: string | ComponentFn;
   leftBody: string | ComponentFn;
