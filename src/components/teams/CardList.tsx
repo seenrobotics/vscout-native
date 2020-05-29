@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import {StyleSheet, TouchableOpacity, ScrollView,} from 'react-native';
 import {Text, Block} from '../index';
 import {EventData} from '../../store/events/types';
 import Utils from '../../utils';
