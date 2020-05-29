@@ -90,10 +90,12 @@ export class Teams extends React.Component<Props, {}> {
         );
       }
     render() {
+      const {search} = this.state;
+      let passDown = [{...this.props}, search]
         return (
           <SafeAreaView style={styles.safe}>
                 {this.renderHeader()}
-                <CardList {...this.props} />
+                  <CardList {...passDown} />
           </SafeAreaView>
         );
       }
