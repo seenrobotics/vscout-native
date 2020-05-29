@@ -107,6 +107,7 @@ const teams = [
     bestDriverScore : 130,
     bestProgrammingScore: 5,
     skillsRanking: 38,
+    favourite:true,
   },
   {
     key:2,
@@ -122,6 +123,7 @@ const teams = [
     bestDriverScore : 120,
     bestProgrammingScore:20,
     skillsRanking: 28,
+    favourite:false,
   },
   {
     key:3,
@@ -137,6 +139,7 @@ const teams = [
     bestDriverScore : 168,
     bestProgrammingScore: 90,
     skillsRanking: 2,
+    favourite:false,
   },
   {
     key:4,
@@ -152,6 +155,7 @@ const teams = [
     bestDriverScore : 90,
     bestProgrammingScore: 5,
     skillsRanking: 100,
+    favourite:false,
   },
   {
     key:5,
@@ -167,6 +171,7 @@ const teams = [
     bestDriverScore : 100,
     bestProgrammingScore: 20,
     skillsRanking: 87,
+    favourite:true,
   },
 ]
 
