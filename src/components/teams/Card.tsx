@@ -1,9 +1,10 @@
-import React, { ReactNode, ReactComponentElement, ReactElement,  } from 'react';
-import {StyleSheet} from 'react-native';
+import React, { ReactNode, ReactComponentElement, ReactElement, useState, useEffect} from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import {Text, Block} from '../index';
 import * as theme from '../../constants/theme';
 import { Tooltip} from 'react-native-elements';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 type ComponentFn = () => JSX.Element;
@@ -15,13 +16,39 @@ export interface CardProps {
   leftBody: string | ComponentFn;
   rightBody: string | ComponentFn;
   rightContent: Array<any>;
+  favourite: boolean;
 }
 
 const Card = (props: CardProps)  => {
-
+  const toggleFavourite = () => {
+    if (isFavourite) {
+      setFavouriteButtonStatus(favouriteButtonDisabled);
+      isFavourite = false;
+    }
+    else {
+      setFavouriteButtonStatus(favouriteButtonEnabled);
+      isFavourite = true;
+    }
+}
   const leftBody = (typeof props.leftBody === "string") ? () =>  <Text h3 white style={{marginHorizontal:6, fontSize: 20}}>{props.leftBody}</Text>: props.leftBody;
   const rightHeader = (typeof props.rightHeader === "string") ? () => <Text h3 style={{fontSize:22,}}numberOfLines={2}>{props.rightHeader}</Text> : props.rightHeader;
   const rightBody = (typeof props.rightBody === "string") ? () => <Text light style={{fontSize:15,}}>{props.rightBody}</Text> : props.rightBody;
+  const favouriteButtonDisabled = <TouchableOpacity style={{position:"absolute", top:-10, right:-25,}} onPress={toggleFavourite}><FontAwesome name="star-o" size={25} color="gold" style={{padding:10,}}/></TouchableOpacity>
+  const favouriteButtonEnabled = <TouchableOpacity style={{position:"absolute", top:-10, right:-25,}} onPress={toggleFavourite}><FontAwesome name="star" size={25} color="gold" style={{padding:10,}}/></TouchableOpacity>
+  const [favouriteButtonStatus, setFavouriteButtonStatus] = useState(favouriteButtonDisabled);
+  let isFavourite = false;
+  
+  useEffect(() => {
+  if (props.favourite) {
+    isFavourite = true;
+    setFavouriteButtonStatus(favouriteButtonEnabled);
+  }
+  else {
+    setFavouriteButtonStatus(favouriteButtonDisabled);
+  }
+  }, []);
+  
+  
 
   return (
     <Block row card shadow color={theme.colors.white} style={styles.request}>
@@ -37,6 +64,7 @@ const Card = (props: CardProps)  => {
       </Block>
     </Block>
     <Block flex={0.75} column middle>
+      {favouriteButtonStatus}
       <Block style={{justifyContent:"flex-start", paddingTop:5,}}>
       {rightHeader()}
         {rightBody()}
