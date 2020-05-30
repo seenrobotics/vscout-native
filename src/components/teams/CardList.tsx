@@ -5,7 +5,6 @@ import {EventData} from '../../store/events/types';
 import Utils from '../../utils';
 import Card from './Card';
 import { parseSync } from '@babel/core';
-import { Dropdown } from 'react-native-material-dropdown';
 
 const CardList = (props: any) => {
   const {events, type, teams} = props[0];
@@ -18,22 +17,12 @@ const CardList = (props: any) => {
     rightContent:[team.averagePlacement, team.averagePPG, team.totalAwards, team.bestDriverScore + team.bestProgrammingScore],
     favourite: team.favourite,
   }));
-  let data = [{
-    value: 'Banana',
-  }, {
-    value: 'Mango',
-  }, {
-    value: 'Pear',
-  }];
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
       <Block flex={false} row space="between" style={styles.requestsHeader}>
         <Text light>Recently Scouted Teams</Text>
         <TouchableOpacity activeOpacity={0.8}>
-        <Dropdown
-        label='Favorite Fruit'
-        data={data}
-      />
+          <Text semibold>View All</Text>
         </TouchableOpacity>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
