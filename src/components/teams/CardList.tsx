@@ -15,7 +15,6 @@ const CardList = (props: any) => {
     rightHeader: team.teamOrg + team.teamLetter,
     rightBody: team.location,
     rightContent:[team.averagePlacement, team.averagePPG, team.totalAwards, team.bestDriverScore + team.bestProgrammingScore],
-    favourite: team.favourite,
   }));
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
