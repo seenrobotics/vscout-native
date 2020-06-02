@@ -2,6 +2,7 @@ import {
   GET_USER,
   AUTH_USER,
   INVALID_CACHED_CREDENTIALS,
+  LOGOUT_USER,
   UserActionTypes,
   UserState,
 
@@ -28,6 +29,11 @@ export function userReducer(state = initialState, action : UserActionTypes) : Us
       case INVALID_CACHED_CREDENTIALS:
         return {
           ...state,
+          auth_attempted : true,
+        }
+      case LOGOUT_USER:
+        return {
+          ...initialState,
           auth_attempted : true,
         }
       default:

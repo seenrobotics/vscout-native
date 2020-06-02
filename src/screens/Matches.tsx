@@ -152,18 +152,11 @@ class Matches extends React.Component<Props, {}> {
     const {event, user} = this.props;
 
     return (
-      <Block flex={0.1} column style={{paddingHorizontal: 15,}}>
-       {Header({
-         backNavigationCB : () => {this.props.navigation.navigate("Events")},
-         pageName : `${event.docData.eventName}`,
-         user : user
-       })}
-      </Block>
+      <Header pageName={`${event.docData.eventName}`} backNavigationCB={this.props.navigation.pop} flex={0.06} ></Header>
     );
   }
 
   render() {
-      
     return (
       <SafeAreaView style={styles.safe}>
         {this.renderHeader()}
