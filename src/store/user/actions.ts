@@ -1,12 +1,10 @@
-import {User,  UserActionTypes, GET_USER, AUTH_USER, INVALID_CACHED_CREDENTIALS, UserState, Database_Credentials, Stored, User_Credentials} from './types'
+import {User,  UserActionTypes, GET_USER, AUTH_USER, LOGOUT_USER, INVALID_CACHED_CREDENTIALS, UserState, Database_Credentials, Stored, User_Credentials} from './types'
 import { Dispatch, AnyAction,  ActionCreator} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import { Types as DatabaseTypes, database, Database} from '../../database';
-import { authorize , AuthorizeResult } from 'react-native-app-auth'
+import { authorize , AuthorizeResult, revoke } from 'react-native-app-auth'
 import { user as default_user} from '../../mocks'
 import {config_discord, config_database} from '../../envars';
-import { Linking } from 'react-native'
-import InAppBrowser from 'react-native-inappbrowser-reborn';
 import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
 import Utils from '../../utils'
@@ -23,9 +21,9 @@ const config = {
   }
 }
 export const getUser : ActionCreator<
-  ThunkAction<Promise<UserActionTypes>, {}, void, AnyAction>
+  ThunkAction<Promise<UserActionTypes>, UserState, void, AnyAction>
 > = () => {
-  return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<UserActionTypes> => {
+  return async (dispatch: ThunkDispatch<{}, {}, any>, getState): Promise<UserActionTypes> => {
     const user = await default_user;
     return dispatch({
       type : GET_USER,
@@ -34,6 +32,36 @@ export const getUser : ActionCreator<
   }
 }
 
+export const logoutUser : ActionCreator<
+  ThunkAction<Promise<UserActionTypes>, UserState, void, AnyAction>
+> = () => {
+  return async (dispatch: ThunkDispatch<{}, {}, any>, getState): Promise<UserActionTypes> => {
+    const user = await default_user;
+    let success = true;
+    try {
+      const clearCreds = clearCachedCredentials();
+      const {token, password} = getState().database_credentials || {};
+      const {accessToken} = getState().user_credentials || {};
+      const sessionConfig = {
+        username : token,
+        password : password
+      }
+      const databaseLogout = axios.post(`http://${config_database.IP}:${config_database.ports.auth}/auth/logout`, sessionConfig)
+      const discordLogout = accessToken ? revoke(config, {tokenToRevoke : accessToken, includeBasicAuth : false, sendClientId : false}) : {};
+      const logoutStatus = await Promise.all([databaseLogout, discordLogout, clearCreds]);
+      await logoutStatus;
+      console.log({logoutStatus});
+    } catch (error)
+    {
+      success = false;
+    }
+    console.log("logout success");
+        return dispatch({
+      type : LOGOUT_USER,
+      success,
+    })
+  }
+}
 const login_discord : () => Promise<Stored<User_Credentials>> = async () => {
   try {
     const authResult = await authorize(config)
@@ -58,16 +86,6 @@ const login_database : (a : {accessToken : string}) => Promise<Stored<Database_C
   {
     throw {...error, message : "authorize database error"}
   }
-}
-const auth_database = async (creds : Database_Credentials) => {
-  const sessionUrl = `http://${config_database.IP}:${config_database.ports.db}/_session`;
-  const sessionConfig = {
-    username : creds.token,
-    password : creds.password
-  }
-  console.log({sessionConfig, sessionUrl});
-  const confirm_session = await axios.get(sessionUrl,{auth : sessionConfig}) 
-  return confirm_session
 }
 
 export const authUserFresh : ActionCreator<
@@ -110,11 +128,12 @@ const setCachedCredentials = async ({database, discord} : {database : Stored<Dat
     Keychain.setGenericPassword("database", JSON.stringify({...database, cached : true}), {service : "database"})
   ]);
 }
+// 
 const connect_database = async (creds : Database_Credentials) => {
   try {
-    const auth = await auth_database(creds);
+    const auth = await Database.Utils.auth_database(config_database, creds);
     const database_config = {...config_database, username : creds.token, password : creds.password};
-    await Database.initialize(database_config).Sync();
+    await Database.initialize(database_config);
     return "OK_STATUS";
   } catch (error)
   {
@@ -123,6 +142,7 @@ const connect_database = async (creds : Database_Credentials) => {
 }
 
 const authUserCachedFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<UserActionTypes> => {
+  
     const credentials = await getCachedCredentials();
     // If cached credentials are corrupted / don't exist.
     if(!credentials) return dispatch({type : INVALID_CACHED_CREDENTIALS});
@@ -132,6 +152,7 @@ const authUserCachedFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<U
       if(connect == "OK_STATUS")
       {
         console.log("Log in successful")
+        dispatch(getUser());
         return dispatch({
           type : AUTH_USER,
           user_credentials : credentials.discord,
@@ -140,6 +161,7 @@ const authUserCachedFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<U
       }
       // Handle server not available
       await clearCachedCredentials();
+      
       return dispatch({type : INVALID_CACHED_CREDENTIALS});
     } catch (error)
     {
@@ -161,6 +183,7 @@ const authUserFreshFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<Us
         database : database_credentials,
       });
       console.log("Log in successful")
+      dispatch(getUser());
       return dispatch({
         type : AUTH_USER,
         user_credentials : discord_credentials,

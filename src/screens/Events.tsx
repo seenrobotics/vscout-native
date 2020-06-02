@@ -6,7 +6,7 @@ import {NavigationTabProp} from 'react-navigation-tabs';
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 
-import {Block, Text} from '../components';
+import {Block, Text, Header} from '../components';
 import {CardList} from '../components/events';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
@@ -70,19 +70,7 @@ class Events extends React.Component<Props, {}> {
   renderHeader() {
     const {user} = this.props;
     return (
-      <Block flex={0.42} column style={{paddingHorizontal: 15}}>
-          <Block flex={false} row style={{paddingVertical: 15}}>
-          <Block center>
-            <Text h3 white style={{fontSize:21, marginRight: -(100 + 10 + 30)}}>
-              Events
-            </Text>
-          </Block>
-          <View style={{width:100, marginRight:10}}>
-    <Text h4 white style={{fontSize:10, textAlign:'right'}}>{user?.userName}</Text>
-            <Text h3 white style={{fontSize:15, textAlign:'right'}}>{user?.team}</Text>
-          </View>
-          <Image style={styles.avatar} source={user?.avatar} />
-        </Block>
+      <Header pageName="Events" flex={0.42} column style={{paddingHorizontal: 15}}>
         <Block card shadow color="white" style={styles.headerChart}>
           <Block row space="between" style={{paddingHorizontal: 30}}>
             <Block flex={false} row center>
@@ -102,7 +90,7 @@ class Events extends React.Component<Props, {}> {
             title="Reload Data"
             onPress={() => this.props.getEvents()}
           />
-      </Block>
+      </Header>
     );
   }
 

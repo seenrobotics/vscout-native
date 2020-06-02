@@ -8,6 +8,10 @@ export interface config
     username : string, 
     password : string, 
     db : string,
+    ports : {
+        db : string;
+        auth : string;
+    }
 }
 
 export const configToURL = (config : config) => 
