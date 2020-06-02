@@ -51,7 +51,8 @@ const Card = (props: CardProps)  => {
   
 
   return (
-    <Block row card shadow color={theme.colors.white} style={styles.request}>
+    <Block         
+    row card shadow color={theme.colors.white} style={styles.request}>
     <Block
       flex={0.2}
       card
