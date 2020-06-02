@@ -8,62 +8,81 @@ import Card from './Card';
 import { parseSync } from '@babel/core';
 import { ThemeColors } from 'react-navigation';
 import * as theme from '../../constants/theme';
+import {NavigationRoute, NavigationParams} from 'react-navigation'
 
 
 const CardList = (props: any) => {
-  const {events, type, teams} = props[0];
+  const {events, type, teams, navigation} = props[0];
   const search = props[1].toLowerCase();
   const [sortBy, setSortBy] = useState("recent");
-
+const handleChange = () => {
+  if (sortBy === "recent") {
+    setCards(cardRenders ? (
+      cardRenders.filter((team)=> team.key.toLowerCase().includes(search))
+      .map((cardProps: React.ComponentProps<typeof Card>) => (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          key={`${type}-${cardProps.key}`}
+          onPress={() => navigation.navigate('TeamDetails')}
+          >
+          <Card {...cardProps} />
+        </TouchableOpacity>
+      ))
+    ) : (
+      <Text>undefined</Text>
+    ));
+  }
+  else if (sortBy == "rank-hl"){
+    setCards(cardRenders ? (
+      cardRenders.sort((a, b) => {return a.leftBody - b.leftBody}).filter((team)=> team.key.toLowerCase().includes(search))
+      .map((cardProps: React.ComponentProps<typeof Card>) => (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          key={`${type}-${cardProps.key}`}
+          onPress={() => navigation.navigate('TeamDetails')}
+          >
+          <Card {...cardProps} />
+        </TouchableOpacity>
+      ))
+    ) : (
+      <Text>undefined</Text>
+    ));
+  }
+  else if (sortBy == "rank-lh"){
+    setCards(cardRenders ? (
+      cardRenders.sort((a, b) => {return b.leftBody - a.leftBody}).filter((team)=> team.key.toLowerCase().includes(search))
+      .map((cardProps: React.ComponentProps<typeof Card>) => (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          key={`${type}-${cardProps.key}`}
+          onPress={() => navigation.navigate('TeamDetails')}
+          >
+          <Card {...cardProps} />
+        </TouchableOpacity>
+      ))
+    ) : (
+      <Text>undefined</Text>
+    ));
+  }
+  else if (sortBy === "fav"){
+    setCards(cardRenders ? (
+      cardRenders.filter((team)=> team.favourite).filter((team)=> team.key.toLowerCase().includes(search))
+      .map((cardProps: React.ComponentProps<typeof Card>) => (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          key={`${type}-${cardProps.key}`}
+          onPress={() => navigation.navigate('TeamDetails')}
+          >
+          <Card {...cardProps} />
+        </TouchableOpacity>
+      ))
+    ) : (
+      <Text>undefined</Text>
+    ));
+  }
+}
   useEffect(() => {
-    if (sortBy === "recent") {
-      setCards(cardRenders ? (
-        cardRenders.filter((team)=> team.key.toLowerCase().includes(search))
-        .map((cardProps: React.ComponentProps<typeof Card>) => (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            key={`${type}-${cardProps.key}`}
-            // onPress={() =>props.navigation.navigate('Matches', {eventId: cardProps._id})}
-            >
-            <Card {...cardProps} />
-          </TouchableOpacity>
-        ))
-      ) : (
-        <Text>undefined</Text>
-      ));
-    }
-    else if (sortBy == "rank"){
-      setCards(cardRenders ? (
-        cardRenders.sort((a, b) => {return a.leftBody - b.leftBody}).filter((team)=> team.key.toLowerCase().includes(search))
-        .map((cardProps: React.ComponentProps<typeof Card>) => (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            key={`${type}-${cardProps.key}`}
-            // onPress={() =>props.navigation.navigate('Matches', {eventId: cardProps._id})}
-            >
-            <Card {...cardProps} />
-          </TouchableOpacity>
-        ))
-      ) : (
-        <Text>undefined</Text>
-      ));
-    }
-    else if (sortBy === "fav"){
-      setCards(cardRenders ? (
-        cardRenders.filter((team)=> team.favourite).filter((team)=> team.key.toLowerCase().includes(search))
-        .map((cardProps: React.ComponentProps<typeof Card>) => (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            key={`${type}-${cardProps.key}`}
-            // onPress={() =>props.navigation.navigate('Matches', {eventId: cardProps._id})}
-            >
-            <Card {...cardProps} />
-          </TouchableOpacity>
-        ))
-      ) : (
-        <Text>undefined</Text>
-      ));
-    }
+    handleChange()
   }, [search, sortBy]);
 
   const cardRenders = teams.map((team) => ({
@@ -75,20 +94,22 @@ const CardList = (props: any) => {
     favourite: team.favourite,
   }));
   
-  const [cards, setCards] = useState(cardRenders ? (
+
+  const temp = cardRenders ? (
     cardRenders.filter((team)=> team.key.toLowerCase().includes(search))
     .map((cardProps: React.ComponentProps<typeof Card>) => (
       <TouchableOpacity
         activeOpacity={0.8}
         key={`${type}-${cardProps.key}`}
-        // onPress={() =>props.navigation.navigate('Matches', {eventId: cardProps._id})}
+        onPress={() => console.log('TeamDetails')}
         >
         <Card {...cardProps} />
       </TouchableOpacity>
     ))
   ) : (
     <Text>undefined</Text>
-  ));
+  )
+  const [cards, setCards] = useState(temp);
 
   return (
     <Block flex={0.8} column color="gray2" style={styles.requests}>
@@ -102,7 +123,8 @@ const CardList = (props: any) => {
         onValueChange={(itemValue, itemIndex) => setSortBy(itemValue)}
       >
         <Picker.Item color={theme.colors.secondary} label="Recently Scouted" value="recent" />
-        <Picker.Item color={theme.colors.secondary} label="Rank" value="rank" />
+        <Picker.Item color={theme.colors.secondary} label="Rank (High to Low)" value="rank-hl" />
+        <Picker.Item color={theme.colors.secondary} label="Rank (Low to High)" value="rank-lh" />
         <Picker.Item color={theme.colors.secondary} label="Favourite" value="fav" />        
  </Picker>
  
