@@ -4,6 +4,7 @@ import {AuthorizeResult} from "react-native-app-auth"
 export const GET_USER = "GET_USER";
 export const AUTH_USER = "AUTH_USER";
 export const INVALID_CACHED_CREDENTIALS = "INVALID_CACHED_CREDENTIALS"
+export const LOGOUT_USER = "LOGOUT_USER";
 export type Stored<T> =  {
     cached : boolean;
 } & T;
@@ -32,6 +33,11 @@ interface GetUserAction {
     user : User;
 }
 
+interface LogoutUserAction {
+    type : typeof LOGOUT_USER;
+    success : boolean;
+}
+
 interface UserAuthAction {
     type: typeof AUTH_USER;
     user_credentials : User_Credentials;
@@ -50,4 +56,4 @@ export interface UserState {
 
 }
 
-export type UserActionTypes = GetUserAction | UserAuthAction | InvalidCachedCredentialsAction;
+export type UserActionTypes = GetUserAction | UserAuthAction | InvalidCachedCredentialsAction | LogoutUserAction;
