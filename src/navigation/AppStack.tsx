@@ -10,8 +10,6 @@ interface StateProps {
 type Props = StateProps;
 
 class App extends React.Component<Props> {
-
-
     render() {
         return this.props.signedIn ? (
             <AppNavigator/>

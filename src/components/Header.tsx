@@ -1,39 +1,130 @@
-import React from 'react';
-import { useSelector } from 'react-redux'
+import React, {useState} from 'react';
+import { useSelector, connect } from 'react-redux'
 import {Block, Text} from '../components';
+
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-import {Image, SafeAreaView, StyleSheet, Button, View} from 'react-native';
+import FeatherIcon from 'react-native-vector-icons/FontAwesome';
+import {Image, SafeAreaView, StyleSheet, Button, View, ViewStyle, StyleProp} from 'react-native';
 import styles from '../assets/styles/styles'
-import {types, actions} from '../store';
-
+import {types, actions, reducers, store} from '../store';
+import {Picker} from 'react-native';
+import { useDispatch } from 'react-redux'
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import { RootState } from '../store/types';
+import style from '../assets/styles/styles';
+const useThunkDispatch = () => useDispatch<typeof store.dispatch>();
 export interface headerProps {
     pageName : string,
     backNavigationCB ?: () => any;
     user ?: types.user.User;
+    style ?: StyleProp<ViewStyle>,
+    children ?: React.ReactNode,
+    [index: string]: any;
 }
 
 const Header = (props : headerProps) => {
-    const { pageName, backNavigationCB, user } = props;
-    return  <Block row style={{paddingVertical: 15}}>
-    {
-    backNavigationCB ? (
-        <TouchableOpacity activeOpacity={0.8} onPress={backNavigationCB} style={{...styles.back}}> 
-            <IoniconsIcon name="ios-arrow-round-back" size={45} color="white"/>            
-        </TouchableOpacity>
-    ) : null
-    }
-      <Block flex={2.5} style={{flexShrink : 2}} center>
-      <Text numberOfLines={2} h3 white style={{fontSize:20, marginRight: 3}}>
+  const dispatch = useThunkDispatch();
+
+  let _menu : Menu;
+  const setMenuRef = (ref : Menu) => {
+    _menu = ref;
+  };
+ 
+  const hideMenu = () => {
+    _menu.hide();
+  };
+ 
+  const showMenu = () => {
+    _menu.show();
+  };
+
+  const signOut = async () => {
+    dispatch<any>(actions.user.logoutUser()) // huh this is dumb
+    hideMenu();
+  }
+  const { pageName, backNavigationCB, user, style, children, ...rest} = props;
+  console.log({user});
+  return  (
+    <Block flex={0.42} column style={{style, paddingHorizontal: 15, }} {...rest} >
+      <Block flex={false} row style={{paddingVertical: 15}}>
+      {
+      backNavigationCB ? (
+          <TouchableOpacity activeOpacity={0.8} onPress={backNavigationCB} style={{...styles.back}}> 
+              <IoniconsIcon name="ios-arrow-round-back" size={45} color="white"/>            
+          </TouchableOpacity>
+      ) : null
+      }
+      <Block center flex={1} >
+        <Text h3 white style={{fontSize:21}} numberOfLines={1}>
           {pageName}
         </Text>
       </Block>
-      <View style={{marginRight:5}}>
-        <Text h4 white numberOfLines={1} style={{fontSize:10, textAlign:'right'}}>{user?.userName}</Text>
-        <Text h3 white numberOfLines={1} style={{fontSize:15, textAlign:'right'}}>{user?.team.substring(0,6)}</Text>
-      </View>
-      <Image style={[styles.avatar, {flex : 0.5}]} source={user?.avatar} />
+
+      <View style={Style.pickerWrapper}>
+      <Menu
+            ref={setMenuRef}
+            button={
+            <TouchableOpacity onPress={showMenu}>
+              
+              <Image style={styles.avatar} source={user?.avatar} />
+            </TouchableOpacity>
+            }
+          >
+            <MenuItem onPress={hideMenu}>
+            <FeatherIcon name="user" style={{borderColor : "black", borderWidth : 1, color : "black"}}  />            
+     
+              <Text h4 style={{paddingLeft : 15}} numberOfLines={1}>  {user?.userName}</Text>
+            </MenuItem>
+            <MenuItem onPress={hideMenu}>Menu item 2</MenuItem>
+            <MenuItem onPress={hideMenu} disabled>
+              Menu item 3
+            </MenuItem>
+            <MenuDivider />
+            <MenuItem onPress={signOut} ><Text style={Style.signOutItem}>Sign Out</Text></MenuItem>
+          </Menu>
+      </View> 
+      </Block>
+      {
+        children
+      }
     </Block>
+  );
+}
+const mapStateToProps = (state : RootState) => {
+  return {
+    user : state.user.user
+  }
 }
 
-export default Header;
+const Style = StyleSheet.create({
+  signOutItem : {
+    color : "red"
+  },
+  border : {
+    borderWidth : 1,
+    borderColor : "black",
+  },
+  pickerWrapper: {
+    // borderColor: "blue",
+    // borderWidth: 1,
+    // backgroundColor: "#273137",
+    borderRadius: 4
+ },
+ pickerIcon: {
+    color: "red",
+    position: "absolute",
+    bottom: 15,
+    right: 10,
+    fontSize: 20
+ },
+
+ pickerContent: {
+   borderColor: "black",
+    borderWidth: 1,
+    color: "yellow",
+    backgroundColor: "transparent",
+ },
+})
+const a : typeof Header =  connect(mapStateToProps)(Header);
+export default a

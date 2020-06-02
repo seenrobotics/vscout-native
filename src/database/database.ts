@@ -5,11 +5,11 @@ import { config, configToURL, nameIndex, default_config } from './config'
 import 'react-native-get-random-values';
 import {v4} from 'uuid';
 import {DocumentBase, DocumentData, OnDataFn, Collection} from './types'
-import { Types } from '.';
-import Axios from 'axios';
+import Utils from './utils';
 
 export default class Database
 {
+    static Utils = Utils;
     LocalDB :  PouchDB.Database<DocumentBase<any>>;
     RemoteDB : PouchDB.Database<DocumentBase<any>>;
 
@@ -27,10 +27,15 @@ export default class Database
         console.trace("db not initialized");
         throw "Database Not Initialized";
     }
-    static initialize = (config : config) => {
+    static initialize = (config : config, sync = false) => {
         Database.instance = new Database(config);
+        if(sync)
+        {
+            Database.instance.Sync();
+        }
         return Database.instance;
     }
+
     private constructor(config : config) 
     {
         this.Config = config;
@@ -122,25 +127,13 @@ export default class Database
         })
     }
 
-    queryRequestParams = <T extends DocumentData>(type : Collection) : PouchDB.Find.FindRequest<DocumentBase<T>> => {
-
-        console.log({type});
-        return {
-            selector : {
-                type : {$eq : type},
-                updated_at: {$gt: true}
-            },
-            fields: ['_id', 'docData', 'updated_at', 'type'],
-            use_index: nameIndex.TYPE_UPDATED_AT,
-        }
-    }
 
     async FetchLocalDB<DocData extends DocumentData>(type : Collection) : 
     Promise<PouchDB.Core.ExistingDocument<DocumentBase<DocData>>[]>{
        
-        console.log(this.queryRequestParams<DocData>(type));
+        console.log(Database.Utils.queryRequestParams<DocData>(type));
         try {
-            const { docs } = await this.LocalDB.find(this.queryRequestParams<DocData>(type));
+            const { docs } = await this.LocalDB.find(Database.Utils.queryRequestParams<DocData>(type));
             console.log({docs});
             return docs;
             
