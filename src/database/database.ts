@@ -4,12 +4,14 @@ const collate = require("pouchdb-collate");
 import { config, configToURL, nameIndex, default_config, offlineConfig } from './config'
 import 'react-native-get-random-values';
 import {v4} from 'uuid';
-import {DocumentBase, DocumentData, OnDataFn, Collection} from './types'
+import {DocumentBase, DocumentData, OnDataFn, Collection, Collections} from './types'
 import Utils from './utils';
+
 
 export default class Database
 {
     static Utils = Utils;
+    public static Collections = Collections;
     LocalDB :  PouchDB.Database<DocumentBase<any>>;
     RemoteDB : PouchDB.Database<DocumentBase<any>>;
 
@@ -28,7 +30,8 @@ export default class Database
         console.trace("db not initialized");
         throw "Database Not Initialized";
     }
-    static initialize = (config : config, sync = false) => {
+
+    static initialize = (config : config, sync = true) => {
         Database.instance = new Database(config);
         if(sync)
         {
@@ -46,6 +49,7 @@ export default class Database
 
         this.Config = config;
         this.LocalDB = new PouchDB(config.db,  {adapter: 'react-native-sqlite'});
+        console.log({config});
         if(config.offline)
         {
             this.RemoteDB = this.LocalDB;
@@ -92,6 +96,7 @@ export default class Database
             return;
         }
         this.syncing = true;
+        console.log("syncing")
         let handlerSync = PouchDB.sync(this.LocalDB, this.RemoteDB, {
             live: true,
             retry: true,
@@ -118,30 +123,22 @@ export default class Database
             })
     }
 
-    AddData<DataType>(data : Array<DataType>, type : Collection) {
-        data.forEach(docData => {
-           
-            const entry = {
-                _id : collate.toIndexableString([
-                    type, v4(),
-                ]).replace(/\u0000/g, '\u0001'),
-                docData,
-                updated_at : Date.now(),
-                type
-            }
-            this.LocalDB
-                .put(entry)
-                .then(response => {
-                    if (response.ok) {
-                        console.log(this.TAG(), response)
-                    } else {
-                        console.log(this.TAG(), "add new doc fail")
-                    }
-                })
-                .catch(err => {
-                    console.log(this.TAG(), err)
-                })
-        })
+    public async AddData<DataType extends DocumentData>(docData : DataType) {
+        const document = {
+            _id : collate.toIndexableString([
+                docData.DOCUMENT_TYPE, v4(),
+            ]).replace(/\u0000/g, '\u0001'),
+            docData,
+            updated_at : Date.now(),
+            type : docData.DOCUMENT_TYPE
+        }
+        const result = await this.LocalDB.put(document);
+        return result;
+    }
+
+    async BulkAddData<DataType extends DocumentData>(data : Array<DataType>) {
+        const results = data.map(d => this.AddData(d));
+        return await Promise.all(results);
     }
 
 
@@ -150,8 +147,9 @@ export default class Database
        
         console.log(Database.Utils.queryRequestParams<DocData>(type));
         try {
-            const { docs } = await this.LocalDB.find(Database.Utils.queryRequestParams<DocData>(type));
-            console.log({docs});
+            const {docs} = await this.LocalDB.find(Database.Utils.queryRequestParams<DocData>(type));
+            console.log(`FETCH LOCAL DB: found ${docs.length} ${type}`)
+            // console.log({docs});
             return docs;
             
         }   catch (err) {
@@ -181,5 +179,8 @@ export default class Database
         })
     }
 }
-
+Database.initialize_offline("vscout-2381"); 
+// This is for debugging otherwise when the app reloads when code updates it will error database
+// not initialized. During normal use, user shouldn't be able to reload the database independently of reloading the app.
+// If that is not the case, this needs to rewritten and fixed.
 export const database = Database.reference;

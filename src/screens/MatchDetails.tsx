@@ -1,7 +1,7 @@
 import React from 'react';
 import * as shape from 'd3-shape';
 import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Block, Text} from '../components';
+import {Block, Text, Header} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {Card} from '../components/index';
@@ -65,26 +65,9 @@ export class MatchDetails extends React.Component<Props, OwnState> {
     }     
     
       renderHeader() {
-        const {user} = this.props;
-        return (
-          <Block flex={0.12} column style={{paddingHorizontal: 15}}>
-              <Block flex={false} row style={{paddingVertical: 15}}>
-              <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('Matches')} style={styles.back}> 
-            <IoniconsIcon name="ios-arrow-round-back" size={45} color={theme.colors.white}/>            
-          </TouchableOpacity>
-              <Block center>
-              <Text h3 white style={{fontSize:19, marginRight: -(100 + 10 + 30 - 50 - 10), marginTop:3,}}>
-                  Match Details
-                </Text>
-              </Block>
-              <View style={{width:100, marginRight:10}}>
-                <Text h4 white style={{fontSize:10, textAlign:'right'}}>Eshwar C.</Text>
-                <Text h3 white style={{fontSize:15, textAlign:'right'}}>2381Y</Text>
-              </View>
-              <Image style={styles.avatar} source={user.avatar} />
-            </Block>
-          </Block>
-        );
+        return(
+          <Header pageName={`Match Details`} backNavigationCB={this.props.navigation.pop} flex={0.1} ></Header>
+        )
       }
 
     displayPreviousMatch = () => {

@@ -25,7 +25,7 @@ export const addMatches = ({matches} : {matches : Array<MatchData>}) :  ThunkAct
   {
     console.log("Database Undefined") 
   } else {
-    database().AddData(matches, DatabaseTypes.Collections.match)
+    database().BulkAddData(matches)
   }
   return dispatch({
     type: ADD_MATCHES,

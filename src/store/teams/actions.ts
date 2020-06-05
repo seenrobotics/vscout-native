@@ -23,7 +23,7 @@ export const addTeams = ({teams} : {teams : Array<TeamData>}) :  ThunkAction<Tea
   {
     console.log("Database Undefined") 
   } else {
-    database().AddData(teams, DatabaseTypes.Collections.team)
+    database().BulkAddData(teams)
   }
   return dispatch({
     type: ADD_TEAMS,
