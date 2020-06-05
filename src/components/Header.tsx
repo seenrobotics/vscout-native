@@ -44,7 +44,6 @@ const Header = (props : headerProps) => {
     hideMenu();
   }
   const { pageName, backNavigationCB, user, style, children, ...rest} = props;
-  console.log({user});
   return  (
     <Block flex={0.42} column style={{style, paddingHorizontal: 15, }} {...rest} >
       <Block flex={false} row style={{paddingVertical: 15}}>
