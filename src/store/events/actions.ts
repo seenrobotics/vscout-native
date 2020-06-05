@@ -24,7 +24,7 @@ export const addEvents = ({events} : {events : Array<EventData>}) :  ThunkAction
   {
     console.log("Database Undefined") 
   } else {
-    database().AddData(events, DatabaseTypes.Collections.event)
+    database().BulkAddData(events)
   }
   return dispatch({
     type: ADD_EVENTS,
