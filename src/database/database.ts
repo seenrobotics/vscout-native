@@ -1,7 +1,7 @@
 import PouchDB from './pouchdb'
 import PouchCollate from 'pouchdb-collate';
 const collate = require("pouchdb-collate");
-import { config, configToURL, nameIndex, default_config } from './config'
+import { config, configToURL, nameIndex, default_config, offlineConfig } from './config'
 import 'react-native-get-random-values';
 import {v4} from 'uuid';
 import {DocumentBase, DocumentData, OnDataFn, Collection} from './types'
@@ -14,6 +14,7 @@ export default class Database
     RemoteDB : PouchDB.Database<DocumentBase<any>>;
 
     syncing : boolean = false;
+
     Config : config;
     TAG = () => `Sync ${this.Config.db}`;
     OnData ?: OnDataFn<any>;
@@ -35,12 +36,23 @@ export default class Database
         }
         return Database.instance;
     }
-
+    static initialize_offline = (db : string) => {
+        Database.instance = new Database(offlineConfig(db));
+        return Database.instance;
+    }
+  
     private constructor(config : config) 
     {
+
         this.Config = config;
-        this.RemoteDB = new PouchDB(configToURL(config));
         this.LocalDB = new PouchDB(config.db,  {adapter: 'react-native-sqlite'});
+        if(config.offline)
+        {
+            this.RemoteDB = this.LocalDB;
+
+        } else {
+            this.RemoteDB = new PouchDB(configToURL(config));
+        }
     }
 
     Initialize_Index () {
@@ -69,6 +81,11 @@ export default class Database
     }
     
     Sync() {
+        if(this.Config.offline)
+        {
+            console.log("OFFLINE DATABASE CANNOT SYNC")
+            return;
+        }
         if(this.syncing)
         {
             console.log("already syncing");

@@ -11,7 +11,7 @@ import {NavigationStackProp} from 'react-navigation-stack';
 
 import {connect} from 'react-redux'; 
 import { User_Credentials, Database_Credentials } from '../store/user/types';
-const {authUserFresh, authUserCached} = actions.user;
+const {authUserFresh, authUserCached, authOfflineUser} = actions.user;
 
 interface OwnProps {
     user: any;
@@ -21,6 +21,7 @@ interface OwnProps {
 interface DispatchProps {
     authUserCached: () => any;
     authUserFresh: () => any;
+    authOfflineUser: () => any;
 
 }
 
@@ -49,6 +50,11 @@ class Login extends React.Component<Props, {error_text ?: string }> {
       this.setState({...this.state, error_text:  `LOGIN FAILED : ${error.message}`});
     }
   }
+
+  async loginOffline () {
+    this.props.authOfflineUser();
+  }
+  
   async componentDidMount() {
     if(!this.props.auth_attempted)
     {
@@ -71,17 +77,32 @@ class Login extends React.Component<Props, {error_text ?: string }> {
             <Text h4 white style={{fontSize:10, textAlign:'right'}}></Text>
             <Text h3 white style={{fontSize:15, textAlign:'right'}}></Text>
           </View>
-          <Image style={styles.avatar} source={user.avatar} />
         </Block>
+        <Text h3 white style={{fontSize:18, marginTop : 10, marginBottom : 10}}>
+          LOGIN TO VSCOUT
+        </Text>
       
         <TouchableOpacity
-          style={styles.button}
+          style={styles.discordButton}
           onPress={() => this.attemptAuthorize()}
         >
           <Text h3 white style={{fontSize:18, marginTop : 10, marginBottom : 10}}>
-            LOGIN TO VSCOUT
+            LOGIN WITH DISCORD
             <Image 
               source={ { uri: 'https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/91_Discord_logo_logos-512.png' }}
+              style={styles.logo}
+            />
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.offlineButton}
+          onPress={() => this.loginOffline()}
+        >
+          <Text h3  style={{fontSize:18, marginTop : 10, marginBottom : 10}}>
+            LOGIN OFFLINE
+            <Image 
+              source={ { uri: 'https://cdn.iconscout.com/icon/free/png-512/account-profile-avatar-man-circle-round-user-30452.png' }}
               style={styles.logo}
             />
           </Text>
@@ -109,14 +130,21 @@ const mapStateToProps = (state: types.RootState) => ({
   ...state.user
 });
   
-export default connect(mapStateToProps, { authUserFresh, authUserCached })(Login);
+export default connect(mapStateToProps, { authUserFresh, authUserCached, authOfflineUser })(Login);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary,  },
-  button : {
+  discordButton : {
       alignItems: "center",
       padding: 5,
       backgroundColor : "#7289DA"
+  },
+  offlineButton : {
+    alignItems: "center",
+    padding: 5,
+    marginTop : 20,
+    backgroundColor : "#D3D3D3",
+    color: "black"
   },
   logo : {
     transform: [{ scaleX:  false ? -1 : 1 }],

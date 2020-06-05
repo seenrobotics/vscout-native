@@ -30,7 +30,6 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
                 <IoniconsIcon name="md-settings" size={26} color={theme.colors.white} style={{marginTop:-2}}/>            
             )
         }},
-
     },
 
     {
