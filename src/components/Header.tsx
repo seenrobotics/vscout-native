@@ -66,7 +66,6 @@ const Header = (props : headerProps) => {
             ref={setMenuRef}
             button={
             <TouchableOpacity onPress={showMenu}>
-              
               <Image style={styles.avatar} source={user?.avatar} />
             </TouchableOpacity>
             }

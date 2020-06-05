@@ -3,8 +3,10 @@
 import {AuthorizeResult} from "react-native-app-auth"
 export const GET_USER = "GET_USER";
 export const AUTH_USER = "AUTH_USER";
-export const INVALID_CACHED_CREDENTIALS = "INVALID_CACHED_CREDENTIALS"
+export const LOGIN_CREDENTIALS_ERROR = "LOGIN_CREDENTIALS_ERROR";
 export const LOGOUT_USER = "LOGOUT_USER";
+export const SERVER_CONNECTION_ERROR = "SERVER_CREDENTIALS_ERROR";
+export const LOGIN_OFFLINE = "LOGIN_OFFLINE";
 export type Stored<T> =  {
     cached : boolean;
 } & T;
@@ -26,6 +28,7 @@ export interface User {
     team : string,
     avatar ?: any,
 }
+
 export type User_Credentials = AuthorizeResult;
 
 interface GetUserAction {
@@ -44,8 +47,16 @@ interface UserAuthAction {
     database_credentials : Database_Credentials;
 }
 
-interface InvalidCachedCredentialsAction {
-    type: typeof INVALID_CACHED_CREDENTIALS;
+interface LoginOfflineAction {
+    type : typeof LOGIN_OFFLINE;
+}
+
+interface ServerCredentialsErrorAction {
+    type : typeof SERVER_CONNECTION_ERROR;
+}
+
+interface LoginCredentialsErrorAction {
+    type: typeof LOGIN_CREDENTIALS_ERROR;
 }
 export interface UserState {
     user_credentials ?: AuthorizeResult;
@@ -53,7 +64,7 @@ export interface UserState {
     user ?: User;
     auth_attempted : boolean;
     signedIn : boolean;
-
+    online : boolean;
 }
 
-export type UserActionTypes = GetUserAction | UserAuthAction | InvalidCachedCredentialsAction | LogoutUserAction;
+export type UserActionTypes = GetUserAction | UserAuthAction | LoginCredentialsErrorAction | LogoutUserAction | LoginOfflineAction | ServerCredentialsErrorAction;
