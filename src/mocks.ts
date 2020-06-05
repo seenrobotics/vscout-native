@@ -110,7 +110,7 @@ const teams = [
     favourite:true,
   },
   {
-    key:4,
+    key:2,
     teamOrg: "905",
     teamLetter : "A",
     teamName: "#RIPWORLDS2020",
@@ -142,7 +142,7 @@ const teams = [
     favourite:false,
   },
   {
-    key:2,
+    key:4,
     teamOrg: "1104",
     teamLetter : "Z",
     teamName: "Discobots ζ",

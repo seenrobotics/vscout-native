@@ -18,12 +18,12 @@ const CardList = (props: any) => {
 const handleChange = () => {
   if (sortBy === "recent") {
     setCards(cardRenders ? (
-      cardRenders.filter((team)=> team.key.toLowerCase().includes(search))
+      cardRenders.filter((team)=> team.teamName.toLowerCase().includes(search))
       .map((cardProps: React.ComponentProps<typeof Card>) => (
         <TouchableOpacity
           activeOpacity={0.8}
           key={`${type}-${cardProps.key}`}
-          onPress={() => navigation.navigate('TeamDetails')}
+          onPress={() => navigation.navigate('TeamDetails', {key:cardProps.key})}
           >
           <Card {...cardProps} />
         </TouchableOpacity>
@@ -34,12 +34,12 @@ const handleChange = () => {
   }
   else if (sortBy == "rank-hl"){
     setCards(cardRenders ? (
-      cardRenders.sort((a, b) => {return a.leftBody - b.leftBody}).filter((team)=> team.key.toLowerCase().includes(search))
+      cardRenders.sort((a, b) => {return a.leftBody - b.leftBody}).filter((team)=> team.teamName.toLowerCase().includes(search))
       .map((cardProps: React.ComponentProps<typeof Card>) => (
         <TouchableOpacity
           activeOpacity={0.8}
           key={`${type}-${cardProps.key}`}
-          onPress={() => navigation.navigate('TeamDetails')}
+          onPress={() => navigation.navigate('TeamDetails', {key:cardProps.key})}
           >
           <Card {...cardProps} />
         </TouchableOpacity>
@@ -50,12 +50,12 @@ const handleChange = () => {
   }
   else if (sortBy == "rank-lh"){
     setCards(cardRenders ? (
-      cardRenders.sort((a, b) => {return b.leftBody - a.leftBody}).filter((team)=> team.key.toLowerCase().includes(search))
+      cardRenders.sort((a, b) => {return b.leftBody - a.leftBody}).filter((team)=> team.teamName.toLowerCase().includes(search))
       .map((cardProps: React.ComponentProps<typeof Card>) => (
         <TouchableOpacity
           activeOpacity={0.8}
           key={`${type}-${cardProps.key}`}
-          onPress={() => navigation.navigate('TeamDetails')}
+          onPress={() => navigation.navigate('TeamDetails', {key:cardProps.key})}
           >
           <Card {...cardProps} />
         </TouchableOpacity>
@@ -66,12 +66,12 @@ const handleChange = () => {
   }
   else if (sortBy === "fav"){
     setCards(cardRenders ? (
-      cardRenders.filter((team)=> team.favourite).filter((team)=> team.key.toLowerCase().includes(search))
+      cardRenders.filter((team)=> team.favourite).filter((team)=> team.teamName.toLowerCase().includes(search))
       .map((cardProps: React.ComponentProps<typeof Card>) => (
         <TouchableOpacity
           activeOpacity={0.8}
           key={`${type}-${cardProps.key}`}
-          onPress={() => navigation.navigate('TeamDetails')}
+          onPress={() => navigation.navigate('TeamDetails', {key:cardProps.key})}
           >
           <Card {...cardProps} />
         </TouchableOpacity>
@@ -86,7 +86,8 @@ const handleChange = () => {
   }, [search, sortBy]);
 
   const cardRenders = teams.map((team) => ({
-    key:team.teamOrg + team.teamLetter,
+    key:team.key,
+    teamName:team.teamOrg + team.teamLetter,
     leftBody: team.skillsRanking.toString(),
     rightHeader: team.teamOrg + team.teamLetter,
     rightBody: team.location,
@@ -96,12 +97,12 @@ const handleChange = () => {
   
 
   const temp = cardRenders ? (
-    cardRenders.filter((team)=> team.key.toLowerCase().includes(search))
+    cardRenders.filter((team) => team.teamName.toLowerCase().includes(search))
     .map((cardProps: React.ComponentProps<typeof Card>) => (
       <TouchableOpacity
         activeOpacity={0.8}
         key={`${type}-${cardProps.key}`}
-        onPress={() => console.log('TeamDetails')}
+        onPress={() => navigation.navigate('TeamDetails', 2)}
         >
         <Card {...cardProps} />
       </TouchableOpacity>

@@ -14,6 +14,7 @@ import {connect} from 'react-redux';
 import {MatchDoc} from '../store/matches/types'
 import { NavigationActions, NavigationRoute } from 'react-navigation';
 import {types, actions} from '../store';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 interface OwnProps {
@@ -21,12 +22,9 @@ interface OwnProps {
     user: any;
     navigation:NavigationStackProp<NavigationRoute<NavigationParams>>;
 }
-interface NavigationParams {
-  matches : Array<MatchDoc>;
-  currentMatchId : number;
-}
+
 type Props = OwnProps;
-export class MatchDetails extends React.Component<Props> {
+export default class TeamDetails extends React.Component<Props> {
     public static defaultProps = {
         user: mocks.user,
       };
@@ -54,39 +52,33 @@ export class MatchDetails extends React.Component<Props> {
       }
 
     renderCard() {
+      const teamKey = this.props.navigation.state.params.key;
+      const team = mocks.teams.filter((team) => team.key === teamKey)[0];
+      console.log(team);
+      
       return (
-        <Block flex={0.88} style={{}}>
-        <Block flex={1} row center style={{justifyContent:'center',paddingBottom:10,marginTop:-20,}}>
-          <Text h1 style={{color:theme.colors.white, fontSize:25, paddingBottom:0,}}>QUALIFIER</Text>
-        </Block>
-
-        <Block flex={2.5} center style={{marginTop:0,}}>
-          <Block card shadow color={theme.colors.white} style={styles.headerChart}>
-          <Block>
-        <Text h1 style={{color:'dimgray', fontSize:40,}}>Test</Text>
-        <Text h1 style={{color:theme.colors.primary, fontSize:50,}}>5 <Text style={{color:theme.colors.blue, fontSize:50,}}>10</Text></Text>
-          </Block>
-        </Block>
-        </Block>
-
-          <Block flex={5} stretch color="gray2" style={{marginTop:-100,paddingTop:100,}}>
-          
-            <Block style={{margin: 30, padding:20, marginBottom:0,paddingBottom:100,}} card shadow color={theme.colors.white}>
-            <Text h1 style={{color:theme.colors.primary, fontSize:20,paddingBottom:5,}}>RED ALLIANCE</Text>
-            <Text h2 style={{color:theme.colors.primary, marginTop:0, fontSize:35,}}>1234  1234</Text>
+<Block flex={1} row card shadow color={theme.colors.accent} style={styles.headerChart}>
+                <Block flex={1}>
+        <Block flex={3} color="" style={{justifyContent: 'center',}}><Text h1 style={{paddingLeft:15, fontSize:38, color:"white",}}>{team.teamOrg + team.teamLetter}</Text></Block>
+        <Block flex={2} color="" style={{justifyContent: 'flex-start',}}><Text h3 style={{paddingLeft:15, fontSize:15,color:"white",}}>{team.location}</Text></Block>
+                </Block>
+                <Block flex={1} row>
+                  <Block color="" flex={1} style={{alignItems:"center",}}>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.averagePlacement}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.averagePPG}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.totalAwards}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.bestDriverScore + team.bestProgrammingScore}</Text></TouchableHighlight>
+                  </Block>
+                  <Block color="" flex={3}>
+                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. Placement</Text>
+                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. PPG</Text>
+                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Awards</Text>
+                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Skills Score</Text>
+                  </Block>
+                </Block>
             </Block>
-            
-            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}} card shadow color={theme.colors.white}>
-            <Text h1 style={{color:theme.colors.blue, fontSize:20,paddingBottom:5,}}>BLUE ALLIANCE</Text>
-            <Text h2 style={{color:theme.colors.blue, marginTop:0, fontSize:35,}}>1234  1234</Text>
-            </Block>
-            
-            <Block style={{margin: 30, padding:20, marginBottom:0, paddingBottom:100,}}>
-            </Block>
-        </Block>
-        </Block>
-        
-        )
+      )
+      
     }
       
     render() {
