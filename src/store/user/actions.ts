@@ -1,4 +1,4 @@
-import {User,  UserActionTypes, GET_USER, AUTH_USER, LOGOUT_USER, INVALID_CACHED_CREDENTIALS, UserState, Database_Credentials, Stored, User_Credentials} from './types'
+import {User,  UserActionTypes, GET_USER, AUTH_USER, LOGOUT_USER, LOGIN_CREDENTIALS_ERROR, LOGIN_OFFLINE, UserState, Database_Credentials, Stored, User_Credentials} from './types'
 import { Dispatch, AnyAction,  ActionCreator} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import { Types as DatabaseTypes, database, Database} from '../../database';
@@ -8,6 +8,7 @@ import {config_discord, config_database} from '../../envars';
 import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
 import Utils from '../../utils'
+
 const config = {
   clientId: config_discord.client_id,
   clientSecret: config_discord.client_secret,
@@ -36,6 +37,8 @@ export const logoutUser : ActionCreator<
   ThunkAction<Promise<UserActionTypes>, UserState, void, AnyAction>
 > = () => {
   return async (dispatch: ThunkDispatch<{}, {}, any>, getState): Promise<UserActionTypes> => {
+    if(!getState().online) return dispatch({type : LOGOUT_USER, success: true,});
+    
     const user = await default_user;
     let success = true;
     try {
@@ -56,7 +59,7 @@ export const logoutUser : ActionCreator<
       success = false;
     }
     console.log("logout success");
-        return dispatch({
+    return dispatch({
       type : LOGOUT_USER,
       success,
     })
@@ -99,6 +102,13 @@ export const authUserCached : ActionCreator<
 > = () => {
   return authUserCachedFn;
 }
+
+export const authOfflineUser : ActionCreator<
+ThunkAction<Promise<UserActionTypes>, {}, void, AnyAction>
+> = () => {
+  return authOfflineUserFn;
+}
+
 
 const clearCachedCredentials = async () => await Promise.all([Keychain.resetGenericPassword({service : "discord"}), Keychain.resetGenericPassword({service : "discord"})]);
 
@@ -145,7 +155,7 @@ const authUserCachedFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<U
   
     const credentials = await getCachedCredentials();
     // If cached credentials are corrupted / don't exist.
-    if(!credentials) return dispatch({type : INVALID_CACHED_CREDENTIALS});
+    if(!credentials) return dispatch({type : LOGIN_CREDENTIALS_ERROR});
     
     try{
       const connect = await connect_database(credentials.database);
@@ -162,7 +172,7 @@ const authUserCachedFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<U
       // Handle server not available
       await clearCachedCredentials();
       
-      return dispatch({type : INVALID_CACHED_CREDENTIALS});
+      return dispatch({type : LOGIN_CREDENTIALS_ERROR});
     } catch (error)
     {
       console.log({trace: "Fetch Cached Credentials Error, Authorize Database Invalid", error });
@@ -170,6 +180,12 @@ const authUserCachedFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<U
     }
 }
 
+const authOfflineUserFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<UserActionTypes>  => {
+  await Database.initialize_offline(config_database.db);
+  return dispatch({
+    type : LOGIN_OFFLINE
+  })
+}
 const authUserFreshFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<UserActionTypes> => {
   // Retrieve credentials
   try {
@@ -178,7 +194,7 @@ const authUserFreshFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<Us
     const connect = await connect_database(database_credentials);
     if(connect == "OK_STATUS")
     {
-      await setCachedCredentials({
+       await setCachedCredentials({
         discord : discord_credentials,
         database : database_credentials,
       });
@@ -192,7 +208,7 @@ const authUserFreshFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<Us
     }
     // Severe error or Server not up
     return dispatch({
-      type : INVALID_CACHED_CREDENTIALS,
+      type : LOGIN_CREDENTIALS_ERROR,
     })
   }
   catch(error)
@@ -200,4 +216,8 @@ const authUserFreshFn = async (dispatch: ThunkDispatch<{}, {}, any>): Promise<Us
     console.log(error)
     throw(error);
   }
+}
+
+const databaseErrorFn = async () => {
+
 }

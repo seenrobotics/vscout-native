@@ -12,6 +12,7 @@ export interface config
         db : string;
         auth : string;
     }
+    offline ?: boolean;
 }
 
 export const configToURL = (config : config) => 
@@ -25,3 +26,19 @@ export const databaseConfig = (db : string) =>
     return {...config_database, db};
 }
 export const nameIndex = {UPDATED_AT: 'index-updated_at', TYPE_UPDATED_AT : 'type-update_at'}
+
+export const offlineConfig = (db : string) : config =>
+{
+    return {
+        IP : "",
+        username :"",
+        password : "",
+        db, 
+        ports : {
+            db : "",
+            auth : ""
+        },
+        offline : true,
+    }
+
+}
