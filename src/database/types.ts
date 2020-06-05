@@ -1,7 +1,9 @@
 export const Collections = {
     match : "match",
     event : "event",
-    team : 'team'
+    team : 'team',
+    scout : 'scout',
+    scout_link : "scout_link"
 } as const;
 
 export type Collection = keyof typeof Collections;
