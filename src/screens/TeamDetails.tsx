@@ -9,12 +9,12 @@ import {LineChart, Path} from 'react-native-svg-charts';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {NavigationStackProp} from 'react-navigation-stack';
-import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
 import {connect} from 'react-redux';
 import {MatchDoc} from '../store/matches/types'
 import { NavigationActions, NavigationRoute } from 'react-navigation';
 import {types, actions} from '../store';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 interface OwnProps {
@@ -28,6 +28,29 @@ export default class TeamDetails extends React.Component<Props> {
     public static defaultProps = {
         user: mocks.user,
       };
+ 
+    
+
+    toggleFavourite = () => {
+      if (this.state.isFavourite) {
+        this.setState({isFavourite:false, favouriteButtonStatus :<TouchableOpacity onPress={this.toggleFavourite}><FontAwesome name="star-o" size={30} color="gold" style={{padding:10,}}/></TouchableOpacity>});    
+      }
+      else {
+        this.setState({isFavourite:true, favouriteButtonStatus :<TouchableOpacity onPress={this.toggleFavourite}><FontAwesome name="star" size={30} color="gold" style={{padding:10,}}/></TouchableOpacity>});    
+      }
+    }
+
+    state = {
+      favouriteButtonStatus:<TouchableOpacity onPress={this.toggleFavourite}><FontAwesome name="star-o" size={30} color="gold" style={{padding:10,}}/></TouchableOpacity>,
+      isFavourite:false,
+    }
+    componentDidMount() {
+      if (mocks.teams.filter((team) => team.key === this.props.navigation.state.params.key)[0].favourite) {
+        this.state.isFavourite = true;
+        this.setState(state => ({...state, favouriteButtonStatus :<TouchableOpacity onPress={this.toggleFavourite}><FontAwesome name="star" size={30} color="gold" style={{padding:10,}}/></TouchableOpacity>}));    
+      }
+  }
+
       renderHeader() {
         const {user} = this.props;
         return (
@@ -54,31 +77,52 @@ export default class TeamDetails extends React.Component<Props> {
     renderCard() {
       const teamKey = this.props.navigation.state.params.key;
       const team = mocks.teams.filter((team) => team.key === teamKey)[0];
-      console.log(team);
-      
       return (
-<Block flex={1} row card shadow color={theme.colors.accent} style={styles.headerChart}>
-                <Block flex={1}>
-        <Block flex={3} color="" style={{justifyContent: 'center',}}><Text h1 style={{paddingLeft:15, fontSize:38, color:"white",}}>{team.teamOrg + team.teamLetter}</Text></Block>
-        <Block flex={2} color="" style={{justifyContent: 'flex-start',}}><Text h3 style={{paddingLeft:15, fontSize:15,color:"white",}}>{team.location}</Text></Block>
-                </Block>
-                <Block flex={1} row>
-                  <Block color="" flex={1} style={{alignItems:"center",}}>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.averagePlacement}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.averagePPG}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.totalAwards}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{team.bestDriverScore + team.bestProgrammingScore}</Text></TouchableHighlight>
+          <Block flex={0.18} row card shadow color={theme.colors.accent} style={styles.headerChart}>
+            <Block flex={1}>
+              <Block flex={3} row>
+                <Block flex={4} style={{justifyContent: 'center',}}><Text h1 style={{fontSize:42, color:"white",}}>{team.teamOrg + team.teamLetter}</Text></Block>
+                <Block flex={1}style={{justifyContent: 'center',}}>{this.state.favouriteButtonStatus}</Block>
+               </Block>
+              <Block flex={3} color="" style={{justifyContent: 'center',}}><Text h1 style={{fontSize:20, color:"white",}}>{team.teamName}</Text></Block>
+              <Block flex={2} color="" style={{justifyContent: 'center',}}><Text h3 style={{fontSize:15,color:"white",}}>{team.location}</Text></Block>
+            </Block>
+          </Block>
+      )
+    }
+
+    renderStats() {
+      const teamKey = this.props.navigation.state.params.key;
+      const team = mocks.teams.filter((team) => team.key === teamKey)[0];
+      return(
+        <Block flex={0.65} card shadow color={theme.colors.secondary} style={{paddingVertical:15, marginTop:20, marginRight:30, marginLeft:30,}}>
+          <Text h1 style={{fontSize:38, color:theme.colors.gray2, margin:0, paddingLeft:15,paddingBottom:8}}>Statistics</Text>
+          <Block row>
+          <Block color="" flex={0.7} style={{alignItems:"center",}}>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.tournamentsAttended}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.averagePlacement}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.totalAwards}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.averagePPG}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.averagePPGAgainst}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.bestDriverScore}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.bestProgrammingScore}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.bestSkillsScore}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color={theme.colors.white} style={{textAlign:"center", fontSize:13,}}>{team.skillsRanking}</Text></TouchableHighlight>
                   </Block>
                   <Block color="" flex={3}>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. Placement</Text>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. PPG</Text>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Awards</Text>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Skills Score</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Tournaments Attended</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. Placement</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Awards</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. PPG</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. PPG Against</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Best Driver Skills Score</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Best Programming Skills Score</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Best Skills Score</Text>
+                  <Text h3 style={{color:theme.colors.gray2, fontSize:13, paddingBottom:11, paddingTop:5,}}>Skills World Ranking</Text>
                   </Block>
-                </Block>
-            </Block>
+                  </Block>
+        </Block>
       )
-      
     }
       
     render() {
@@ -86,6 +130,7 @@ export default class TeamDetails extends React.Component<Props> {
           <SafeAreaView style={styles.safe}>
                 {this.renderHeader()}
                 {this.renderCard()}
+                {this.renderStats()}
           </SafeAreaView>
         );
       }
@@ -93,7 +138,7 @@ export default class TeamDetails extends React.Component<Props> {
 
 const styles = StyleSheet.create({
     safe: {flex: 1, backgroundColor: theme.colors.primary},
-    headerChart: {padding: 30, marginRight:30, marginLeft:30, zIndex: 1, flex:1, flexDirection: 'row',},
+    headerChart: {padding: 30, marginRight:30, marginLeft:30, zIndex: 1, flexDirection: 'row',},
   avatar: {
     width: 30,
     height: 30,
