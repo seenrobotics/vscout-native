@@ -89,6 +89,7 @@ const userTeam = {
     averagePPGAgainst: 45,
     bestDriverScore : 90,
     bestProgrammingScore: 5,
+    bestSkillsScore:90,
     skillsRanking: 218,
 }
 
@@ -107,6 +108,7 @@ const teams = [
     bestDriverScore : 130,
     bestProgrammingScore: 5,
     skillsRanking: 38,
+    bestSkillsScore:135,
     favourite:true,
   },
   {
@@ -123,6 +125,7 @@ const teams = [
     bestDriverScore : 120,
     bestProgrammingScore:20,
     skillsRanking: 28,
+    bestSkillsScore:125,
     favourite:false,
   },
   {
@@ -139,6 +142,7 @@ const teams = [
     bestDriverScore : 168,
     bestProgrammingScore: 90,
     skillsRanking: 2,
+    bestSkillsScore:252,
     favourite:false,
   },
   {
@@ -155,6 +159,7 @@ const teams = [
     bestDriverScore : 90,
     bestProgrammingScore: 5,
     skillsRanking: 100,
+    bestSkillsScore:95,
     favourite:false,
   },
   {
@@ -171,6 +176,7 @@ const teams = [
     bestDriverScore : 100,
     bestProgrammingScore: 20,
     skillsRanking: 87,
+    bestSkillsScore:120,
     favourite:true,
   },
 ]

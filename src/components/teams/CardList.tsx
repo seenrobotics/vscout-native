@@ -91,7 +91,7 @@ const handleChange = () => {
     leftBody: team.skillsRanking.toString(),
     rightHeader: team.teamOrg + team.teamLetter,
     rightBody: team.location,
-    rightContent:[team.averagePlacement, team.averagePPG, team.totalAwards, team.bestDriverScore + team.bestProgrammingScore],
+    rightContent:[team.averagePlacement, team.averagePPG, team.totalAwards, team.bestSkillsScore],
     favourite: team.favourite,
   }));
   

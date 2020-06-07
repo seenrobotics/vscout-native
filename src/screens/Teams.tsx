@@ -76,13 +76,13 @@ export class Teams extends React.Component<Props, {}> {
                   <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.averagePlacement}</Text></TouchableHighlight>
                   <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.averagePPG}</Text></TouchableHighlight>
                   <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.totalAwards}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.bestDriverScore + userTeam.bestProgrammingScore}</Text></TouchableHighlight>
+                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.bestSkillsScore}</Text></TouchableHighlight>
                   </Block>
                   <Block color="" flex={3}>
                   <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. Placement</Text>
                   <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. PPG</Text>
                   <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Awards</Text>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Skills Score</Text>
+                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Best Skills Score</Text>
                   </Block>
                 </Block>
             </Block>
