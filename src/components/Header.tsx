@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux'
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import { RootState } from '../store/types';
 import style from '../assets/styles/styles';
+import Dialog from "react-native-dialog"
 const useThunkDispatch = () => useDispatch<typeof store.dispatch>();
 export interface headerProps {
     pageName : string,
@@ -25,6 +26,7 @@ export interface headerProps {
 
 const Header = (props : headerProps) => {
   const dispatch = useThunkDispatch();
+  const [dialogVisible, setDialog] = useState(false);
 
   let _menu : Menu;
   const setMenuRef = (ref : Menu) => {
@@ -55,7 +57,7 @@ const Header = (props : headerProps) => {
       ) : null
       }
       <Block center flex={1} >
-        <Text h3 white style={{fontSize:21}} numberOfLines={1}>
+        <Text h3 white style={{fontSize:21, marginLeft : 35}} numberOfLines={1}>
           {pageName}
         </Text>
       </Block>
@@ -79,13 +81,21 @@ const Header = (props : headerProps) => {
               Menu item 3
             </MenuItem>
             <MenuDivider />
-            <MenuItem onPress={signOut} ><Text style={Style.signOutItem}>Sign Out</Text></MenuItem>
+            <MenuItem onPress={()=>setDialog(true)} ><Text style={Style.signOutItem}>Sign Out</Text></MenuItem>
           </Menu>
       </View> 
       </Block>
       {
         children
       }
+      <Dialog.Container visible={dialogVisible}>
+          <Dialog.Title>Sign Out Confirmation</Dialog.Title>
+          <Dialog.Description>
+            Are you sure you want to sign out?
+          </Dialog.Description>
+          <Dialog.Button label="Cancel" onPress={() => setDialog(false)} />
+          <Dialog.Button label="Sign Out" onPress={signOut} />
+      </Dialog.Container>
     </Block>
   );
 }
