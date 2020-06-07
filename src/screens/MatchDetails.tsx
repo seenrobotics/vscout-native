@@ -75,11 +75,11 @@ export class MatchDetails extends React.Component<Props, OwnState> {
       this.setState({currentMatchId :  this.state.currentMatchId - 1}, () => {this.updateWinner()}); 
     }}
     
-      displayNextMatch = () => {
+    displayNextMatch = () => {
       if (this.state.currentMatchId < this.props.matches.length -1) {
         this.setState({currentMatchId :  this.state.currentMatchId + 1}, () => {this.updateWinner()});
       }
-      }
+    }
 
     renderCard() {
       const {currentMatchId} = this.state;

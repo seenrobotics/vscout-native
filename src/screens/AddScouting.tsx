@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet, View, Button} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Block, Text} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
@@ -8,8 +8,9 @@ import Header from '../components/Header'
 import {connect} from 'react-redux'; 
 
 interface OwnProps {
-  type: string;
-  navigation:NavigationTabProp;
+  linkedDocIDs : string[];
+  navigation: NavigationTabProp;
+  pageName : string;
 }
 
 type Props = OwnProps;
@@ -18,23 +19,16 @@ export default class Summary extends React.Component<Props> {
     public static defaultProps = {
         pageName : "Summary"
     };
-    constructor(props : Props)
-    {
-      super(props);
-    }
+
     renderHeader() {
       return (
-        <Header pageName="Summary"></Header>
+        <Header pageName="Add Scouting"></Header>
       );
     }
     render() {
         return (
           <SafeAreaView style={styles.safe}>
                 {this.renderHeader()}
-                <Button
-            title="Reload Data"
-            onPress={() => this.props.navigation.navigate("AddScouting")}
-          />
           </SafeAreaView>
         );
       }

@@ -64,8 +64,8 @@ const initialLayout = { width: Dimensions.get('window').width };
 export function MatchesTabView(props :  tabPropTypes) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'second', title: 'Info', icon: 'file-alt', View: InfoPage },
-    { key: 'first', title: 'Matches', icon: 'list', View : CardList},
+    { key: '1', title: 'Matches', icon: 'list', View : CardList},
+    { key: '2', title: 'Info', icon: 'file-alt', View: InfoPage },
   ]);
 
   const renderScene = ({ route } : { route : { key : string, View : (props : tabPropTypes) => JSX.Element } }) => {

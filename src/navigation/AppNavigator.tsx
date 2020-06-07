@@ -4,32 +4,33 @@ import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import EventStack from './EventStack';
 import * as theme from '../constants/theme';
 import Settings from '../screens/Settings';
-import Login from '../screens/Login';
 import Summary from '../screens/Summary';
-
+import AddScouting from '../screens/AddScouting'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-  const routeConfigs = createMaterialTopTabNavigator({
-
-    Summary: {screen: Summary,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <FontAwesome5Icon name="home" size={22} color={theme.colors.white} />            
-            )
-        }
-    },
-    Scouting: {screen: EventStack,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <FontAwesome5Icon name="binoculars" size={22} color={theme.colors.white} />            
-            )
+const routeConfigs = createMaterialTopTabNavigator(
+    {
+        Summary: {screen: Summary,
+            navigationOptions: {
+                tabBarIcon: () => (
+                    <FontAwesome5Icon name="home" size={22} color={theme.colors.white} />            
+                )
+            }
+        },
+        Scouting: {screen: EventStack,
+            navigationOptions: {
+                tabBarIcon: () => (
+                    <FontAwesome5Icon name="binoculars" size={22} color={theme.colors.white} />            
+                )
         }}, 
-    Settings: {screen: Settings,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <IoniconsIcon name="md-settings" size={26} color={theme.colors.white} style={{marginTop:-2}}/>            
-            )
-        }},
+        AddScouting : {
+            screen : AddScouting,
+            navigationOptions: {
+                tabBarIcon: () => (
+                    <FontAwesome5Icon name="binoculars" size={22} color={theme.colors.white} />            
+                )
+            }
+        }
     },
 
     {
