@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Block, Text} from '../components';
+import {Image, SafeAreaView, StyleSheet, View, TextInput, ScrollView} from 'react-native';
+import {Block, Text, Input} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {NavigationTabProp} from 'react-navigation-tabs';
@@ -19,18 +19,25 @@ export default class Summary extends React.Component<Props> {
     public static defaultProps = {
         pageName : "Summary"
     };
+    state = {
 
+    }
     renderHeader() {
       return (
-        <Header pageName="Add Scouting"></Header>
+        <Header pageName="Add Scouting" flex={0.15} style={{flex : 0.5, borderWidth : 1}}></Header>
       );
     }
     render() {
-        return (
-          <SafeAreaView style={styles.safe}>
-                {this.renderHeader()}
-          </SafeAreaView>
-        );
+      return (
+        <SafeAreaView style={styles.safe}>
+          {this.renderHeader()}
+      <ScrollView showsVerticalScrollIndicator={false} style={{flex : 1}} >
+        <Input></Input>
+      </ScrollView>
+
+          
+        </SafeAreaView>
+      );
       }
 }
 

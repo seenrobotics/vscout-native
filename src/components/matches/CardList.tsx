@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import {Text, Block, Card} from '../index';
+import {Text, Block} from '../index';
 import {MatchData, MatchDoc} from '../../store/matches/types'
 import Utils from '../../utils';
 import MatchCard from './MatchCard'

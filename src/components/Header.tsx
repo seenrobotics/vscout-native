@@ -18,6 +18,7 @@ const useThunkDispatch = () => useDispatch<typeof store.dispatch>();
 export interface headerProps {
     pageName : string,
     backNavigationCB ?: () => any;
+    flex ?: number,
     user ?: types.user.User;
     style ?: StyleProp<ViewStyle>,
     children ?: React.ReactNode,
@@ -45,9 +46,9 @@ const Header = (props : headerProps) => {
     dispatch<any>(actions.user.logoutUser()) // huh this is dumb
     hideMenu();
   }
-  const { pageName, backNavigationCB, user, style, children, ...rest} = props;
+  const { pageName, backNavigationCB, user, style, children, flex, ...rest} = props;
   return  (
-    <Block flex={0.42} column style={{style, paddingHorizontal: 15, }} {...rest} >
+    <Block flex={ flex || 0.42} column style={{style, paddingHorizontal: 15, }} {...rest} >
       <Block flex={false} row style={{paddingVertical: 15}}>
       {
       backNavigationCB ? (

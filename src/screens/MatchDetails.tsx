@@ -4,7 +4,6 @@ import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Block, Text, Header} from '../components';
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
-import {Card} from '../components/index';
 import {Line} from 'react-native-svg';
 import {LineChart, Path} from 'react-native-svg-charts';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
