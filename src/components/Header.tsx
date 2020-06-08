@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useSelector, connect } from 'react-redux'
+import {connect } from 'react-redux'
 import {Block, Text} from '../components';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -8,11 +8,9 @@ import FeatherIcon from 'react-native-vector-icons/FontAwesome';
 import {Image, SafeAreaView, StyleSheet, Button, View, ViewStyle, StyleProp} from 'react-native';
 import styles from '../assets/styles/styles'
 import {types, actions, reducers, store} from '../store';
-import {Picker} from 'react-native';
 import { useDispatch } from 'react-redux'
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import { RootState } from '../store/types';
-import style from '../assets/styles/styles';
 import Dialog from "react-native-dialog"
 const useThunkDispatch = () => useDispatch<typeof store.dispatch>();
 export interface headerProps {
@@ -135,5 +133,4 @@ const Style = StyleSheet.create({
     backgroundColor: "transparent",
  },
 })
-const a : typeof Header =  connect(mapStateToProps)(Header);
-export default a
+export default connect(mapStateToProps)(Header);

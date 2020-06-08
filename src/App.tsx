@@ -13,14 +13,14 @@ import {Provider} from 'react-redux';
 import {store} from './store';
 
 import AppStack from './navigation/AppStack';
+import { NavigationContainer } from '@react-navigation/native';
 
 const App: () => React.ReactNode = () => {
   return (
     <>
       <Provider store={store}>
         <SafeAreaView style={{flex:1}}>
-          <View style={styles.container}>
-            <AppStack />
+          <View style={styles.container}><AppStack/>
           </View>
         </SafeAreaView>
       </Provider>

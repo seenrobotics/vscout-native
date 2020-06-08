@@ -3,16 +3,16 @@ import React from 'react';
 import {Image, SafeAreaView, StyleSheet, ActivityIndicator, View, Dimensions, ScrollView, Text as NormalText } from 'react-native';
 
 import {Block, Text, Header} from '../components';
-import {Text as SVGText, Svg} from "react-native-svg"
+import {Text as SVGText, Svg} from "react-native-svg";
 import * as theme from '../constants/theme';
 import * as mocks from '../mocks';
 import {types, actions} from '../store';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {NavigationStackProp} from 'react-navigation-stack';
-
 import {connect} from 'react-redux'; 
 import { User_Credentials, Database_Credentials } from '../store/user/types';
 const {authUserFresh, authUserCached, authOfflineUser} = actions.user;
+
 
 interface OwnProps {
     user: any;
@@ -32,16 +32,16 @@ interface StateProps {
     signedIn : boolean;
     auth_attempted : boolean;
 }
-
+const initialState =  {
+  error_text : " ",
+}
 type Props = OwnProps & DispatchProps & StateProps;
 
-class Login extends React.Component<Props, {error_text ?: string }> {
+class Login extends React.Component<Props, typeof initialState> {
   public static defaultProps = {
       user: mocks.user,
   };
-  state = {
-         error_text : " "
-  }
+  state = initialState;
   async attemptAuthorize () {
     try {
       this.props.authUserFresh();
@@ -53,7 +53,8 @@ class Login extends React.Component<Props, {error_text ?: string }> {
   }
 
   async loginOffline () {
-    this.props.authOfflineUser();
+    (this.props.authOfflineUser());
+
   }
   
   async componentDidMount() {
@@ -67,7 +68,7 @@ class Login extends React.Component<Props, {error_text ?: string }> {
     const {error_text} = this.state;
 
     return (
-      <View style={{paddingHorizontal: 15, paddingVertical : 50}}>
+      <View style={{paddingHorizontal: 15, paddingVertical : 50}} >
         
           <View style={{flexDirection : "row", justifyContent : "center", }}>
             <Image 
@@ -129,6 +130,7 @@ class Login extends React.Component<Props, {error_text ?: string }> {
       </View>
     )
   }
+
   renderLoading() {
     return (
     <View style={[styles.container, styles.horizontal]}>
@@ -140,11 +142,13 @@ class Login extends React.Component<Props, {error_text ?: string }> {
   {
     return  (
       <SafeAreaView style={styles.safe}>
-        {this.props.auth_attempted ? ([this.renderHeader(), this.renderBody(), this.renderFooter()]) : this.renderLoading()}
+        {this.props.auth_attempted ? <>{this.renderHeader()}{this.renderBody()}{this.renderFooter()}</> : this.renderLoading()}
       </SafeAreaView>
     );
   }
 }
+
+
 const mapStateToProps = (state: types.RootState) => ({
   ...state.user
 });

@@ -9,12 +9,11 @@ import {NavigationStackProp} from 'react-navigation-stack';
 
 export interface CardListProps {
   matches : Array<MatchDoc>;
-  eventId : number;
+  eventId : string;
   type : string;
   navigation : NavigationStackProp<NavigationRoute<NavigationParams>>,
 }
 const CardList : (props : CardListProps) => React.ReactElement = (props: CardListProps) => {
-  console.log(props)
   const {matches, type} = props;
   const cardRenders : Array<MatchDoc> = matches;
   return (

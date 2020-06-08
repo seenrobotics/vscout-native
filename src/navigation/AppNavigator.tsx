@@ -1,39 +1,13 @@
 import React from 'react';
-import {createAppContainer, withOrientation} from 'react-navigation';
-import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import EventStack from './EventStack';
 import * as theme from '../constants/theme';
-import Settings from '../screens/Settings';
 import Summary from '../screens/Summary';
 import AddScouting from '../screens/AddScouting'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-const routeConfigs = createMaterialTopTabNavigator(
-    {
-        Summary: {screen: Summary,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <FontAwesome5Icon name="home" size={22} color={theme.colors.white} />            
-                )
-            }
-        },
-        Scouting: {screen: EventStack,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <FontAwesome5Icon name="binoculars" size={22} color={theme.colors.white} />            
-                )
-        }}, 
-        AddScouting : {
-            screen : AddScouting,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <FontAwesome5Icon name="binoculars" size={22} color={theme.colors.white} />            
-                )
-            }
-        }
-    },
+import { createMaterialTopTabNavigator  } from '@react-navigation/material-top-tabs';
 
-    {
+const Tab = createMaterialTopTabNavigator();
+const TabNavigatorOptions =  {
     initialRouteName: 'Summary',
     tabBarPosition: 'bottom',
     tabBarOptions: {
@@ -49,6 +23,15 @@ const routeConfigs = createMaterialTopTabNavigator(
             backgroundColor:'white',
         }
     }
-    });
+} as const;
 
-export default createAppContainer(routeConfigs);
+const Tabs = () => {
+    return (
+        <Tab.Navigator {...TabNavigatorOptions}>
+            <Tab.Screen name="Summary" component={Summary} options={{tabBarIcon : () => (<FontAwesome5Icon name="home" size={22} color={theme.colors.white} />)}}/>
+            <Tab.Screen name="Events" component={EventStack} options={{tabBarIcon: () => (<FontAwesome5Icon name="flag" size={22} color={theme.colors.white}/>)}}/>
+            <Tab.Screen name="Scouting" component={AddScouting} options={{tabBarIcon: () => (<FontAwesome5Icon name="binoculars" size={22} color={theme.colors.white}/>)}}/>
+        </Tab.Navigator>
+    )
+}
+export default Tabs;

@@ -5,7 +5,6 @@
  * 
  */
 /// <reference types='pouchdb-replication' />
-
 declare module 'react-native-sqlite-2' {
     
 }

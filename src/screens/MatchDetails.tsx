@@ -14,24 +14,23 @@ import {connect} from 'react-redux';
 import {MatchDoc} from '../store/matches/types'
 import { NavigationActions, NavigationRoute } from 'react-navigation';
 import {types, actions} from '../store';
+import {RouteProp} from '@react-navigation/native'
+import {EventStackParamList} from '../navigation/EventStack'
 
 
-interface NavigationParams {
-  matches : Array<MatchDoc>;
-  currentMatchId : number;
-}
 interface OwnProps {
     type: string;
     user: any;
     chart: Array<number>;
-    navigation:NavigationStackProp<NavigationRoute<NavigationParams>>;
+    navigation:NavigationStackProp;
+    route : RouteProp<EventStackParamList, 'MatchDetails'>
 }
 interface StateProps {
     matches: Array<MatchDoc>;
 }
 interface OwnState{
   currentMatchId : number;
-  eventId : number;
+  eventId : string;
   winner: string;
 }
 
@@ -42,8 +41,8 @@ export class MatchDetails extends React.Component<Props, OwnState> {
         chart: mocks.chart,
       };
         state = {
-          eventId: this.props.navigation.state.params?.eventId || 0,
-          currentMatchId: this.props.navigation.state.params?.currentMatchId || 0,
+          eventId: this.props.route.params.eventId,
+          currentMatchId: this.props.route.params.currentMatchId,
           winner:"BLUE",
         }
 
@@ -121,7 +120,6 @@ export class MatchDetails extends React.Component<Props, OwnState> {
             </Block>
         </Block>
         </Block>
-        
         )
     }
       
@@ -139,7 +137,8 @@ export class MatchDetails extends React.Component<Props, OwnState> {
 const mapStateToProps = (state: types.RootState, ownProps: Props) => {
 return {
   matches: state.matches.matches.filter(
-      match => match.docData.eventId === ownProps.navigation.state.params?.eventId,  ),}
+      match => match.docData.eventId === ownProps.route.params.eventId)
+  }
 };
 
 export default connect(mapStateToProps)(MatchDetails);

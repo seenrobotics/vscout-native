@@ -12,11 +12,11 @@ import * as mocks from '../mocks';
 import {types, actions} from '../store';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-
+import {RouteProp } from '@react-navigation/native'
+import {EventStackParamList} from '../navigation/EventStack'
 import {NavigationStackProp} from 'react-navigation-stack';
 import {connect} from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
-
 
 interface InfoPageProps {
   event : types.events.EventDoc;
@@ -90,10 +90,13 @@ export function MatchesTabView(props :  tabPropTypes) {
 
 const {getMatches}  = actions.matches;
 const {getUser} = actions.user;
+
+
 interface OwnProps {
   type: string;
   chart: Array<number>;
   navigation: NavigationStackProp;
+  route : RouteProp<EventStackParamList, 'Matches'>;
 }
 
 interface DispatchProps {
@@ -104,7 +107,7 @@ interface DispatchProps {
 interface StateProps {
   matches: Array<types.matches.MatchDoc>;
   event : types.events.EventDoc;
-  eventId : number;
+  eventId : string;
   user ?: types.user.User;
 }
 type Props = OwnProps & DispatchProps & StateProps;
@@ -150,7 +153,6 @@ class Matches extends React.Component<Props, {}> {
 
   renderHeader() {
     const {event, user} = this.props;
-
     return (
       <Header pageName={`${event.docData.eventName}`} backNavigationCB={this.props.navigation.pop} flex={0.06} ></Header>
     );
@@ -170,13 +172,12 @@ class Matches extends React.Component<Props, {}> {
 const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
 
   event: state.events.events.filter(
-    event => event._id === ownProps.navigation.state.params?.eventId,
+    event => event._id === ownProps.route.params.eventId,
   )[0],
   matches: state.matches.matches.filter(
-    match => match.docData.eventId === ownProps.navigation.state.params?.eventId,
-    
+    match => match.docData.eventId === ownProps.route.params.eventId,
   ),
-  eventId : ownProps.navigation.state.params?.eventId,
+  eventId : ownProps.route.params.eventId,
   user : state.user.user,
 });
 
