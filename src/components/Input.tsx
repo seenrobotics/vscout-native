@@ -3,6 +3,7 @@ import {TextInput, TouchableOpacity} from 'react-native'
 import Block from './Block'
 import Text from './Text'
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import * as Animatable from 'react-native-animatable'
 export const InputOptions = [
     "text"
 ] as const;

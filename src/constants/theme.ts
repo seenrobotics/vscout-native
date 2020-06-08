@@ -9,7 +9,7 @@ const colors = {
     gray2: "#F6F5F5",
     blue: '#1E90FF',
     darkgray: '#525252',
-};
+} as const;
 
 const sizes = {
     // global sizes
@@ -25,7 +25,7 @@ const sizes = {
     body: 12,
     caption: 12,
     small: 8,
-};
+} as const ;
 
 const fonts = {
     h1: {
@@ -53,6 +53,6 @@ const fonts = {
     small: {
         fontSize: sizes.small
     }
-};
+} as const;
 
 export { colors, sizes, fonts };
