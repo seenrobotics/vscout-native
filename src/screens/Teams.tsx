@@ -13,6 +13,8 @@ import { SearchBar } from 'react-native-elements';
 interface OwnProps {
     type: string;
     user: any;
+    userTeam:any;
+    teams:any;
     navigation:NavigationTabProp;
   }
 
@@ -29,7 +31,7 @@ export class Teams extends React.Component<Props, {}> {
         search: '',
       };
 
-      updateSearch = search => {
+      updateSearch = (search:string) => {
         this.setState({ search });
       };
 

@@ -20,8 +20,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 interface OwnProps {
     type: string;
     user: any;
-    navigation:NavigationStackProp<NavigationRoute<NavigationParams>>;
-}
+    navigation:any;
+  }
 
 type Props = OwnProps;
 export default class TeamDetails extends React.Component<Props> {
