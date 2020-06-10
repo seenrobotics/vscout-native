@@ -14,7 +14,7 @@ export interface CardListProps {
   navigation : NavigationStackProp<NavigationRoute<NavigationParams>>,
 }
 const CardList : (props : CardListProps) => React.ReactElement = (props: CardListProps) => {
-  console.log(props)
+  console.log("asdasdasdadsad" + props)
   const {matches, type} = props;
   const cardRenders : Array<MatchDoc> = matches;
   return (
