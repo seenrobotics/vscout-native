@@ -35,6 +35,14 @@ export class Teams extends React.Component<Props, {}> {
         this.setState({ search });
       };
 
+      renderStat(stat:number) {
+        <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{stat}</Text></TouchableHighlight>
+      }
+
+      renderLabel(label:string) {
+        <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>{label}</Text>
+      }
+
     
       renderHeader() {
         const {user} = this.props;
@@ -75,16 +83,16 @@ export class Teams extends React.Component<Props, {}> {
                 </Block>
                 <Block flex={1} row>
                   <Block color="" flex={1} style={{alignItems:"center",}}>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.averagePlacement}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.averagePPG}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.totalAwards}</Text></TouchableHighlight>
-                  <TouchableHighlight style={{width:28, height:28, borderRadius:28, marginBottom:5, backgroundColor:theme.colors.primary,justifyContent:'center',}}><Text h3 color="white" style={{textAlign:"center", fontSize:13,}}>{userTeam.bestSkillsScore}</Text></TouchableHighlight>
+                  {this.renderStat(userTeam.averagePlacement)}
+                  {this.renderStat(userTeam.averagePPG)}
+                  {this.renderStat(userTeam.totalAwards)}
+                  {this.renderStat(userTeam.bestSkillsScore)}
                   </Block>
                   <Block color="" flex={3}>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. Placement</Text>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Avg. PPG</Text>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Awards</Text>
-                  <Text h3 style={{color:"white", fontSize:13, paddingBottom:11, paddingTop:5,}}>Best Skills Score</Text>
+                  {this.renderLabel("Avg. Placement")}
+                  {this.renderLabel("Avg. PPG")}
+                  {this.renderLabel("Awards")}
+                  {this.renderLabel("Best Skills Score")}
                   </Block>
                 </Block>
             </Block>
