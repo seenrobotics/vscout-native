@@ -7,6 +7,12 @@ import {v4} from 'uuid';
 import {DocumentBase, DocumentData, OnDataFn, Collection, Collections} from './types'
 import Utils from './utils';
 
+export interface Subscription<T extends DocumentData> {
+    id : number;
+    docType : T['DOCUMENT_TYPE'];
+    callbackFn : (change : PouchDB.Core.ChangesResponseChange<DocumentBase<T>>) => any;
+    unsubscribe : () => void;
+}
 
 export default class Database
 {
@@ -32,6 +38,7 @@ export default class Database
     }
 
     static initialize = (config : config, sync = true) => {
+
         Database.instance = new Database(config);
         if(sync)
         {
@@ -43,17 +50,29 @@ export default class Database
         Database.instance = new Database(offlineConfig(db));
         return Database.instance;
     }
-  
+
+    private unsubscribe = (id: number) =>  () => delete this.subscriptions[id];
+
+    subscribe<T extends DocumentData> (docType : T['DOCUMENT_TYPE'], callbackFn : (change : PouchDB.Core.ChangesResponseChange<DocumentBase<T>>) => void) {
+        console.log("subscribe", {subscriptions : this.numberSubscriptions});
+        this.numberSubscriptions++;
+        const subscription = {docType, callbackFn, id : this.numberSubscriptions, unsubscribe : this.unsubscribe(this.numberSubscriptions)};
+        this.subscriptions[this.numberSubscriptions] = subscription;
+        return subscription;
+    }
+    private numberSubscriptions = 0;
+    private subscriptions : {[index : number] : Subscription<any>} = [];
+
+    syncCallbackFn = () => {};
     private constructor(config : config) 
     {
-
+        this.syncCallbackFn = config.syncCallbackFn || (() => {});
         this.Config = config;
         this.LocalDB = new PouchDB(config.db,  {adapter: 'react-native-sqlite'});
         console.log({config});
         if(config.offline)
         {
             this.RemoteDB = this.LocalDB;
-
         } else {
             this.RemoteDB = new PouchDB(configToURL(config));
         }
@@ -97,12 +116,26 @@ export default class Database
         }
         this.syncing = true;
         console.log("syncing")
+        this.RemoteDB.changes({
+            live : true,
+            since : "now",
+            include_docs : true
+        }).then((change) => {
+            const type = change.results[0].doc?.type;
+            Object.entries(this.subscriptions).forEach(([key, value]) => {
+                if(type == value.docType)
+                {
+                    value.callbackFn(change.results[0]);
+                }
+            })
+        })
+
         let handlerSync = PouchDB.sync(this.LocalDB, this.RemoteDB, {
             live: true,
             retry: true,
         })
             .on('change', (info) => {
-                console.log(this.TAG(), 'onChange', info)
+                // console.log(this.TAG(), 'onChange', info)
             })
             .on('paused', (err) => {
                 console.log(this.TAG(), 'onPaused', err)
@@ -144,7 +177,7 @@ export default class Database
 
     async FetchLocalDB<DocData extends DocumentData>(type : Collection) : 
     Promise<PouchDB.Core.ExistingDocument<DocumentBase<DocData>>[]>{
-       
+
         console.log(Database.Utils.queryRequestParams<DocData>(type));
         try {
             const {docs} = await this.LocalDB.find(Database.Utils.queryRequestParams<DocData>(type));

@@ -1,4 +1,4 @@
-import {EventData, GET_EVENTS, ADD_EVENTS, EventActionTypes, EventsState} from './types'
+import {EventData, GET_EVENTS, ADD_EVENTS, EventActionTypes, EventsState, EventDoc} from './types'
 import { Dispatch, AnyAction, ActionCreator } from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import { Types as DatabaseTypes, database} from '../../database';
@@ -9,6 +9,13 @@ export const getEvents : ActionCreator<
   return async (dispatch: ThunkDispatch<{}, {}, any>): Promise<EventActionTypes> => {
 
     const events = await database().FetchLocalDB<EventData>(DatabaseTypes.Collections.event);
+    const subscription = database().subscribe<EventData>("event", async (change) => {
+      const events = await database().FetchLocalDB<EventData>(DatabaseTypes.Collections.event);
+      dispatch({
+        type : GET_EVENTS,
+        events,
+      });
+    });
     return dispatch({
       type : GET_EVENTS,
       events

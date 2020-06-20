@@ -13,6 +13,7 @@ export interface config
         auth : string;
     }
     offline ?: boolean;
+    syncCallbackFn ?: () => any;
 }
 
 export const configToURL = (config : config) => 

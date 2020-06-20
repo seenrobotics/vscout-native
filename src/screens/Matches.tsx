@@ -89,8 +89,6 @@ export function MatchesTabView(props :  tabPropTypes) {
 }
 
 const {getMatches}  = actions.matches;
-const {getUser} = actions.user;
-
 
 interface OwnProps {
   type: string;
@@ -101,7 +99,6 @@ interface OwnProps {
 
 interface DispatchProps {
   getMatches: () => any;
-  getUser:() => any;
 
 }
 interface StateProps {
@@ -118,7 +115,6 @@ class Matches extends React.Component<Props, {}> {
     chart: mocks.chart,
   };
   componentDidMount() {
-    this.props.getUser();
     this.props.getMatches();
   }
 
@@ -181,7 +177,7 @@ const mapStateToProps = (state: types.RootState, ownProps: Props) => ({
   user : state.user.user,
 });
 
-export default connect(mapStateToProps, {getMatches, getUser})(Matches);
+export default connect(mapStateToProps, {getMatches})(Matches);
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: theme.colors.primary},
