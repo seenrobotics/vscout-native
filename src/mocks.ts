@@ -68,6 +68,14 @@ const chart = [
   6,
 ];
 
+const chart2 = [
+  5,
+  10,
+  6,
+  14,
+  4
+];
+
 const user = {
   _id : '1', 
   userName: "C9WIN",
@@ -181,4 +189,4 @@ const teams = [
   },
 ]
 
-export {matches, events, chart, user, teams, userTeam};
+export {matches, events, chart, user, teams, userTeam, chart2};

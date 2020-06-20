@@ -46,7 +46,7 @@ export class Teams extends React.Component<Props, {}> {
               <Block flex={false} row style={{paddingVertical: 15}}>
               <Block center>
                 <Text h3 white style={{fontSize:21, marginRight: -(100 + 10 + 30)}}>
-                  Teams
+                  TEAMS
                 </Text>
               </Block>
               <View style={{width:100, marginRight:10}}>

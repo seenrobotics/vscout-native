@@ -1,12 +1,26 @@
+import * as shape from 'd3-shape';
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Block, Text} from '../components';
-import * as theme from '../constants/theme';
-import * as mocks from '../mocks';
+import {Image, SafeAreaView, StyleSheet, View, Button} from 'react-native';
 import {NavigationTabProp} from 'react-navigation-tabs';
 
+import {Line} from 'react-native-svg';
+import {LineChart, Path} from 'react-native-svg-charts';
 
+import {Block, Text} from '../components';
+import {CardList} from '../components/events';
+import * as theme from '../constants/theme';
+import * as mocks from '../mocks';
+import {types, actions} from '../store';
 import {connect} from 'react-redux'; 
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 
 interface OwnProps {
     type: string;
@@ -19,17 +33,33 @@ interface OwnProps {
 export default class Settings extends React.Component<Props, {}> {
     public static defaultProps = {
         user: mocks.user,
+        chart: mocks.chart,
       };
     
+      renderBody() {
+        return (
+          <Block flex={0.8} style={{backgroundColor:theme.colors.gray2,marginTop:-60,}}>
+            <Block card shadow style={{backgroundColor:"white", marginHorizontal:25, paddingTop:30, paddingLeft:20, paddingBottom:0, marginTop:100, marginBottom:50,}}>
+            <Block row><Feather name="moon" size={25} color={theme.colors.secondary}/><Text h4 style={{color:theme.colors.secondary, fontSize:20,paddingLeft:10,}}> Dark Theme</Text></Block>
+            <Block row><MaterialIcons name="notifications-none" size={25} color={theme.colors.secondary}/><Text h4 style={{color:theme.colors.secondary, fontSize:20,paddingLeft:10,}}> Notifications</Text></Block>
+            <Block row><Fontisto name="export" size={20} color={theme.colors.secondary} style={{paddingLeft:5}}/><Text h4 style={{color:theme.colors.secondary, fontSize:20,paddingLeft:10,}}> Export Scouting Reports</Text></Block>
+            <Block row><SimpleLineIcons name="organization" size={25} color={theme.colors.secondary} style={{paddingLeft:3}}/><Text h4 style={{color:theme.colors.secondary, fontSize:20,paddingLeft:10,}}> Manage Organisation</Text></Block>
+            <Block row><Text h4 style={{color:theme.colors.primary, fontSize:20,}}> Go Offline</Text></Block>
+            <Block row><Text h4 style={{color:theme.colors.primary, fontSize:20,}}> Sign Out</Text></Block>
+            </Block>
+          </Block>
+        )
+      }
+
       renderHeader() {
         const {user} = this.props;
     
         return (
-          <Block flex={0.42} column style={{paddingHorizontal: 15}}>
+          <Block flex={0.31} column style={{paddingHorizontal: 15}}>
               <Block flex={false} row style={{paddingVertical: 15}}>
               <Block center>
                 <Text h3 white style={{fontSize:21, marginRight: -(100 + 10 + 30)}}>
-                  Settings
+                  SETTINGS
                 </Text>
               </Block>
               <View style={{width:100, marginRight:10}}>
@@ -38,6 +68,25 @@ export default class Settings extends React.Component<Props, {}> {
               </View>
               <Image style={styles.avatar} source={user.avatar} />
             </Block>
+           
+            <Block card shadow row style={{backgroundColor:theme.colors.accent, padding:20, zIndex: 100 }}>
+            <MaterialIcons name="edit" size={25} color={theme.colors.white} style={{position:"absolute", top:12,right:12}}/>            
+            <Block>
+          <Block flex={0.7}><Block row style={{justifyContent: 'center'}}>
+              <Block flex={0.25}>
+                <Image style={{width: 60, height: 60, borderRadius: 60 / 2, marginBottom:10,}} source={user.avatar} />
+              </Block>
+              <Block flex={0.75}>
+                <Text h3 white style={{fontSize:15,}}>Eshwar Chockalingam</Text>
+                <Text h1 white style={{fontSize:30}}>Kernel Bye</Text>
+                </Block>
+            </Block>
+            </Block>
+          <Block flex={0.3} style={{flexDirection: 'row', alignItems:'center'}}><Text h3 white style={{fontSize:21}}>2381Y </Text><FontAwesome name="circle" size={12} color={theme.colors.white} style={{marginTop:3}}/><Text white h3 style={{fontSize:16}}> Programmer </Text></Block>
+            
+            </Block>
+
+            </Block>
           </Block>
         );
       }
@@ -45,6 +94,7 @@ export default class Settings extends React.Component<Props, {}> {
         return (
           <SafeAreaView style={styles.safe}>
                 {this.renderHeader()}
+                {this.renderBody()}
           </SafeAreaView>
         );
       }
@@ -57,7 +107,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 30 / 2,
-    marginRight: 5,
   },
   });
   
