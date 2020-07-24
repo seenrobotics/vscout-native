@@ -2,11 +2,10 @@ import { Types } from '../database'
 
 export default interface EventData {
     DOCUMENT_TYPE : typeof Types.Collections.event;
-
+    id : number;
     eventName: string;
     eventType: string;
     eventDate: string;
-    venue: string;
     address : string;
     city : string;
     region : string;
@@ -14,5 +13,4 @@ export default interface EventData {
     teamsRegistered: number;
     numberOfMatches: number;
     qualificationSpots ?: number;
-    qualifiesFor : string;
 }

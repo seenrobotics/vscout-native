@@ -5,7 +5,8 @@ import {Text, Block} from '../index';
 import {  MatchDoc, MatchData  } from '../../store/matches/types'
 import {  events, matches } from '../../store/types'
 import * as theme from '../../constants/theme';
-
+import { connect } from 'react-redux';
+import { RootState } from '../../store/types';
 export interface CardProps {
   _id : string;
   leftHeader: string;
@@ -15,8 +16,11 @@ export interface CardProps {
   rightContent: Array<any>;
 }
 
-const MatchCard = (props: { match : MatchDoc}) =>  {
-  const {match} = props;
+const MatchCard = (props: { match : MatchDoc, matches : MatchDoc[]}) =>  {
+  const matchData = props.match;
+  const id = matchData._id;
+  console.log("DIE", {match : props.matches.find((value) => value._id==id)});
+  const match  =  props.matches.find((value) => value._id == id) || matchData;
   const cardProps = {
     _id: match._id,
     leftHeader: match.docData.time || '10:00 AM',
@@ -85,8 +89,13 @@ const MatchCard = (props: { match : MatchDoc}) =>  {
   </Block>
   )
 };
+const mapStateToProps = (state : RootState) => {
+  return {
+    matches : state.matches.matches
+  }
+}
 
-export default MatchCard;
+export default connect(mapStateToProps)(MatchCard);
 
 const styles = StyleSheet.create({
   requests: {

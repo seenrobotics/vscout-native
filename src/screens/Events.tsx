@@ -33,7 +33,8 @@ type Props = OwnProps & DispatchProps & StateProps;
 class Events extends React.Component<Props, {}> {
   public static defaultProps = {
     type: 'Event',
-    chart: mocks.chart,
+    chart: mocks.chart2,
+    user: mocks.user,
   };
   componentDidMount() {
     this.props.getEvents();
@@ -44,7 +45,7 @@ class Events extends React.Component<Props, {}> {
     return (
       <LineChart
         yMin={0}
-        yMax={10}
+        yMax={20}
         data={chart}
         style={{flex: 2}}
         curve={shape.curveMonotoneX}
@@ -57,8 +58,8 @@ class Events extends React.Component<Props, {}> {
           key="zero-axis"
           x1="0%"
           x2="100%"
-          y1="50%"
-          y2="50%"
+          y1="100%"
+          y2="100%"
           stroke={theme.colors.gray}
           strokeDasharray={[2, 10]}
           strokeWidth={3}
@@ -74,22 +75,18 @@ class Events extends React.Component<Props, {}> {
         <Block card shadow color="white" style={styles.headerChart}>
           <Block row space="between" style={{paddingHorizontal: 30}}>
             <Block flex={false} row center>
-              <Text h1>291 </Text>
+              <Text h1>6.4 </Text>
             </Block>
             <Block flex={false} row center>
-              <Text h1>481 </Text>
+              <Text h1>5  </Text>
             </Block>
           </Block>
           <Block flex={0.5} row space="between" style={{paddingHorizontal: 30}}>
-            <Text caption light>Matches</Text>
-            <Text caption light style={{marginRight:15}}>Days</Text>
+            <Text caption light>Avg. Event Placement</Text>
+            <Text caption light style={{marginRight:15}}>Events</Text>
           </Block>
           <Block flex={1}>{this.renderChart()}</Block>
         </Block>
-        <Button
-            title="Reload Data"
-            onPress={() => this.props.getEvents()}
-          />
       </Header>
     );
   }

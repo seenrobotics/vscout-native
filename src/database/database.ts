@@ -120,12 +120,15 @@ export default class Database
             live : true,
             since : "now",
             include_docs : true
-        }).then((change) => {
-            const type = change.results[0].doc?.type;
+        }).on('change', (change) => {
+
+            const type = change.doc?.type;
+            console.log({type});
             Object.entries(this.subscriptions).forEach(([key, value]) => {
+                console.log(value.docType);
                 if(type == value.docType)
                 {
-                    value.callbackFn(change.results[0]);
+                    value.callbackFn(change);
                 }
             })
         })

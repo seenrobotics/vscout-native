@@ -3,7 +3,8 @@ export type MatchType = "QUALIFIER" | "R16" | "R8" | "R4" | "R2";
 
 export default interface MatchData extends Types.DocumentData {
     DOCUMENT_TYPE : typeof Types.Collections.match;
-
+    
+    id:number;
     eventId: string;
     blueTeamTop: string;
     blueTeamBottom: string;
@@ -15,5 +16,4 @@ export default interface MatchData extends Types.DocumentData {
     time : string;
     matchNumber : number;
     completed : boolean;
-    id:number;
 }
